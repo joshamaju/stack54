@@ -74,10 +74,6 @@
     "./tsconfigs/*": "./tsconfigs/*.json",
     "./render": "./dist/runtime/render.js",
     "./components": "./components/index.ts",
-    "./client/utils": "./dist/runtime/utils.js",
-    "./runtime": {
-      "import": "./dist/runtime/index.js",
-      "types": "./dist/runtime/index.d.ts"
-    }
+    "./client/utils": "./dist/runtime/utils.js"
   }
 }
