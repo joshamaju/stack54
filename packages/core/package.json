@@ -1,0 +1,86 @@
+{
+  "name": "@leanweb/fullstack",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/theleanweb/fullstack#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theleanweb/fullstack.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --w",
+    "changeset": "changeset",
+    "prepublish": "pnpm build",
+    "version": "changeset version",
+    "release": "changeset publish"
+  },
+  "author": "Joshua Amaju",
+  "license": "ISC",
+  "keywords": [
+    "fullstack",
+    "ssr"
+  ],
+  "files": [
+    "dist",
+    "components",
+    "tsconfigs",
+    "client.d.ts"
+  ],
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@sveltejs/vite-plugin-svelte": "^3.0.1",
+    "@types/cookie": "^0.6.0",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.10.6",
+    "@types/set-cookie-parser": "^2.4.7",
+    "hono": "^3.12.0",
+    "svelte": "^4.2.8",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10"
+  },
+  "peerDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.0.1",
+    "hono": "^3.12.0",
+    "svelte": "^4.2.8",
+    "vite": "^5.0.10"
+  },
+  "dependencies": {
+    "@remix-run/node": "^2.7.2",
+    "@remix-run/web-fetch": "^4.4.2",
+    "@tsconfig/svelte": "^5.0.2",
+    "devalue": "^4.3.2",
+    "effect": "^2.4.1",
+    "es-module-lexer": "^1.4.1",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.3.10",
+    "kleur": "^4.1.5",
+    "magic-string": "^0.30.5",
+    "mdsvex": "^0.11.0",
+    "mlly": "^1.5.0",
+    "parse-es-import": "^0.6.0",
+    "set-cookie-parser": "^2.6.0",
+    "sirv": "^2.0.4",
+    "ts-dedent": "^2.2.0",
+    "zod": "^3.22.4"
+  },
+  "exports": {
+    "./client": "./client.d.ts",
+    "./vite": "./dist/vite/mod.js",
+    "./package.json": "./package.json",
+    "./types": "./dist/types/index.js",
+    "./tsconfigs/*.json": "./tsconfigs/*",
+    "./tsconfigs/*": "./tsconfigs/*.json",
+    "./render": "./dist/runtime/render.js",
+    "./components": "./components/index.ts",
+    "./client/utils": "./dist/runtime/utils.js",
+    "./runtime": {
+      "import": "./dist/runtime/index.js",
+      "types": "./dist/runtime/index.d.ts"
+    }
+  }
+}
