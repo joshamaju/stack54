@@ -1,7 +1,7 @@
 {
   "name": "stack54",
   "version": "0.0.3",
-  "description": "",
+  "description": "Build multi-page applications",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -24,6 +24,7 @@
   "license": "ISC",
   "keywords": [
     "fullstack",
+    "mvc",
     "ssr"
   ],
   "files": [
@@ -74,7 +75,9 @@
     "./tsconfigs/*.json": "./tsconfigs/*",
     "./tsconfigs/*": "./tsconfigs/*.json",
     "./render": "./dist/runtime/render.js",
+    "./cookie": "./dist/runtime/cookie.js",
     "./components": "./components/index.ts",
+    "./session": "./dist/runtime/session.js",
     "./client/utils": "./dist/runtime/utils.js"
   }
 }
