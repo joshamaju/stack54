@@ -3,6 +3,8 @@ import { dedent } from "ts-dedent";
 import { relative_path } from "../../vite/utils/filesystem.js";
 import { Config } from "../config/options.js";
 
+import { name } from "../../../package.json";
+
 export const types_template = (
   templates: string[],
   { directories, typescript }: Config,
@@ -18,7 +20,7 @@ export const types_template = (
       .map((file, i) => `import $${i} from "${relative_path(outDir, file)}";`)
       .join("\n")}
         
-    declare module "@leanweb/fullstack/render" {
+    declare module "${name}/render" {
         interface Views {
             ${templates
               .map((file, i) => {
