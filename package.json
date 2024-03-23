@@ -1,9 +1,10 @@
 {
-  "name": "mpa",
+  "name": "mpa-monorepo",
   "version": "1.0.0",
   "description": "",
   "author": "Joshua Amaju",
   "license": "ISC",
+  "private": true,
   "keywords": [],
   "repository": {
     "type": "git",
