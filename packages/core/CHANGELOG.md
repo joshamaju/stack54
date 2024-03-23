@@ -1,5 +1,11 @@
 # mpa
 
+## 0.0.3
+
+### Patch Changes
+
+- 721358d: Change package name
+
 ## 0.0.2
 
 ### Patch Changes
