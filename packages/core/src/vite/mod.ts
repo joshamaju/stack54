@@ -42,7 +42,7 @@ const markdownPreprocessor = mdsvex() as PreprocessorGroup;
 const defaultPreprocessors = [markdownPreprocessor, vitePreprocess()];
 
 export default function fullstack(userConfig?: UserConfig) {
-  const root = ".mpa";
+  const root = ".stack54";
 
   const configResult = parse_config(userConfig ?? {});
 

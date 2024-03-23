@@ -1,0 +1,5 @@
+.mpa
+node_modules
+.env
+public/assets
+dist
