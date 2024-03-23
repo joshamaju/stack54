@@ -13,7 +13,7 @@
 
 ```ts
 import { defineConfig } from "vite";
-import mpa from "@leanweb/fullstack/vite";
+import mpa from "stack54/vite";
 
 export default defineConfig({
   plugins: [
@@ -62,7 +62,7 @@ router.route("*", nested);
 To render a component/template, include `ssr` query in file import i.e
 
 ```ts
-import { renderToString } from "mpa/render";
+import { renderToString } from "stack54/render";
 import About from "./views/about.svelte?ssr";
 
 renderToString(
@@ -81,7 +81,7 @@ renderToString(About, {
 Or
 
 ```ts
-import { makeFactory, resolveComponent } from "mpa/render";
+import { makeFactory, resolveComponent } from "stack54/render";
 
 const templates = import.meta.glob("./views/**/*.page.svelte", {
   query: { ssr: true },
