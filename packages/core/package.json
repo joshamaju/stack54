@@ -1,15 +1,15 @@
 {
-  "name": "@leanweb/fullstack",
+  "name": "mpa",
   "version": "0.0.0",
   "description": "",
   "type": "module",
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/theleanweb/fullstack#readme",
+  "homepage": "https://github.com/joshamaju/mpa#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/theleanweb/fullstack.git"
+    "url": "https://github.com/joshamaju/mpa.git"
   },
   "scripts": {
     "build": "tsc",
@@ -55,14 +55,11 @@
     "@tsconfig/svelte": "^5.0.2",
     "devalue": "^4.3.2",
     "effect": "^2.4.1",
-    "es-module-lexer": "^1.4.1",
     "fs-extra": "^11.2.0",
     "glob": "^10.3.10",
     "kleur": "^4.1.5",
     "magic-string": "^0.30.5",
     "mdsvex": "^0.11.0",
-    "mlly": "^1.5.0",
-    "parse-es-import": "^0.6.0",
     "set-cookie-parser": "^2.6.0",
     "sirv": "^2.0.4",
     "ts-dedent": "^2.2.0",
