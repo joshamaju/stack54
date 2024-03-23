@@ -6,10 +6,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/joshamaju/mpa#readme",
+  "homepage": "https://github.com/joshamaju/stack54#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joshamaju/mpa.git"
+    "url": "https://github.com/joshamaju/stack54.git",
+    "directory": "packages/core"
   },
   "scripts": {
     "build": "tsc",
