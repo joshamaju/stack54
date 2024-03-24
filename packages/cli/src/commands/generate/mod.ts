@@ -8,8 +8,8 @@ import * as template from "./templates.js";
 
 export function create_controller({
   name,
+  param,
   directory,
-  param = "id",
 }: {
   name: string;
   param?: string;
@@ -18,6 +18,10 @@ export function create_controller({
   const dir = path.join(directory, name);
   const router = path.join(dir, "router.ts");
   const controller = path.join(dir, "controller.ts");
+
+  if (!param) {
+    param = inflection.singularize(name);
+  }
 
   fs.mkdirSync(dir, { recursive: true });
 
