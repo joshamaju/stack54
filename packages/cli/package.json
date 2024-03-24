@@ -1,0 +1,37 @@
+{
+  "name": "@stack54/cli",
+  "version": "0.0.0",
+  "description": "stack54 cli",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/joshamaju/stack54#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshamaju/stack54.git",
+    "directory": "packages/cli"
+  },
+  "bin": {
+    "stack54": "./cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --w",
+    "changeset": "changeset",
+    "prepublish": "pnpm build",
+    "version": "changeset version",
+    "release": "changeset publish"
+  },
+  "author": "Joshua Amaju",
+  "license": "ISC",
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "giget": "^1.2.3",
+    "kleur": "^4.1.5",
+    "sade": "^1.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6"
+  }
+}
