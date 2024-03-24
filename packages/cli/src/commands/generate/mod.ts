@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+
 import color from "kleur";
 import inflection from "inflection";
 
