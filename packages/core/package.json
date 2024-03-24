@@ -78,6 +78,7 @@
     "./cookie": "./dist/runtime/cookie.js",
     "./components": "./components/index.ts",
     "./session": "./dist/runtime/session.js",
-    "./client/utils": "./dist/runtime/utils.js"
+    "./client/utils": "./dist/runtime/utils.js",
+    "./view": "./dist/runtime/middlewares/view.js"
   }
 }
