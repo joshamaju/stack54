@@ -21,7 +21,7 @@ export function create_controller({
 
   fs.mkdirSync(dir, { recursive: true });
 
-  fs.writeFileSync(controller, template.controller);
+  fs.writeFileSync(controller, template.controller({ param }));
   fs.writeFileSync(router, template.router({ param }));
 
   console.log(color.green(`✓ Created controller ${controller}`));

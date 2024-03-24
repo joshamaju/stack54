@@ -1,6 +1,6 @@
 import { dedent } from "ts-dedent";
 
-export const controller = dedent`
+export const controller = ({ param }: { param: string }) => dedent`
 import type {Context} from "hono";
 
 /**
@@ -24,7 +24,7 @@ export async function store(ctx: Context) {}
  * Display a single post by id.
  */
 export async function show(ctx: Context) {
-    const id = ctx.req.param('id');
+    const id = ctx.req.param('${param}');
 }
 
 /**
@@ -32,7 +32,7 @@ export async function show(ctx: Context) {
  * Not needed if you are creating an API server.
  */
 export async function edit(ctx: Context) {
-    const id = ctx.req.param('id');
+    const id = ctx.req.param('${param}');
 }
 
 /**
@@ -44,7 +44,7 @@ export async function update(ctx: Context) {}
  * Handle the form submission to delete a specific post by id.
  */
 export async function destroy(ctx: Context) {
-    const id = ctx.req.param('id');
+    const id = ctx.req.param('${param}');
 }
 `;
 

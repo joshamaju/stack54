@@ -34,7 +34,7 @@ program
     switch (type) {
       case "controller": {
         const dir = opts.controllers ? path.join(cwd, opts.controllers) : cwd;
-        create_controller({ name, directory: dir });
+        create_controller({ name, directory: dir, param: opts.param });
         break;
       }
 
@@ -58,7 +58,11 @@ program
         const view_dir = path.join(cwd, opts.views);
         const controllers_dir = path.join(cwd, opts.controllers);
 
-        create_controller({ name, directory: controllers_dir });
+        create_controller({
+          name,
+          param: opts.param,
+          directory: controllers_dir,
+        });
 
         console.log();
 
