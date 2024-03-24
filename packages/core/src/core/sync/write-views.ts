@@ -1,9 +1,10 @@
+import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { dedent } from "ts-dedent";
 import { relative_path } from "../../vite/utils/filesystem.js";
 import { Config } from "../config/options.js";
-
-import { name } from "../../../package.json";
 
 export const types_template = (
   templates: string[],
@@ -12,6 +13,13 @@ export const types_template = (
 ) => {
   const { includeExtension } = typescript.views;
   const prefix = path.join(cwd, directories.templates);
+
+  const pkg = fs.readFileSync(
+    fileURLToPath(new URL("../../../package.json", import.meta.url)),
+    "utf-8"
+  );
+
+  const { name } = JSON.parse(pkg);
 
   return dedent`
     import {ComponentProps} from 'svelte';
