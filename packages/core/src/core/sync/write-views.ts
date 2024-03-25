@@ -23,13 +23,13 @@ export const types_template = (
 
   return dedent`
     import {ComponentProps} from 'svelte';
+    import {Options as TemplateOptions} from "${name}/types";
       
     ${templates
       .map((file, i) => `import $${i} from "${relative_path(outDir, file)}";`)
       .join("\n")}
-        
-    declare module "${name}/render" {
-        interface Views {
+
+      interface Templates {
             ${templates
               .map((file, i) => {
                 const id = file.replace(
@@ -53,6 +53,15 @@ export const types_template = (
               .flat()
               .join(",\n")}
         }
+        
+    declare module "${name}/render" {
+        interface Views extends Templates {}
+    }
+
+    declare module "hono" {
+      interface ContextRenderer {
+        <V extends Templates, K extends keyof V>(content: K, props: V[K], options?: TemplateOptions): Response | Promise<Response>;
+      }
     }
     `;
 };

@@ -72,13 +72,14 @@
     "./vite": "./dist/vite/mod.js",
     "./package.json": "./package.json",
     "./types": "./dist/types/index.js",
+    "./view": "./dist/runtime/view.js",
     "./tsconfigs/*.json": "./tsconfigs/*",
     "./tsconfigs/*": "./tsconfigs/*.json",
     "./render": "./dist/runtime/render.js",
     "./cookie": "./dist/runtime/cookie.js",
+    "./locals": "./dist/runtime/locals.js",
     "./components": "./components/index.ts",
     "./session": "./dist/runtime/session.js",
-    "./client/utils": "./dist/runtime/utils.js",
-    "./view": "./dist/runtime/middlewares/view.js"
+    "./client/utils": "./dist/runtime/utils.js"
   }
 }

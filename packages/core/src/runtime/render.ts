@@ -1,6 +1,12 @@
 import * as Either from "effect/Either";
 
-import { Output, Props, Template, TemplateModule } from "../types/template.js";
+import {
+  Options,
+  Output,
+  Props,
+  Template,
+  TemplateModule,
+} from "../types/template.js";
 import { HEAD_INSERTION_MARKER } from "./constants.js";
 
 export interface Views {}
@@ -76,13 +82,14 @@ export function makeFactory<T extends Template | Promise<Template>>(
 ) {
   return <V extends Views, K extends keyof V>(
     name: K,
-    props?: V[K]
+    props?: V[K],
+    opts?: Options
   ): T extends Promise<Template> ? Promise<string> : string => {
     // @ts-expect-error
     const output = f(name);
     // @ts-expect-error
     return output instanceof Promise
-      ? output.then((_) => unsafeRenderToString(_, props as Props))
-      : unsafeRenderToString(output, props as Props);
+      ? output.then((_) => unsafeRenderToString(_, props as Props, opts))
+      : unsafeRenderToString(output, props as Props, opts);
   };
 }
