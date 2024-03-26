@@ -30,7 +30,7 @@ enum Type {
 }
 
 program
-  .command("make [type] [name]")
+  .command("make <type> <name>")
   .option("-t, --views", "Views directory to use")
   .option("-c, --controllers", "Controllers directory to use")
   .option("-p, --param", "Route param to use instead of the default :id")
