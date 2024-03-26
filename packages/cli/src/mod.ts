@@ -23,28 +23,34 @@ program
   .option("-t, --template", "Use template", "basic")
   .action((name, opts) => create_app({ name, template: opts.template }));
 
+enum Type {
+  mvc = "mvc",
+  view = "view",
+  controller = "controller",
+}
+
 program
-  .command("make <type> <name>")
+  .command("make [type] [name]")
   .option("-t, --views", "Views directory to use")
   .option("-c, --controllers", "Controllers directory to use")
   .option("-p, --param", "Route param to use instead of the default :id")
-  .action((type, name, opts) => {
+  .action(async (type, name, opts) => {
     const cwd = process.cwd();
 
     switch (type) {
-      case "controller": {
+      case Type.controller: {
         const dir = opts.controllers ? path.join(cwd, opts.controllers) : cwd;
         create_controller({ name, directory: dir, param: opts.param });
         break;
       }
 
-      case "view": {
+      case Type.view: {
         const dir = opts.views ? path.join(cwd, opts.views) : cwd;
         create_views({ name, directory: dir });
         break;
       }
 
-      case "mvc": {
+      case Type.mvc: {
         if (!opts.views) {
           console.log(color.red("Please specify your views directory"));
           process.exit(1);
