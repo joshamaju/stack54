@@ -15,6 +15,10 @@
   "bin": {
     "stack54": "./cli.js"
   },
+  "files": [
+    "build",
+    "cli.js"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --w",
