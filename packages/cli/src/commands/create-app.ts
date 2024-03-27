@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import color from "kleur";
+import enquirer from "enquirer";
 import * as prompt from "@clack/prompts";
 import { downloadTemplate } from "giget";
 
@@ -14,14 +15,16 @@ export async function create_app({
   name: string;
   template: string;
 }) {
-  prompt.intro("Creating project");
-
   if (fs.existsSync(name)) {
     if (fs.readdirSync(name).length > 0) {
-      const use_non_empty_dir = await prompt.confirm({
-        initialValue: false,
+      const response = await enquirer.prompt({
+        name: "use",
+        initial: false,
+        type: "confirm",
         message: `Directory (${name}) not empty, continue?`,
       });
+
+      const use_non_empty_dir = (response as any).use;
 
       if (prompt.isCancel(use_non_empty_dir) || !use_non_empty_dir) {
         process.exit(1);
@@ -33,7 +36,7 @@ export async function create_app({
 
   const s = prompt.spinner();
 
-  s.start("copying template...");
+  s.start("Setting up project...");
 
   try {
     await downloadTemplate(`${templates}/${template}`, { dir: name });
