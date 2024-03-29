@@ -1,5 +1,15 @@
 # mpa
 
+## 0.1.0
+
+### Minor Changes
+
+- 20edbce: Add view rendering middleware with views autosuggestion
+
+### Patch Changes
+
+- 9819365: Properly resolve package json file
+
 ## 0.0.3
 
 ### Patch Changes
