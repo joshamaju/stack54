@@ -28,31 +28,31 @@ export const types_template = (
     ${templates
       .map((file, i) => `import $${i} from "${relative_path(outDir, file)}";`)
       .join("\n")}
+      
+    interface Templates {
+      ${templates
+        .map((file, i) => {
+          const id = file.replace(
+            prefix.endsWith("/") ? prefix : `${prefix}/`,
+            ""
+          );
 
-      interface Templates {
-            ${templates
-              .map((file, i) => {
-                const id = file.replace(
-                  prefix.endsWith("/") ? prefix : `${prefix}/`,
-                  ""
-                );
+          const { dir, name } = path.parse(id);
 
-                const { dir, name } = path.parse(id);
+          const key = path.join(dir, name);
+          const value = `ComponentProps<$${i}>`;
 
-                const key = path.join(dir, name);
-                const value = `ComponentProps<$${i}>`;
+          const key_value = [`"${key}": ${value}`];
 
-                const key_value = [`"${key}": ${value}`];
+          if (includeExtension) {
+            key_value.push(`"${id}": ${value}`);
+          }
 
-                if (includeExtension) {
-                  key_value.push(`"${id}": ${value}`);
-                }
-
-                return key_value;
-              })
-              .flat()
-              .join(",\n")}
-        }
+          return key_value;
+        })
+        .flat()
+        .join(",\n")}
+    }
         
     declare module "${name}/render" {
         interface Views extends Templates {}
