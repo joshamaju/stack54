@@ -43,7 +43,8 @@
     "hono": "^3.12.0",
     "svelte": "^4.2.8",
     "typescript": "^5.3.3",
-    "vite": "^5.0.10"
+    "vite": "^5.0.10",
+    "vitest": "^1.4.0"
   },
   "peerDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
@@ -71,7 +72,6 @@
     "./client": "./client.d.ts",
     "./vite": "./dist/vite/mod.js",
     "./package.json": "./package.json",
-    "./types": "./dist/types/index.js",
     "./view": "./dist/runtime/view.js",
     "./tsconfigs/*.json": "./tsconfigs/*",
     "./tsconfigs/*": "./tsconfigs/*.json",
@@ -80,6 +80,10 @@
     "./locals": "./dist/runtime/locals.js",
     "./components": "./components/index.ts",
     "./session": "./dist/runtime/session.js",
-    "./client/utils": "./dist/runtime/utils.js"
+    "./client/utils": "./dist/runtime/utils.js",
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
+    }
   }
 }
