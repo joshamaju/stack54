@@ -6,6 +6,6 @@ const components = import.meta.glob<TemplateModule>("../views/**/*.svelte", {
   eager: true,
 });
 
-export const view = makeFactory((name) => {
+export const render = makeFactory((name) => {
   return resolveComponent(`../views/${name}.svelte`, components);
 });
