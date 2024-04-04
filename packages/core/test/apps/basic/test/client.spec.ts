@@ -24,6 +24,17 @@ test.describe("Views", () => {
     await dec.click();
     expect(await text.textContent()).toBe("0");
   });
+
+  test("supports inline script tags", async ({ page }) => {
+    await page.goto("/script/inline");
+    const inc = page.getByTestId("inc");
+    const dec = page.getByTestId("dec");
+    const text = page.getByTestId("text");
+    await inc.click();
+    expect(await text.textContent()).toBe("1");
+    await dec.click();
+    expect(await text.textContent()).toBe("0");
+  });
 });
 
 test.describe("CSS", () => {

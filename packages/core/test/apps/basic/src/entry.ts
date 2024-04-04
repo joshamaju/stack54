@@ -18,6 +18,7 @@ app.get("/without-locals", (ctx) => {
 });
 
 app.get("/client-assets", (ctx) => ctx.render("client-assets/page"));
+app.get("/script/inline", (ctx) => ctx.render("script-inline"));
 
 app.get("/css/inline", (ctx) => ctx.render("css/inline"));
 app.get("/css/nested", (ctx) => ctx.render("css/nested/index"));
