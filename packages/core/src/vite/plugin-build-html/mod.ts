@@ -48,6 +48,14 @@ const deobfuscate: Plugin = {
 
 const build_cache = new Map<string, string>();
 
+function is_local_path(path: string) {
+  return (
+    !path.startsWith("http:") &&
+    !path.startsWith("https:") &&
+    !path.startsWith("//")
+  );
+}
+
 /**
  * Builds svelte components as HTML files, processes images, stylesheets, script tags
  * and other asset types
@@ -127,9 +135,9 @@ export function plugin_buildHTML({
           return build_cache.get(id);
         }
 
-        const has_asset = _.match(assetRegex);
+        // const has_asset = _.match(assetRegex);
 
-        if (!has_asset) return;
+        // if (!has_asset) return;
 
         const { dir, name } = path.parse(filename);
 
@@ -142,21 +150,27 @@ export function plugin_buildHTML({
         fse.ensureDirSync(tmp_dir);
         fse.copyFileSync(filename, tmp_path);
 
+        const build_import_analysis = resolved_vite_config.plugins.find(
+          (p) => p.name == "vite:build-import-analysis"
+        );
+
         // resolve imports from the original file location
         const resolve: Plugin = {
           name: "plugin-resolve",
+          load: {
+            order: "pre",
+            handler(id, options) {
+              const load = build_import_analysis?.load;
+              const fn = typeof load == "function" ? load : load?.handler;
+              return fn?.call(this, id, options);
+            },
+          },
           resolveId: {
             order: "pre",
             async handler(source, importer) {
-              const result = await this.resolve(source, importer, {
-                skipSelf: true,
-              });
-
-              const resolved = path.resolve(dir, result?.id ?? source);
-
-              if (importer && fs.existsSync(resolved)) {
-                return resolved;
-              }
+              if (!is_local_path(source)) return;
+              const resolved = path.resolve(dir, source);
+              if (importer && fs.existsSync(resolved)) return resolved;
             },
           },
         };
