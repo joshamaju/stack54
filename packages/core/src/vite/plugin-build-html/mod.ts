@@ -126,10 +126,10 @@ export function plugin_buildHTML({
 
     transform: {
       order: "pre",
-      async handler(_, id) {
+      async handler(code, id) {
         const { filename } = parse_request(id);
 
-        if (!is_view(filename)) return;
+        if (code.length <= 0 || !is_view(filename)) return;
 
         if (build_cache.has(id)) {
           return build_cache.get(id);
