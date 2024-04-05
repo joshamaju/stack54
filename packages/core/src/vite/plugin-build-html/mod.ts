@@ -171,10 +171,10 @@ export function plugin_buildHTML({
           },
           resolveId: {
             order: "pre",
-            handler(source, importer) {
+            handler(source) {
               if (!is_local_path(source)) return;
               const resolved = path.resolve(dir, source);
-              if (importer && fs.existsSync(resolved)) return resolved;
+              if (fs.existsSync(resolved)) return resolved;
             },
           },
         };
