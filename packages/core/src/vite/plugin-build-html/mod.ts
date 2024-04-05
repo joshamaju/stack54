@@ -233,6 +233,7 @@ export function plugin_buildHTML({
           configFile: false,
           clearScreen: false,
           logLevel: "silent",
+          mode: "production",
           css: resolved_vite_config.css,
           json: resolved_vite_config.json,
           base: resolved_vite_config.base,
