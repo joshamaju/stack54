@@ -154,9 +154,13 @@ export function plugin_buildHTML({
           (p) => p.name == "vite:build-import-analysis"
         );
 
+        const { transform, ...build_import_analysis_plugin } =
+          build_import_analysis ?? {};
+
         // resolve imports from the original file location
         const resolve: Plugin = {
           name: "plugin-resolve",
+          ...build_import_analysis_plugin,
           load: {
             order: "pre",
             handler(id, options) {
