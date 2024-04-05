@@ -6,9 +6,9 @@ import color from "kleur";
 
 import type { Plugin, ResolvedConfig } from "vite";
 
-import { PreprocessorGroup } from "svelte/compiler";
 import type { Options as SvelteOptions } from "@sveltejs/vite-plugin-svelte";
 import { svelte, vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+import { PreprocessorGroup } from "svelte/compiler";
 
 import { mdsvex } from "mdsvex";
 
@@ -22,6 +22,7 @@ import type { UserConfig } from "../core/config/options.js";
 import { plugin_buildHTML } from "./plugin-build-html/mod.js";
 import { plugin_devServer } from "./plugin-dev-server/mod.js";
 import { plugin_env } from "./plugin-env/mod.js";
+import { plugin_hot_reload } from "./plugin-hot-reload/mod.js";
 import { plugin_previewServer } from "./plugin-preview-server/mod.js";
 import { plugin_typedTemplate } from "./plugin-typed-views/mod.js";
 
@@ -163,6 +164,7 @@ export default function fullstack(userConfig?: UserConfig) {
 
   return [
     setup,
+    plugin_hot_reload(),
     svelte(svelteOptions),
     plugin_previewServer(),
     plugin_env({ cwd, outDir: root }),
