@@ -1,5 +1,16 @@
 # mpa
 
+## 0.2.0
+
+### Minor Changes
+
+- fdedcab: Add hot reload feature
+
+### Patch Changes
+
+- be749d5: Correctly resolve and load vite virtual modules
+- b9c83dd: Set secondary build as production build
+
 ## 0.1.0
 
 ### Minor Changes
