@@ -71,7 +71,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    port: 5173,
+    port: 4173,
     stdout: "pipe",
     stderr: "pipe",
     reuseExistingServer: !process.env.CI,
