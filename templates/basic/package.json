@@ -7,7 +7,10 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "test:integration": "playwright test",
+    "test": "pnpm test:integration && pnpm test:unit"
   },
   "keywords": [],
   "dependencies": {
@@ -18,9 +21,11 @@
     "svelte": "^4.2.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.43.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@tsconfig/svelte": "^5.0.2",
     "typescript": "^5.3.3",
-    "vite": "^5.0.10"
+    "vite": "^5.0.10",
+    "vitest": "^1.4.0"
   }
 }

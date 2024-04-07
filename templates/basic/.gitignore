@@ -3,3 +3,5 @@ node_modules
 .env
 public/assets
 dist
+playwright-report
+test-results
