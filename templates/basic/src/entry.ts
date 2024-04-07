@@ -7,6 +7,6 @@ const app = new Hono();
 
 app.use(view(render));
 
-app.get("/", (ctx) => ctx.render("welcome"));
+app.get("/", (ctx) => ctx.render("welcome", {}));
 
 export default app;
