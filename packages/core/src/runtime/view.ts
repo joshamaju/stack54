@@ -9,10 +9,14 @@ export const view = (fn: ReturnType<typeof makeFactory>): MiddlewareHandler => {
     ctx.setRenderer((...args) => {
       const [name, props, opts] = args as any;
 
-      const locals = Locals.getLocals(ctx);
+      const user_context = opts?.context as Map<string, unknown> | undefined;
 
-      const context = new Map(opts?.context);
-      context.set(Locals.key, locals);
+      const locals = Locals.makeLocalsContext(ctx);
+
+      const context = new Map([
+        ...(user_context?.entries() ?? []),
+        ...locals.entries(),
+      ]);
 
       // @ts-expect-error
       return ctx.html(fn(name, props, { context }));
