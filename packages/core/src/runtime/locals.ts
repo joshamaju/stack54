@@ -30,3 +30,9 @@ export function getLocals(ctx: Context, name?: string) {
   const locals = structuredClone(ctx.get(key) ?? {});
   return name ? locals[name] : locals;
 }
+
+export function makeLocalsContext(ctx: Context) {
+  const locals = getLocals(ctx);
+  const context = new Map([[key, locals]]);
+  return context;
+}
