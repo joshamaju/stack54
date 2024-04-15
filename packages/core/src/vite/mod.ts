@@ -19,7 +19,7 @@ import { parse as parse_config } from "../core/config/mod.js";
 import type { UserConfig } from "../core/config/options.js";
 
 // Plugins
-import { plugin_buildHTML } from "./plugin-build-html/mod.js";
+import { plugin_build_html } from "./plugin-build-html/mod.js";
 import { plugin_devServer } from "./plugin-dev-server/mod.js";
 import { plugin_env } from "./plugin-env/mod.js";
 import { plugin_hot_reload } from "./plugin-hot-reload/mod.js";
@@ -153,7 +153,7 @@ export default function fullstack(userConfig?: UserConfig) {
   });
 
   const svelteOptions: SvelteOptions = {
-    // emitCss: false,
+    emitCss: false,
     extensions: config.extensions,
     preprocess: [...preprocessors, attach_full_path(configProxy)],
     compilerOptions: {
@@ -169,7 +169,7 @@ export default function fullstack(userConfig?: UserConfig) {
     plugin_previewServer(),
     plugin_env({ cwd, outDir: root }),
     plugin_devServer(resolved_config),
-    plugin_buildHTML({ cwd, outDir: root }),
+    plugin_build_html({ cwd, outDir: root }),
     plugin_typedTemplate(config, { cwd, outDir: root }),
   ];
 }
