@@ -7,10 +7,9 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "test": "playwright test",
     "preview": "vite preview",
-    "pretest": "pnpm run playwright:install",
-    "playwright:install": "pnpm exec playwright install"
+    "playwright:install": "pnpm exec playwright install",
+    "test": "pnpm run playwright:install && playwright test"
   },
   "keywords": [],
   "dependencies": {
