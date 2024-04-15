@@ -36,7 +36,7 @@ jobs:
 
       - run: pnpm install
       - run: pnpm playwright install
-      - run: pnpm test
+      - run: pnpm run test
       - run: pnpm build
 
       - name: create release pull request or publish
