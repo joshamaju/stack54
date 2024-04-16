@@ -26,6 +26,30 @@ function is_local_path(path: string) {
   );
 }
 
+const VITE_HTML_PLACEHOLDER = "<div data-obfuscation-placeholder></div>";
+
+const obfuscate: Plugin = {
+  name: "plugin-obfuscate",
+  /**
+   * we need to execute this before any vite html parser sees it and throws an error because of the
+   * svelte script at the beginning of the markup, to trick it into accepting the markup as valid HTML
+   */
+  transformIndexHtml: {
+    order: "pre",
+    handler(html) {
+      return `${VITE_HTML_PLACEHOLDER}\n${html}`;
+    },
+  },
+};
+
+const deobfuscate: Plugin = {
+  enforce: "post",
+  name: "plugin-deobfuscate",
+  transformIndexHtml(html) {
+    return html.replace(`${VITE_HTML_PLACEHOLDER}\n`, "");
+  },
+};
+
 /**
  * Builds svelte components as HTML files, processes images, stylesheets, script tags
  * and other asset types
@@ -197,13 +221,13 @@ export function plugin_build_html({
           logLevel: "silent",
           mode: "production",
           css: resolved_vite_config.css,
-          plugins: [...plugins, resolve],
           json: resolved_vite_config.json,
           base: resolved_vite_config.base,
           define: resolved_vite_config.define,
           esbuild: resolved_vite_config.esbuild,
           optimizeDeps: resolved_vite_config.optimizeDeps,
           envPrefix: resolved_vite_config.envPrefix as string[],
+          plugins: [...plugins, resolve, obfuscate, deobfuscate],
           build: {
             ssr: false,
             outDir: build_dir,
