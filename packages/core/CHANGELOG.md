@@ -1,5 +1,11 @@
 # mpa
 
+## 0.3.1
+
+### Patch Changes
+
+- fe552e9: Fix invalid html error by vite during build
+
 ## 0.3.0
 
 ### Minor Changes
