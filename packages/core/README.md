@@ -12,6 +12,14 @@ stack54 is a fullstack, batteries included framework for building modern web app
 - Typed environment variables
 - Templates with Svelte and Markdown
 
+## Get started
+```bash
+npx @stack54/cli new <project-name>
+cd <project-name>
+npm i
+npm run dev
+```
+
 ## Configuration
 
 ```ts
