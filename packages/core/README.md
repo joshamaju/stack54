@@ -50,7 +50,7 @@ import { Hono } from "hono";
 
 const router = new Hono();
 
-router.get("/", (ctx) => ctx.html(view("about")));
+router.get("/", (ctx) => ctx.render("about"));
 ```
 
 ### Nested router
@@ -62,7 +62,7 @@ const router = new Hono();
 
 // nested
 const nested = new Hono();
-nested.get("/", (ctx) => ctx.html(view("about")));
+nested.get("/", (ctx) => ctx.render("about"));
 // nested
 
 router.route("*", nested);
