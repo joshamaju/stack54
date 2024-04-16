@@ -1,5 +1,16 @@
 # mpa
 
+## 0.3.0
+
+### Minor Changes
+
+- 121e285: Properly support script tags of type module in leaf components
+
+### Patch Changes
+
+- 34b90b9: Add helper to construct locals svelte context
+- d2d0b1c: Rename props passing getter and setter functions
+
 ## 0.2.0
 
 ### Minor Changes
