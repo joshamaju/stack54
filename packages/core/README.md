@@ -132,6 +132,12 @@ app.get('/', ctx => ctx.render("about"))
 ### Why svelte
 Using svelte means we can build UIs leveraging the power of composition using components, getting rid of the traditional layouts and partials approach, we also get type safety, automatic import update on refactor etc. And svelte is closer to HTML compared to other component frameworks, which makes it possible to discover HTML assets like stylesheet links, script tags etc to produce optimized assets for production.
 
+#### Benefits
+- Fast rendering (templates are compiled to static strings, no disk access)
+- Component architecture
+- Scoped CSS
+- Optimised assets for production
+
 ## Limitations
 
 - Cannot use dynamic import types in templates i.e
