@@ -1,0 +1,29 @@
+{
+  "name": "with-express",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node ./dist/server.js",
+    "watch": "nodemon --watch './src/*' --exec 'pnpm run build && pnpm start' -e ts,js,svelte"
+  },
+  "keywords": [],
+  "dependencies": {
+    "express": "^4.19.2",
+    "hono": "^3.12.0",
+    "stack54": "^0.2.0",
+    "svelte": "^4.2.8"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.0.1",
+    "@tsconfig/svelte": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "nodemon": "^3.1.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10"
+  }
+}
