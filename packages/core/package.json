@@ -74,6 +74,7 @@
     "./vite": "./dist/vite/mod.js",
     "./package.json": "./package.json",
     "./view": "./dist/runtime/view.js",
+    "./node": "./dist/exports/node.js",
     "./types": "./dist/types/index.js",
     "./tsconfigs/*.json": "./tsconfigs/*",
     "./tsconfigs/*": "./tsconfigs/*.json",
