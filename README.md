@@ -2,6 +2,8 @@
 
 > Build multi-page web applications
 
+## [Documentation](packages/core/README.md)
+
 ### Packages
 
 | Package                  | Changelog                               |
