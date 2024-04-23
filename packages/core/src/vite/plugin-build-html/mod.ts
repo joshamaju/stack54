@@ -12,6 +12,7 @@ import { parse } from "node-html-parser";
 
 import { is_view, parse_request } from "../utils/template.js";
 
+const link_regex = /<link(\s[^]*?)?(?:>([^]*?)<\/link>|\/>)/gim;
 const script_regex = /<script(\s[^]*?)?(?:>([^]*?)<\/script>|\/>)/gim;
 const style_regex = /<style(\s[^]*?)?(?:>([^]*?)<\/style>|\/>)/gim;
 const module_regex = /type\s*=\s*["']module["']/i;
@@ -157,7 +158,7 @@ export function plugin_build_html({
              *
              * ```html
              * <svelte:head>
-             *  <script type="module" src="./app.ts"></script>
+             *  <script type="module" src="./app.ts"></l>
              * </svelte:head>
              *
              * which breaks the svelte build because you can only have one top-level script.
@@ -173,6 +174,12 @@ export function plugin_build_html({
           const p = `<!--${Math.random()}${Math.random()}-->`;
           replacements.push([p, match]);
           return p;
+        });
+
+        code = code.replace(link_regex, (match, attrs) => {
+          const id = `${Math.random()}${Math.random()}`;
+          movers.push(id);
+          return `<html data-move="${id}"><head>${match}</head></html>`;
         });
 
         const template = code.replace(style_regex, (match) => {
