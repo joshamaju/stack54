@@ -17,6 +17,8 @@ app.get("/without-locals", (ctx) => {
   return ctx.html(render("locals", {}));
 });
 
+app.get("/leaf", (ctx) => ctx.render("leaf/page"));
+
 app.get("/client-assets", (ctx) => ctx.render("client-assets/page"));
 app.get("/script/inline", (ctx) => ctx.render("script-inline"));
 

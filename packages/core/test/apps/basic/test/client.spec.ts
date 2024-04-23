@@ -85,3 +85,19 @@ test.describe("Head", () => {
     expect(title).toBeNull();
   });
 });
+
+test("should collect all components assets", async ({ page }) => {
+  await page.goto("/leaf");
+
+  const button = page.locator("button");
+  const link = page.getByTestId("page-style");
+  const inner_link = page.getByTestId("button-style");
+
+  const color = await button.evaluate(
+    (node) => window.getComputedStyle(node).color
+  );
+
+  expect(link).toBeAttached();
+  expect(inner_link).toBeAttached();
+  expect(color).toBe("rgb(255, 0, 0)");
+});
