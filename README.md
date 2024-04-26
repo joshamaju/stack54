@@ -1,6 +1,6 @@
 # stack54
 
-> Build multi-page web applications
+> The fun Javascript stack
 
 [Documentation](packages/core/README.md)
 
