@@ -1,5 +1,13 @@
 # basic
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [3ca19cf]
+- Updated dependencies [3e561fb]
+  - stack54@0.4.0
+
 ## 0.0.4
 
 ### Patch Changes

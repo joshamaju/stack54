@@ -1,5 +1,15 @@
 # mpa
 
+## 0.4.0
+
+### Minor Changes
+
+- 3ca19cf: Export handler to convert hono instance to a node request handler, which enabled integrating a Hono app with something like express.js
+
+### Patch Changes
+
+- 3e561fb: Include link tag in asset realignment after secondary build
+
 ## 0.3.1
 
 ### Patch Changes
