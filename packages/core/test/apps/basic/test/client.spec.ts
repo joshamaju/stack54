@@ -89,15 +89,19 @@ test.describe("Head", () => {
 test("should collect all components assets", async ({ page }) => {
   await page.goto("/leaf");
 
-  const button = page.locator("button");
-  const link = page.getByTestId("page-style");
-  const inner_link = page.getByTestId("button-style");
+  const inc = page.getByTestId("inc");
+  const dec = page.getByTestId("dec");
+  const text = page.getByTestId("text");
 
-  const color = await button.evaluate(
-    (node) => window.getComputedStyle(node).color
+  await inc.click();
+  expect(await text.textContent()).toBe("1");
+
+  await dec.click();
+  expect(await text.textContent()).toBe("0");
+
+  const color = await inc.evaluate(
+    (node) => window.getComputedStyle(node).backgroundColor
   );
 
-  expect(link).toBeAttached();
-  expect(inner_link).toBeAttached();
   expect(color).toBe("rgb(255, 0, 0)");
 });

@@ -2,6 +2,7 @@
 
 dist
 build
+**/public/assets
 .stack54
 node_modules
 test-results/

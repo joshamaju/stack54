@@ -1,10 +1,10 @@
 <script lang="ts">
   import { Head } from "stack54/components";
-  import Button from "./button.svelte";
+  import Counter from "./counter.svelte";
 </script>
 
 <svelte:head>
-  <link data-testid="page-style" rel="stylesheet" href="./page.css" />
+  <link rel="stylesheet" href="./page.css" />
 </svelte:head>
 
 <!DOCTYPE html>
@@ -15,6 +15,6 @@
     <Head />
   </head>
   <body>
-    <Button />
+    <Counter />
   </body>
 </html>
