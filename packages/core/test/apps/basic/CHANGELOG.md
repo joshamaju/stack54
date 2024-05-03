@@ -1,5 +1,12 @@
 # basic
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [d2c2888]
+  - stack54@0.5.0
+
 ## 0.0.5
 
 ### Patch Changes

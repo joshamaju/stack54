@@ -1,5 +1,11 @@
 # mpa
 
+## 0.5.0
+
+### Minor Changes
+
+- d2c2888: Export props serialization utils
+
 ## 0.4.0
 
 ### Minor Changes
