@@ -27,6 +27,10 @@ function is_local_path(path: string) {
   );
 }
 
+const make_id = () => `${Math.random()}${Math.random()}`;
+
+const make_marker = () => `<build-marker>${make_id()}</build-marker>`;
+
 const VITE_HTML_PLACEHOLDER = "<div data-obfuscation-placeholder></div>";
 
 const obfuscate: Plugin = {
@@ -166,24 +170,24 @@ export function plugin_build_html({
              * which we then clean up at the end of the build.
              * ```
              */
-            const id = `${Math.random()}${Math.random()}`;
+            const id = make_id();
             movers.push(id);
             return `<html data-move="${id}"><head>${match}</head></html>`;
           }
 
-          const p = `<!--${Math.random()}${Math.random()}-->`;
+          const p = make_marker();
           replacements.push([p, match]);
           return p;
         });
 
-        code = code.replace(link_regex, (match, attrs) => {
-          const id = `${Math.random()}${Math.random()}`;
+        code = code.replace(link_regex, (match) => {
+          const id = make_id();
           movers.push(id);
           return `<html data-move="${id}"><head>${match}</head></html>`;
         });
 
         const template = code.replace(style_regex, (match) => {
-          const p = `<!--${Math.random()}${Math.random()}-->`;
+          const p = make_marker();
           replacements.push([p, match]);
           return p;
         });
@@ -274,11 +278,14 @@ export function plugin_build_html({
             const doc = node.querySelector(`[data-move="${move}"]`);
             const nodes = doc?.querySelectorAll("head > *");
 
-            if (doc && nodes) {
-              code = code.replace(
-                doc.toString(),
-                nodes.map((_) => _.toString()).join("")
-              );
+            const regex = new RegExp(
+              `<html\\s+data-move="${move}">(?:.|[\r\n])*?<\/html>`,
+              "i"
+            );
+
+            if (doc) {
+              const assets = nodes?.map((_) => _.toString()).join("") ?? "";
+              code = code.replace(regex, assets);
             }
           });
 
