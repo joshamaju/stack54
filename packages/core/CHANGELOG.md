@@ -1,5 +1,11 @@
 # mpa
 
+## 0.5.1
+
+### Patch Changes
+
+- 590a1b1: Remove the wrapping html tag injected during build
+
 ## 0.5.0
 
 ### Minor Changes
