@@ -1,7 +1,7 @@
 .DS_Store
 
 dist
-build
+packages/*/build
 **/public/assets
 .stack54
 node_modules
