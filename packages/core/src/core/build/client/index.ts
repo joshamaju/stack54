@@ -1,12 +1,10 @@
-import * as fs from "node:fs/promises";
+import * as fs from "node:fs";
 import * as path from "node:path";
 
 import fse from "fs-extra";
 
 import type { Plugin } from "vite";
 import * as vite from "vite";
-
-import { Effect } from "effect";
 
 import type { ResolvedConfig } from "../../config/index.js";
 import { define, Env } from "../../env.js";
@@ -57,56 +55,30 @@ export async function buildViews({
   const build_dir = path.join(cwd, build);
   const generated_dir = path.join(cwd, generated);
 
-  Effect.gen(function* (_) {
-    yield* _(Effect.promise(() => fse.remove(root_dir)));
-    yield* _(Effect.promise(() => fs.mkdir(root_dir)));
-
-    let facades = new Map<string, PreparedFacade>();
-
-    Effect.forEach(config.views, (view) => {
-      return Effect.gen(function* (_) {
-        const code = yield* _(Effect.promise(() => fs.readFile(view, "utf-8")));
-
-        const prepared = Facade.prepare(code);
-        const facade = Facade.make(view, generated_dir);
-
-        yield* _(
-          Effect.promise(() =>
-            fs.mkdir(path.dirname(facade), { recursive: true })
-          )
-        );
-
-        yield* _(Effect.promise(() => fs.writeFile(facade, prepared.code)));
-
-        facades.set(facade, prepared);
-      });
-    });
-  });
-
-  await fse.remove(root_dir);
-  await fs.mkdir(root_dir);
+  fse.removeSync(root_dir);
+  fs.mkdirSync(root_dir);
 
   let facades = new Map<string, PreparedFacade>();
 
   for (const view of config.views) {
-    const code = await fs.readFile(view, "utf-8");
+    const code = fs.readFileSync(view, "utf-8");
 
     const prepared = Facade.prepare(code);
     const facade = Facade.make(view, generated_dir);
 
-    await fs.mkdir(path.dirname(facade), { recursive: true });
-    await fs.writeFile(facade, prepared.code);
+    fs.mkdirSync(path.dirname(facade), { recursive: true });
+    fs.writeFileSync(facade, prepared.code);
 
     facades.set(facade, prepared);
   }
 
   const resolve: Plugin = {
     name: "facade-resolver",
-    async resolveId(source, importer) {
+    resolveId(source, importer) {
       if (importer && facades.has(importer)) {
         const original = importer.replace(generated_dir, "");
         const file = path.resolve(path.dirname(original), source);
-        if (await fse.exists(file)) return file;
+        if (fs.existsSync(file)) return file;
       }
     },
   };
@@ -132,7 +104,7 @@ export async function buildViews({
 
   for (const [facade, prepared] of facades) {
     const view = path.join(build_dir, facade.replace(cwd, ""));
-    const html = await fs.readFile(view, "utf-8");
+    const html = fs.readFileSync(view, "utf-8");
     const code = Facade.reconstruct({ ...prepared, code: html });
     const original = view.replace(path.join(cwd, build, generated), "");
     const { dir, name } = path.parse(original);
@@ -140,12 +112,12 @@ export async function buildViews({
     modules.set(file, { code, file });
   }
 
-  await fse.move(
+  fse.moveSync(
     path.join(build_dir, config.build.assetsDir),
     path.join(outDir, "client", config.build.assetsDir)
   );
 
-  await fse.remove(root_dir);
+  fse.removeSync(root_dir);
 
   return modules;
 }
