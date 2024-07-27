@@ -1,10 +1,20 @@
-import sade from "sade";
 import color from "kleur";
+import sade from "sade";
 
 import * as fs from "node:fs";
 import { fileURLToPath } from "node:url";
 
-import * as Log from "./logger.js";
+import { Effect, Exit, Fiber, Layer, Logger, LogLevel, Scope } from "effect";
+
+import { InvalidConfig } from "./config/index.js";
+import { simpleLogger } from "./logger.js";
+import { formatConfigErrorMessage } from "./message.js";
+
+const log_config_error = (e: InvalidConfig) => {
+  return Effect.logError(formatConfigErrorMessage(e.cause));
+};
+
+const layer = Logger.replace(Logger.defaultLogger, simpleLogger);
 
 const pkg_path = fileURLToPath(new URL("../../package.json", import.meta.url));
 
@@ -14,24 +24,47 @@ const program = sade("stack54-cli").version(pkg.version);
 
 program.command("dev").action(async () => {
   const { dev } = await import("./dev/index.js");
-  const handle = await dev();
+
+  const scope = Effect.runSync(Scope.make());
+
+  dev().pipe(
+    Effect.catchTag("InvalidConfig", (e) => log_config_error(e)),
+    Effect.provide(layer),
+    Scope.extend(scope),
+    Effect.runFork
+  );
 
   process.on("SIGINT", async () => {
     console.log(`\n${color.dim("---")}`);
-    Log.info("shutting down server...");
-    await handle.shutdown();
-    Log.info("server closed");
+    await Effect.runPromise(Scope.close(scope, Exit.succeed(void 0)));
+    process.exit(0);
   });
 
-  process.on("unhandledRejection", (error) => {
-    // console.log(error);
-    // Log.error(error.stack ?? error.message);
-    process.exit(1);
-  });
+  // process.on("unhandledRejection", async (error) => {
+  //   await Effect.runPromise(Fiber.interrupt(fiber));
+  //   process.exit(1);
+  // });
 });
 
 program.command("build").action(async () => {
-  (await import("./build/index.js")).build();
+  const { build } = await import("./build/index.js");
+
+  const fiber = build().pipe(
+    Effect.catchTag("InvalidConfig", (e) => log_config_error(e)),
+    // Effect.catchAllCause(c => Effect.logError(Cause.prettyErrors(c))),
+    Logger.withMinimumLogLevel(LogLevel.All),
+    Effect.provide(layer),
+    Effect.runFork
+  );
+
+  const events = ["SIGINT", "SIGTERM"] as const;
+
+  for (const event of events) {
+    process.on(event, async () => {
+      await Effect.runPromise(Fiber.interrupt(fiber));
+      process.exit(0);
+    });
+  }
 });
 
 program.parse(process.argv);

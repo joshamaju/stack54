@@ -1,7 +1,7 @@
 import * as path from "node:path";
 
 import { pipe } from "effect/Function";
-import * as RA from "effect/ReadonlyArray";
+import * as RA from "effect/Array";
 
 import type { PreprocessorGroup } from "svelte/compiler";
 import * as compiler from "svelte/compiler";

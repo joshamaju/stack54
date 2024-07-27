@@ -2,6 +2,8 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as url from "node:url";
 
+import {Effect} from 'effect'
+
 import type { Arrayable } from "@sveltejs/vite-plugin-svelte";
 import { glob } from "glob";
 import type { CompileOptions, PreprocessorGroup } from "svelte/compiler";
@@ -89,10 +91,10 @@ export class InvalidConfig {
   constructor(public cause: ZodError<UserConfig>) {}
 }
 
-export async function parse(config: UserConfig) {
+export function parse(config: UserConfig | null = {}) {
   const result = userConfigSchema.safeParse(config);
-  if (result.success) return result.data;
-  return new InvalidConfig(result.error);
+  if (result.success) return Effect.succeed(result.data);
+  return Effect.fail(new InvalidConfig(result.error));
 }
 
 export async function preprocess(
@@ -100,7 +102,7 @@ export async function preprocess(
   { cwd }: { cwd: string }
 ) {
   const [views, entry] = await Promise.all([
-    glob(config.views, { cwd, absolute: true }),
+    glob([...new Set(config.views)], { cwd, absolute: true }),
     glob(config.entry, { cwd }),
   ]);
 

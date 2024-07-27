@@ -1,6 +1,12 @@
-import colors from "kleur";
+import color from "kleur";
 
-import type { LogLevel, Rollup, Logger as ViteLogger } from "vite";
+import type {
+  Rollup,
+  Logger as ViteLogger,
+  LogLevel as ViteLogLevel,
+} from "vite";
+
+import { Effect, HashMap, Logger, LogLevel, Option, Runtime } from "effect";
 
 type LoggerLevel = "debug" | "info" | "warn" | "error";
 
@@ -12,10 +18,10 @@ export const dateTimeFormat = new Intl.DateTimeFormat([], {
 });
 
 const chars = {
-  info: colors.cyan("info"),
-  error: colors.red("error"),
-  warn: colors.yellow("warn"),
-  debug: colors.yellow("debug"),
+  info: color.cyan("info"),
+  error: color.red("error"),
+  warn: color.yellow("warn"),
+  debug: color.yellow("debug"),
 };
 
 export const log = ({
@@ -28,8 +34,8 @@ export const log = ({
   level: LoggerLevel;
 }) => {
   const timestamp = `${dateTimeFormat.format(new Date())}`;
-  const prefix = [colors.dim(timestamp), chars[level]];
-  if (label) prefix.push(colors.grey(`[${label}]`));
+  const prefix = [color.dim(timestamp), chars[level]];
+  if (label) prefix.push(color.grey(`[${label}]`));
   console.log(prefix.join(" "), message);
 };
 
@@ -45,7 +51,9 @@ export const warn = (message: string) => {
   log({ message, level: "warn" });
 };
 
-export function createViteLogger(viteLogLevel: LogLevel = "info"): ViteLogger {
+export function createViteLogger(
+  viteLogLevel: ViteLogLevel = "info"
+): ViteLogger {
   const warnedMessages = new Set<string>();
   const loggedErrors = new WeakSet<Error | Rollup.RollupError>();
 
@@ -92,3 +100,69 @@ export function createViteLogger(viteLogLevel: LogLevel = "info"): ViteLogger {
 
   return logger;
 }
+
+export function makeViteLogger(): Effect.Effect<ViteLogger> {
+  return Effect.gen(function* () {
+    const runtime = yield* Effect.runtime();
+    const run_sync = Runtime.runSync(runtime);
+
+    const run = (effect: Effect.Effect<any>) => {
+      run_sync(Effect.annotateLogs(effect, "label", "vite"));
+    };
+
+    const warnedMessages = new Set<string>();
+    const loggedErrors = new WeakSet<Error | Rollup.RollupError>();
+
+    const logger: ViteLogger = {
+      hasWarned: false,
+      info(message) {
+        run(Effect.logInfo(message));
+      },
+      warn(message) {
+        logger.hasWarned = true;
+        run(Effect.logWarning(message));
+      },
+      warnOnce(message) {
+        if (warnedMessages.has(message)) return;
+        logger.hasWarned = true;
+        run(Effect.logWarning(message));
+        warnedMessages.add(message);
+      },
+      error(message, opts) {
+        logger.hasWarned = true;
+        run(Effect.logError(message));
+      },
+      // Don't allow clear screen
+      clearScreen: () => {},
+      hasErrorLogged(error) {
+        return loggedErrors.has(error);
+      },
+    };
+
+    return logger;
+  });
+}
+
+const colors = {
+  [LogLevel.Info.label]: color.cyan("info"),
+  [LogLevel.Error.label]: color.red("error"),
+  [LogLevel.Debug.label]: color.yellow("debug"),
+  [LogLevel.Warning.label]: color.yellow("warn"),
+};
+
+export const simpleLogger = Logger.make(
+  ({ date, message, logLevel, annotations }) => {
+    const label = HashMap.get(annotations, "label");
+    const timestamp = `${dateTimeFormat.format(date)}`;
+    const prefix = [color.dim(timestamp), colors[logLevel.label]];
+
+    if (Option.isSome(label)) {
+      prefix.push(color.grey(`[${label.value}]`));
+    }
+
+    console.log(
+      prefix.join(" "),
+      ...(Array.isArray(message) ? message : [message])
+    );
+  }
+);
