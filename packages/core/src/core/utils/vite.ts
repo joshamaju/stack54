@@ -3,12 +3,12 @@ import * as vite from "vite";
 
 import { ResolvedConfig } from "../config/index.js";
 import { arraify } from "./index.js";
-import { createViteLogger } from "../logger.js";
 
 type CreateViteOptions = {
   mode: "dev" | "build" | string;
   // will be undefined when using `getViteConfig`
   command?: "dev" | "build";
+  logger?: vite.Logger
 };
 
 const defaultPreprocessors = [vitePreprocess()];
@@ -25,21 +25,21 @@ export function getSvelte(config: ResolvedConfig) {
   return { ...svelte_config, preprocess: preprocessors };
 }
 
-export function makeVite(config: ResolvedConfig, { mode }: CreateViteOptions) {
+export function makeVite(config: ResolvedConfig, { mode, logger }: CreateViteOptions) {
   const inline_config: vite.InlineConfig = {
     appType: "custom",
     configFile: false,
     clearScreen: false,
+    customLogger: logger,
     envDir: config.env.dir,
     publicDir: config.staticDir,
     base: config.build.assetPrefix,
-    customLogger: createViteLogger(),
     envPrefix: config.env.publicPrefix,
     plugins: [svelte(getSvelte(config)) as vite.PluginOption],
     build: {
       copyPublicDir: false,
       assetsDir: config.build.assetsDir,
-      minify: config.build.minify ?? config.vite.build?.minify ?? true,
+      minify: config.build.minify ?? config.vite.build?.minify,
     },
     server: {
       watch: {

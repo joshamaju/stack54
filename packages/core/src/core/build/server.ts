@@ -32,8 +32,9 @@ export async function buildServer(
     mode: "production",
     build: {
       ssr: true,
-      target: "esnext",
+      // target: "esnext",
       ssrEmitAssets: true,
+      minify: config.build.minify,
       outDir: path.join(outDir, "server"),
       rollupOptions: {
         // output: { format: "esm" },

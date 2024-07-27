@@ -1,5 +1,4 @@
 import { loadEnv } from "vite";
-import { ResolvedConfig } from "./config/index.js";
 
 export type Env = Record<string, string>;
 

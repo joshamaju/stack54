@@ -1,10 +1,9 @@
 import type { MiddlewareHandler } from "hono";
 
-import { makeFactory } from "../../render.js";
-import * as Locals from "../locals.js";
+import { unsafeMakeFactory } from "../../render.js";
 
 export const middleware = (
-  fn: ReturnType<typeof makeFactory>
+  fn: ReturnType<typeof unsafeMakeFactory>
 ): MiddlewareHandler => {
   return async function view(ctx, next) {
     ctx.setRenderer((...args) => {
@@ -12,12 +11,7 @@ export const middleware = (
 
       const user_context = opts?.context as Map<string, unknown> | undefined;
 
-      const locals = Locals.makeLocalsContext(ctx);
-
-      const context = new Map([
-        ...(user_context?.entries() ?? []),
-        ...locals.entries(),
-      ]);
+      const context = new Map([...(user_context?.entries() ?? [])]);
 
       // @ts-expect-error
       return ctx.html(fn(name, props, { context }));

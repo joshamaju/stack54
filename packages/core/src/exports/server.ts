@@ -1,7 +1,7 @@
 import type { Hono } from "hono";
 import { IncomingMessage, ServerResponse } from "node:http";
 
-import { getRequest, setResponse } from "../core/utils/request.js";
+import { getRequest, setResponse } from "../core/request.js";
 
 export function toNodeHandler(app: Hono) {
   return async (req: IncomingMessage, res: ServerResponse) => {
