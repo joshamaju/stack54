@@ -1,0 +1,33 @@
+{
+  "name": "@stack54/hono",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --w"
+  },
+  "keywords": [],
+  "author": "Joshua Amaju",
+  "license": "ISC",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "stack54": "workspace:^"
+  },
+  "devDependencies": {
+    "hono": "^3.12.0",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "hono": "^3.12.0"
+  },
+  "exports": {
+    "./render": "./dist/render.js",
+    "./locals": "./dist/locals.js"
+  }
+}

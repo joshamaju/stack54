@@ -8,8 +8,8 @@ import { defineServerEnv, load } from "../env.js";
 import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
 import { arraify } from "../utils/index.js";
 import { makeVite } from "../utils/vite.js";
-import { hotReloadPlugin } from "../vite-plugin-hot-reload/index.js";
-import { integrationsPlugin } from "../vite-plugin-integrations/index.js";
+import { hotReloadPlugin } from "../vite-plugins/hot-reload/index.js";
+import { integrationsContainerPlugin } from "../vite-plugins/integrations/index.js";
 import { attachFullPath } from "./preprocess/index.js";
 
 const cwd = process.cwd();
@@ -58,7 +58,7 @@ export function dev() {
 
     const internal_vite_config: vite.InlineConfig = {
       build: { rollupOptions: { input: merged_config.entry } },
-      plugins: [integrationsPlugin(user_config), hotReloadPlugin()],
+      plugins: [integrationsContainerPlugin(user_config), hotReloadPlugin()],
     };
 
     const config = {

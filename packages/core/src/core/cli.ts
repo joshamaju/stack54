@@ -1,10 +1,9 @@
-import color from "kleur";
 import sade from "sade";
 
 import * as fs from "node:fs";
 import { fileURLToPath } from "node:url";
 
-import { Effect, Exit, Fiber, Layer, Logger, LogLevel, Scope } from "effect";
+import { Effect, Exit, Fiber, Logger, LogLevel, Scope } from "effect";
 
 import { InvalidConfig } from "./config/index.js";
 import { simpleLogger } from "./logger.js";
@@ -34,15 +33,24 @@ program.command("dev").action(async () => {
     Effect.runFork
   );
 
-  process.on("SIGINT", async () => {
-    console.log(`\n${color.dim("---")}`);
-    await Effect.runPromise(Scope.close(scope, Exit.succeed(void 0)));
-    process.exit(0);
-  });
+  const events = ["SIGINT", "SIGTERM", "unhandledRejection"] as const;
+
+  // process.on("SIGINT", async () => {
+  //   console.log(`\n${color.dim("---")}`);
+  //   await Effect.runPromise(Scope.close(scope, Exit.void));
+  //   process.exit(0);
+  // });
+
+  for (const event of events) {
+    process.on(event, async () => {
+      await Effect.runPromise(Scope.close(scope, Exit.void));
+      process.exit(0);
+    });
+  }
 
   // process.on("unhandledRejection", async (error) => {
-  //   await Effect.runPromise(Fiber.interrupt(fiber));
-  //   process.exit(1);
+  //   await Effect.runPromise(Scope.close(scope, Exit.void));
+  //   process.exit(0);
   // });
 });
 

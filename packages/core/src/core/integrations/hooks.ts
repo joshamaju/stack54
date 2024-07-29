@@ -1,7 +1,9 @@
 import type { ResolvedConfig } from "../config/index.js";
 import { merge } from "../config/merge.js";
 
-export async function runConfigSetup(config: ResolvedConfig) {
+export async function runConfigSetup(
+  config: ResolvedConfig
+): Promise<ResolvedConfig> {
   const { integrations } = config;
 
   let merged_config = config;

@@ -1,6 +1,6 @@
 import MagicString from "magic-string";
 import { Plugin, ResolvedConfig } from "vite";
-import { is_view, parse_id } from "../utils/view.js";
+import { is_view, parse_id } from "../../utils/view.js";
 
 const hot_reload_markup = /<\s*HotReload\s*\/\s*>/;
 

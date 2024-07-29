@@ -85,7 +85,6 @@
     "./config": "./dist/exports/config.js",
     "./server": "./dist/exports/server.js",
     "./render": "./dist/runtime/render.js",
-    "./components": "./components/index.ts",
-    "./hono": "./dist/runtime/hono/index.js"
+    "./components": "./components/index.ts"
   }
 }

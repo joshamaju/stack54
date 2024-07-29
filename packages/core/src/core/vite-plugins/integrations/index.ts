@@ -1,7 +1,7 @@
 import { Plugin } from "vite";
-import { ResolvedConfig } from "../config";
+import { ResolvedConfig } from "../../config/index.js";
 
-export function integrationsPlugin(config: ResolvedConfig): Plugin {
+export function integrationsContainerPlugin(config: ResolvedConfig): Plugin {
   return {
     name: "stack54:integrations",
     async configureServer(server) {
