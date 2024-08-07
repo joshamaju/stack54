@@ -1,7 +1,7 @@
 {
   "name": "stack54",
   "version": "0.5.0",
-  "description": "Build multi-page applications",
+  "description": "The fun Javascript stack",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -79,6 +79,7 @@
     "./locals": "./dist/runtime/locals.js",
     "./config": "./dist/exports/config.js",
     "./components": "./components/index.ts",
-    "./render": "./dist/runtime/render/index.js"
+    "./render": "./dist/runtime/render/index.js",
+    "./render/streaming": "./dist/runtime/render/streaming/index.js"
   }
 }

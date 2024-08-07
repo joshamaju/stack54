@@ -9,6 +9,8 @@ import {
 } from "../../types/template.js";
 import { HEAD_INSERTION_MARKER } from "../constants.js";
 
+export * from "./streaming/index.js";
+
 export interface Views {}
 
 type Lazy<T> = () => Promise<T>;

@@ -1,4 +1,4 @@
-import type { Chunk } from "./types";
+import type { Chunk } from "./types.js";
 
 export function isPromise(value: any): value is Promise<any> {
   return (

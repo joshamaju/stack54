@@ -1,8 +1,9 @@
 import { AsyncLocalStorage } from "node:async_hooks";
-import type { Template } from "../../../types";
+
+import type { Chunk } from "./types.js";
+import type { Template } from "../../../types/template.js";
 import { HEAD_INSERTION_MARKER } from "../../constants.js";
 import { isPromise, renderChunk, renderFallback, swapScript } from "./utils.js";
-import type { Chunk } from "./types";
 
 type Slot<T = any> = (props: T) => string;
 
