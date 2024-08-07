@@ -78,7 +78,7 @@
     "./tsconfigs/*": "./tsconfigs/*.json",
     "./locals": "./dist/runtime/locals.js",
     "./config": "./dist/exports/config.js",
-    "./render": "./dist/runtime/render.js",
-    "./components": "./components/index.ts"
+    "./components": "./components/index.ts",
+    "./render": "./dist/runtime/render/index.js"
   }
 }
