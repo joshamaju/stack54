@@ -1,3 +1,3 @@
-export * from "./render.js";
+export * from "./render/index.js";
 export * from "./data.js";
-export * from './locals.js'
+export * from "./locals.js";

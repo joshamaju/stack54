@@ -6,8 +6,8 @@ import {
   Props,
   Template,
   TemplateModule,
-} from "../types/template.js";
-import { HEAD_INSERTION_MARKER } from "./constants.js";
+} from "../../types/template.js";
+import { HEAD_INSERTION_MARKER } from "../constants.js";
 
 export interface Views {}
 
