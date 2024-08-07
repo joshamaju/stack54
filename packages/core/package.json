@@ -34,8 +34,7 @@
     "dist",
     "cli.js",
     "components",
-    "tsconfigs",
-    "client.d.ts"
+    "tsconfigs"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
@@ -44,24 +43,21 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.10.6",
     "@types/set-cookie-parser": "^2.4.7",
-    "hono": "^3.12.0",
     "svelte": "^4.2.8",
     "typescript": "^5.3.3",
-    "vite": "^5.0.10",
+    "vite": "^5.3.5",
     "vitest": "^1.4.0"
   },
   "peerDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
-    "hono": "^3.12.0",
     "svelte": "^4.2.8",
-    "vite": "^5.0.10"
+    "vite": "^5.3.5"
   },
   "dependencies": {
-    "@remix-run/node": "^2.7.2",
-    "@remix-run/web-fetch": "^4.4.2",
     "@tsconfig/svelte": "^5.0.2",
     "devalue": "^4.3.2",
     "effect": "^3.5.7",
+    "es-module-lexer": "^1.5.4",
     "fs-extra": "^11.2.0",
     "glob": "^10.3.10",
     "kleur": "^4.1.5",
@@ -71,7 +67,6 @@
     "sade": "^1.8.1",
     "set-cookie-parser": "^2.6.0",
     "sirv": "^2.0.4",
-    "ts-dedent": "^2.2.0",
     "zod": "^3.22.4"
   },
   "exports": {
@@ -83,7 +78,6 @@
     "./tsconfigs/*": "./tsconfigs/*.json",
     "./locals": "./dist/runtime/locals.js",
     "./config": "./dist/exports/config.js",
-    "./server": "./dist/exports/server.js",
     "./render": "./dist/runtime/render.js",
     "./components": "./components/index.ts"
   }

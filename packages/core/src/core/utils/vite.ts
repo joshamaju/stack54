@@ -8,7 +8,7 @@ type CreateViteOptions = {
   mode: "dev" | "build" | string;
   // will be undefined when using `getViteConfig`
   command?: "dev" | "build";
-  logger?: vite.Logger
+  logger?: vite.Logger;
 };
 
 const defaultPreprocessors = [vitePreprocess()];
@@ -25,7 +25,10 @@ export function getSvelte(config: ResolvedConfig) {
   return { ...svelte_config, preprocess: preprocessors };
 }
 
-export function makeVite(config: ResolvedConfig, { mode, logger }: CreateViteOptions) {
+export function makeVite(
+  config: ResolvedConfig,
+  { mode, logger }: CreateViteOptions
+) {
   const inline_config: vite.InlineConfig = {
     appType: "custom",
     configFile: false,
@@ -35,7 +38,7 @@ export function makeVite(config: ResolvedConfig, { mode, logger }: CreateViteOpt
     publicDir: config.staticDir,
     base: config.build.assetPrefix,
     envPrefix: config.env.publicPrefix,
-    plugins: [svelte(getSvelte(config)) as vite.PluginOption],
+    plugins: [svelte(config.svelte) as vite.PluginOption],
     build: {
       copyPublicDir: false,
       assetsDir: config.build.assetsDir,

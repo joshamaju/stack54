@@ -2,7 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as url from "node:url";
 
-import {Effect} from 'effect'
+import { Effect } from "effect";
 
 import type { Arrayable } from "@sveltejs/vite-plugin-svelte";
 import { glob } from "glob";
@@ -15,6 +15,7 @@ import type {
 import z, { ZodError } from "zod";
 
 import type { MaybeAwait } from "../types.js";
+import { getSvelte } from "../utils/vite.js";
 
 export const userConfigSchema = z.object({
   staticDir: z.string().default("static"),
@@ -50,6 +51,8 @@ export const userConfigSchema = z.object({
     .array(
       z.object({
         name: z.string(),
+        buildStart: z.custom<() => MaybeAwait<void>>().optional(),
+        buildEnd: z.custom<() => MaybeAwait<void>>().optional(),
         configResolved: z
           .custom<(config: any) => MaybeAwait<void>>()
           .optional(),
@@ -57,10 +60,18 @@ export const userConfigSchema = z.object({
           .custom<(config: any) => MaybeAwait<object | undefined>>()
           .optional(),
         configureServer: z
-          .custom<(server: ViteDevServer) => void | (() => void)>()
+          .custom<
+            (
+              server: ViteDevServer
+            ) => MaybeAwait<void> | (() => MaybeAwait<void>)
+          >()
           .optional(),
         configurePreviewServer: z
-          .custom<(server: PreviewServer) => void | (() => void)>()
+          .custom<
+            (
+              server: PreviewServer
+            ) => MaybeAwait<void> | (() => MaybeAwait<void>)
+          >()
           .optional(),
       })
     )
@@ -106,5 +117,5 @@ export async function preprocess(
     glob(config.entry, { cwd }),
   ]);
 
-  return { ...config, views, entry: entry[0] };
+  return { ...config, views, entry: entry[0], svelte: getSvelte(config) };
 }

@@ -2,13 +2,17 @@
 
 > The fun Javascript stack
 
-[Documentation](packages/core/README.md)
+stack54 is a build tool for building optimized multi page applications. We use svelte templates (instead of ejs, pug etc), which saves us from the brittleness of partials and layouts. And also we get full control over how our static assets like js and css are located (instead of placing everything in [project]/public/(js,css)).
 
-### Packages
+You get to BYOR (Bring Your Own Router)
 
-| Package                  | Changelog                               |
-| ------------------------ | --------------------------------------- |
-| [stack54](packages/core) | [Changelog](packages/core/CHANGELOG.md) |
+## Features
+
+- Svelte templates
+- Optimized client assets
+- Live reload
+
+## Examples
 
 ## License
 

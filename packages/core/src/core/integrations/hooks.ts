@@ -21,3 +21,15 @@ export async function runConfigResolved(config: ResolvedConfig) {
     await integration.configResolved?.call(integration, config);
   }
 }
+
+export async function runBuildStart(config: ResolvedConfig) {
+  for (const integration of config.integrations) {
+    await integration.buildStart?.call(integration);
+  }
+}
+
+export async function runBuildEnd(config: ResolvedConfig) {
+  for (const integration of config.integrations) {
+    await integration.buildEnd?.call(integration);
+  }
+}

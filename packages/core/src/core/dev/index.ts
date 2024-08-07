@@ -6,11 +6,11 @@ import { Effect } from "effect";
 import * as Config from "../config/index.js";
 import { defineServerEnv, load } from "../env.js";
 import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
-import { arraify } from "../utils/index.js";
-import { makeVite } from "../utils/vite.js";
+import { getSvelte, makeVite } from "../utils/vite.js";
 import { hotReloadPlugin } from "../vite-plugins/hot-reload/index.js";
 import { integrationsContainerPlugin } from "../vite-plugins/integrations/index.js";
 import { attachFullPath } from "./preprocess/index.js";
+import { resolveInlineImportsPlugin } from "./resolve-inline-imports/index.js";
 
 const cwd = process.cwd();
 
@@ -26,12 +26,6 @@ export function dev() {
       return runConfigSetup(user_config);
     });
 
-    const svelte_config = merged_config.svelte;
-
-    const preprocess = svelte_config.preprocess
-      ? arraify(svelte_config.preprocess)
-      : [];
-
     let { assetPrefix } = merged_config.build;
 
     if (assetPrefix) {
@@ -43,25 +37,30 @@ export function dev() {
       }
     }
 
-    const preprocessors = [...preprocess, attachFullPath({ assetPrefix })];
+    const svelte_config = getSvelte(merged_config);
 
-    const shared_vite_config = makeVite(
-      {
-        ...merged_config,
-        svelte: {
-          ...merged_config.svelte,
-          preprocess: preprocessors,
-        },
-      },
-      { mode: "dev" }
-    );
+    merged_config.svelte = {
+      ...svelte_config,
+      preprocess: [
+        ...svelte_config.preprocess,
+        attachFullPath({ assetPrefix }),
+      ],
+    };
+
+    // merged_config.integrations.push(liveReloadIntegration());
+
+    const shared_vite_config = makeVite(merged_config, { mode: "dev" });
 
     const internal_vite_config: vite.InlineConfig = {
       build: { rollupOptions: { input: merged_config.entry } },
-      plugins: [integrationsContainerPlugin(user_config), hotReloadPlugin()],
+      plugins: [
+        integrationsContainerPlugin(merged_config),
+        resolveInlineImportsPlugin(),
+        hotReloadPlugin(),
+      ],
     };
 
-    const config = {
+    const config: typeof merged_config = {
       ...merged_config,
       vite: vite.mergeConfig(shared_vite_config, internal_vite_config),
     };
@@ -79,10 +78,8 @@ export function dev() {
 
     defineServerEnv(env);
 
-    yield* Effect.log(`load .env.${mode}`);
-
     const server = yield* Effect.tryPromise(() => {
-      return vite.createServer(config.vite);
+      return vite.createServer(resolved_config.vite);
     });
 
     yield* Effect.promise(() => server.listen());

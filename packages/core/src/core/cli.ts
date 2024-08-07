@@ -33,7 +33,7 @@ program.command("dev").action(async () => {
     Effect.runFork
   );
 
-  const events = ["SIGINT", "SIGTERM", "unhandledRejection"] as const;
+  const events = ["SIGINT", "SIGTERM"] as const;
 
   // process.on("SIGINT", async () => {
   //   console.log(`\n${color.dim("---")}`);
@@ -41,17 +41,21 @@ program.command("dev").action(async () => {
   //   process.exit(0);
   // });
 
-  for (const event of events) {
-    process.on(event, async () => {
-      await Effect.runPromise(Scope.close(scope, Exit.void));
-      process.exit(0);
-    });
-  }
+  const close = () => Effect.runPromise(Scope.close(scope, Exit.void));
 
-  // process.on("unhandledRejection", async (error) => {
-  //   await Effect.runPromise(Scope.close(scope, Exit.void));
-  //   process.exit(0);
-  // });
+  const shutdown = async () => {
+    await close();
+    process.exit(0);
+  };
+
+  process.on("unhandledRejection", async (error) => {
+    console.log(error);
+    await close();
+    process.exit(1);
+  });
+
+  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
 });
 
 program.command("build").action(async () => {
@@ -65,14 +69,13 @@ program.command("build").action(async () => {
     Effect.runFork
   );
 
-  const events = ["SIGINT", "SIGTERM"] as const;
+  const shutdown = async () => {
+    await Effect.runPromise(Fiber.interrupt(fiber));
+    process.exit(0);
+  };
 
-  for (const event of events) {
-    process.on(event, async () => {
-      await Effect.runPromise(Fiber.interrupt(fiber));
-      process.exit(0);
-    });
-  }
+  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
 });
 
 program.parse(process.argv);

@@ -2,12 +2,9 @@ import { getContext } from "svelte";
 
 export interface Locals {}
 
-export const key = "$$local";
+export const key = "$$locals";
 
-export function makeLocals(locals: Locals) {
-  const context = new Map([[key, locals]]);
-  return context;
-}
+export const makeLocals = (locals: Locals) => new Map([[key, locals]]);
 
 export function getLocals(): Locals;
 export function getLocals<T>(name?: string): T;

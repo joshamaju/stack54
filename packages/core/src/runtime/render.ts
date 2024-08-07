@@ -112,3 +112,15 @@ export function makeFactory<T extends Template | Promise<Template>>(
       : renderToString(output, props as Props, opts);
   };
 }
+
+export const isOk = (
+  result: Either.Either<string, RenderError>
+): result is Either.Right<RenderError, string> => {
+  return Either.isRight(result);
+};
+
+export const isErr = (
+  result: Either.Either<string, RenderError>
+): result is Either.Left<RenderError, string> => {
+  return Either.isLeft(result);
+};

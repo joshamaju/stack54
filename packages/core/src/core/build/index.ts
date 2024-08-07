@@ -6,7 +6,12 @@ import { Effect } from "effect";
 
 import * as Config from "../config/index.js";
 import { defineServerEnv, load, partition } from "../env.js";
-import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
+import {
+  runBuildEnd,
+  runBuildStart,
+  runConfigResolved,
+  runConfigSetup,
+} from "../integrations/hooks.js";
 import { makeVite } from "../utils/vite.js";
 import { buildServer } from "./server.js";
 import { buildViews } from "./view.js";
@@ -50,6 +55,8 @@ export function build() {
 
     yield* Effect.tryPromise(() => fs.remove(outDir));
 
+    yield* Effect.promise(() => runBuildStart(resolved_config));
+
     yield* Effect.log("building views...");
 
     const opts = { cwd, outDir, config: resolved_config, env: env_.public };
@@ -62,6 +69,8 @@ export function build() {
     yield* Effect.promise(() => {
       return buildServer(views, { env, outDir, config: resolved_config });
     });
+
+    yield* Effect.promise(() => runBuildEnd(resolved_config));
 
     yield* Effect.log("✔︎ build done");
   });

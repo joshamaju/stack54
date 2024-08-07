@@ -69,7 +69,11 @@ export function buildViews({
             return fs.readFile(view, "utf-8");
           });
 
-          const prepared = Facade.prepare(code);
+          const prepared = yield* Effect.tryPromise(() => {
+            return Facade.prepare_async(code, view, config.svelte);
+          });
+
+          // const prepared = Facade.prepare(code);
           const facade = Facade.make(view, generated_dir);
 
           yield* Effect.tryPromise(() => {
@@ -91,10 +95,32 @@ export function buildViews({
     const resolve: Plugin = {
       name: "facade-resolver",
       async resolveId(source, importer) {
-        if (importer && facades.has(importer)) {
-          const original = importer.replace(generated_dir, "");
-          const file = path.resolve(path.dirname(original), source);
-          if (await fse.exists(file)) return file;
+        if (importer) {
+          const [importer_] = importer.split("?");
+
+          /**
+           * resolves imports (including import aliases) inside inline script and modules script tags
+           * i.e
+           * <script type="module">
+           * import module from '@/aliased/module'
+           * import module from './file/path'
+           * import module form 'installed/node-module'
+           * </script>
+           */
+          if (facades.has(importer_)) {
+            // reconstruct the original svelte file name from the html facade
+            const original = importer_.replace(generated_dir, "");
+
+            const { dir, name } = path.parse(original);
+            const view = path.join(dir, `${name}.svelte`);
+
+            const resolved = await this.resolve(source, view);
+
+            if (resolved) return resolved;
+
+            const file = path.resolve(path.dirname(original), source);
+            if (await fse.exists(file)) return file;
+          }
         }
       },
     };
@@ -102,7 +128,7 @@ export function buildViews({
     const env_define = define(env);
 
     const inline_config: vite.InlineConfig = {
-      logLevel: "silent",
+      // logLevel: "silent",
       define: env_define,
       mode: "production",
       plugins: [resolve, obfuscate, deobfuscate],
