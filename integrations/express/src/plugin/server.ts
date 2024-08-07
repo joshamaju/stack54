@@ -18,7 +18,9 @@ export async function devServer(
     app(req, res, next);
   };
 
-  server.middlewares.stack.unshift({ handle, route: "" });
+  // server.middlewares.stack.unshift({ handle, route: "" });
+
+  server.middlewares.use(handle);
 }
 
 export async function previewServer(server: PreviewServer) {
