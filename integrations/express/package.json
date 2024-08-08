@@ -1,0 +1,37 @@
+{
+  "name": "@stack54/express",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --w"
+  },
+  "keywords": [],
+  "author": "Joshua Amaju",
+  "license": "ISC",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "sirv": "^2.0.4",
+    "stack54": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/connect": "^3.4.38",
+    "@types/express": "^4.17.21",
+    "express": "^4.19.2",
+    "typescript": "^5.3.3",
+    "vite": "^5.3.5"
+  },
+  "exports": {
+    "./render": "./dist/render.js",
+    "./plugin": "./dist/plugin/index.js"
+  },
+  "peerDependencies": {
+    "express": "^4.19.2"
+  }
+}

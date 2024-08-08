@@ -1,38 +1,14 @@
-import type { Context } from "hono";
+import { getContext } from "svelte";
 
-export const key = "$$local";
+export interface Locals {}
 
-export function setLocals<T extends App.Locals, K extends keyof T>(
-  ctx: Context,
-  name: K,
-  value: T[K]
-): void;
-export function setLocals(ctx: Context, name: Partial<App.Locals>): void;
-export function setLocals<T extends App.Locals, K extends keyof T>(
-  ctx: Context,
-  name: K | Partial<T>,
-  value?: T[K]
-): void {
-  const locals = (ctx.get(key) ?? {}) as App.Locals;
+export const key = "$$locals";
 
-  ctx.set(
-    key,
-    typeof name == "object"
-      ? { ...locals, ...name }
-      : { ...locals, [name]: value }
-  );
-}
+export const makeLocals = (locals: Locals) => new Map([[key, locals]]);
 
-// For getting locals inside server handlers
-export function getLocals(ctx: Context): App.Locals;
-export function getLocals(ctx: Context, name: string): unknown;
-export function getLocals(ctx: Context, name?: string) {
-  const locals = structuredClone(ctx.get(key) ?? {});
-  return name ? locals[name] : locals;
-}
-
-export function makeLocalsContext(ctx: Context) {
-  const locals = getLocals(ctx);
-  const context = new Map([[key, locals]]);
-  return context;
+export function getLocals(): Locals;
+export function getLocals<T>(name?: string): T;
+export function getLocals(name?: string) {
+  const locals = getContext(key) as Locals;
+  return name ? (locals as any)[name] : locals;
 }

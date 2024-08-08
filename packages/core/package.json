@@ -1,7 +1,7 @@
 {
   "name": "stack54",
-  "version": "0.5.1",
-  "description": "Build multi-page applications",
+  "version": "0.5.0",
+  "description": "The fun Javascript stack",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -27,11 +27,14 @@
     "mvc",
     "ssr"
   ],
+  "bin": {
+    "stack54": "./cli.js"
+  },
   "files": [
     "dist",
+    "cli.js",
     "components",
-    "tsconfigs",
-    "client.d.ts"
+    "tsconfigs"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
@@ -40,50 +43,49 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.10.6",
     "@types/set-cookie-parser": "^2.4.7",
-    "hono": "^3.12.0",
     "svelte": "^4.2.8",
     "typescript": "^5.3.3",
-    "vite": "^5.0.10",
+    "vite": "^5.3.5",
     "vitest": "^1.4.0"
   },
   "peerDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
-    "hono": "^3.12.0",
     "svelte": "^4.2.8",
-    "vite": "^5.0.10"
+    "vite": "^5.3.5"
   },
   "dependencies": {
-    "@remix-run/node": "^2.7.2",
-    "@remix-run/web-fetch": "^4.4.2",
     "@tsconfig/svelte": "^5.0.2",
     "devalue": "^4.3.2",
-    "effect": "^2.4.1",
+    "effect": "^3.5.7",
+    "es-module-lexer": "^1.5.4",
     "fs-extra": "^11.2.0",
     "glob": "^10.3.10",
     "kleur": "^4.1.5",
     "magic-string": "^0.30.5",
     "mdsvex": "^0.11.0",
     "node-html-parser": "^6.1.13",
+    "sade": "^1.8.1",
     "set-cookie-parser": "^2.6.0",
     "sirv": "^2.0.4",
-    "ts-dedent": "^2.2.0",
     "zod": "^3.22.4"
   },
   "exports": {
-    "./client": "./client.d.ts",
-    "./vite": "./dist/vite/mod.js",
+    ".": "./dist/index.js",
     "./package.json": "./package.json",
-    "./view": "./dist/runtime/view.js",
-    "./node": "./dist/exports/node.js",
     "./types": "./dist/types/index.js",
-    "./utils": "./dist/runtime/utils.js",
+    "./data": "./dist/runtime/data.js",
     "./tsconfigs/*.json": "./tsconfigs/*",
     "./tsconfigs/*": "./tsconfigs/*.json",
-    "./render": "./dist/runtime/render.js",
-    "./cookie": "./dist/runtime/cookie.js",
     "./locals": "./dist/runtime/locals.js",
+    "./config": "./dist/exports/config.js",
+    "./runtime": "./dist/runtime/index.js",
     "./components": "./components/index.ts",
-    "./session": "./dist/runtime/session.js",
-    "./client/utils": "./dist/runtime/utils.js"
+    "./render": "./dist/runtime/render/index.js",
+    "./runtime/internals": "./dist/runtime/constants.js",
+    "./render/streaming": "./dist/runtime/render/streaming/index.js",
+    "./components/Await": {
+      "node": "./components/Await/node.ts",
+      "default": "./components/Await/index.ts"
+    }
   }
 }

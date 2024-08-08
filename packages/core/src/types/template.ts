@@ -1,5 +1,9 @@
 export type Props = Record<string, any>;
-export type Options = { context: Map<string, unknown> };
+
+export type Options = {
+  stream?: boolean;
+  context?: Map<string, unknown>;
+};
 
 export interface Output {
   html: string;
