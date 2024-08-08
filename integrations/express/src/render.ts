@@ -1,14 +1,14 @@
 import type { Express } from "express";
 
 import { makeLocals } from "stack54/locals";
-import { isErr, makeFactory, unsafeMakeFactory } from "stack54/render";
+import { unsafeMakeFactory } from "stack54/render";
 
 export const register = (
   app: Express,
-  fn: ReturnType<typeof makeFactory> | ReturnType<typeof unsafeMakeFactory>
+  fn: ReturnType<typeof unsafeMakeFactory>
 ) => {
   app.use((_, __, next) => {
-    const renderer = app.render;
+    // const renderer = app.render;
 
     app.render = async function (name, options) {
       let done;
@@ -38,6 +38,9 @@ export const register = (
 
       const locals = makeLocals({ ...render_options._locals });
 
+      const { stream: s, ...props } = render_options;
+      const stream: boolean | undefined = s;
+
       const context = new Map<string, any>([
         ...locals,
         // @ts-expect-error
@@ -46,17 +49,7 @@ export const register = (
 
       try {
         // @ts-expect-error
-        const view = await fn(name, render_options, { context });
-
-        if (typeof view !== "string") {
-          if (isErr(view)) {
-            return done?.(view.left);
-          }
-
-          done?.(null, view.right);
-          return;
-        }
-
+        const view = await fn(name, props, { context, stream });
         done?.(null, view);
       } catch (error) {
         done?.(error);

@@ -8,11 +8,21 @@
   }
 
   // @ts-expect-error
-  export const resolve: PromiseLike<T> = null;
+  export let resolve: PromiseLike<T> = null;
   const error = null as any as Error;
   const value = null as any as T;
 </script>
 
-<slot name="error" {error} />
-<slot name="fallback" />
-<slot {value} />
+{#if typeof window == "undefined"}
+  <slot name="error" {error} />
+  <slot name="fallback" />
+  <slot {value} />
+{:else}
+  {#await resolve}
+    <slot name="fallback" />
+  {:then value}
+    <slot {value} />
+  {:catch error}
+    <slot name="error" {error} />
+  {/await}
+{/if}

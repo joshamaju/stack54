@@ -1,19 +1,26 @@
 import { Hono } from "hono";
-import { setLocals } from "stack54/locals";
-import { view } from "stack54/view";
+import { setLocals } from "@stack54/hono/locals";
+import { render as middleware } from "@stack54/hono/render";
 import { render } from "./utils/view";
 
 const app = new Hono();
 
-app.use("/*", view(render));
+// @ts-expect-error
+app.use("/*", middleware(render));
 
 app.get("/locals", (ctx) => {
+  // @ts-expect-error
   setLocals(ctx, "user", "John");
+
+  // @ts-expect-error
   return ctx.render("locals", {});
 });
 
 app.get("/without-locals", (ctx) => {
+  // @ts-expect-error
   setLocals(ctx, "user", "John");
+
+  // @ts-expect-error
   return ctx.html(render("locals", {}));
 });
 

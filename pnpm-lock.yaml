@@ -15,34 +15,6 @@ importers:
         specifier: ^1.41.1
         version: 1.41.1
 
-  integrations/dev-server:
-    dependencies:
-      '@remix-run/node':
-        specifier: ^2.7.2
-        version: 2.7.2(typescript@5.3.3)
-      sirv:
-        specifier: ^2.0.4
-        version: 2.0.4
-      stack54:
-        specifier: workspace:^
-        version: link:../../packages/core
-    devDependencies:
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
-      express:
-        specifier: ^4.19.2
-        version: 4.19.2
-      hono:
-        specifier: ^3.12.0
-        version: 3.12.0
-      typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
-      vite:
-        specifier: ^5.0.10
-        version: 5.0.10(terser@5.31.3)
-
   integrations/express:
     dependencies:
       sirv:
@@ -177,6 +149,12 @@ importers:
 
   packages/core/test/apps/basic:
     dependencies:
+      '@hono/node-server':
+        specifier: ^1.12.0
+        version: 1.12.0
+      '@stack54/hono':
+        specifier: workspace:*
+        version: link:../../../../../integrations/hono
       hono:
         specifier: ^3.12.0
         version: 3.12.0
@@ -399,9 +377,6 @@ importers:
         specifier: ^0.58.5
         version: 0.58.5(postcss@8.4.33)(vite@5.0.10)
     devDependencies:
-      '@stack54/dev-server':
-        specifier: workspace:^
-        version: link:../../integrations/dev-server
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
         version: 3.0.1(svelte@4.2.8)(vite@5.0.10)
@@ -3839,6 +3814,11 @@ packages:
       long: 5.2.3
       protobufjs: 7.3.2
       yargs: 17.7.2
+    dev: false
+
+  /@hono/node-server@1.12.0:
+    resolution: {integrity: sha512-e6oHjNiErRxsZRZBmc2KucuvY3btlO/XPncIpP2X75bRdTilF9GLjm3NHvKKunpJbbJJj31/FoPTksTf8djAVw==}
+    engines: {node: '>=18.14.1'}
     dev: false
 
   /@hono/node-server@1.4.0:
@@ -9133,6 +9113,7 @@ packages:
   /hono@3.12.0:
     resolution: {integrity: sha512-UPEtZuLY7Wo7g0mqKWSOjLFdT8t7wJ60IYEcxKl3AQNU4u+R2QqU2fJMPmSu24C+/ag20Z8mOTQOErZzK4DMvA==}
     engines: {node: '>=16.0.0'}
+    dev: false
 
   /hono@3.12.3:
     resolution: {integrity: sha512-eymmA0t4YzoBlaZhfcJiR6wC9tIdIgx68fdHYCpbKf0RMYXux+uJjwuZSAa2pKPNXZd6K6oGgizqaiLDvQ5jzg==}

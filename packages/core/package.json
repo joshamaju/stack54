@@ -81,6 +81,11 @@
     "./runtime": "./dist/runtime/index.js",
     "./components": "./components/index.ts",
     "./render": "./dist/runtime/render/index.js",
-    "./render/streaming": "./dist/runtime/render/streaming/index.js"
+    "./runtime/internals": "./dist/runtime/constants.js",
+    "./render/streaming": "./dist/runtime/render/streaming/index.js",
+    "./components/Await": {
+      "node": "./components/Await/node.ts",
+      "default": "./components/Await/index.ts"
+    }
   }
 }

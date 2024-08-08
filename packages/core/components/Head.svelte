@@ -3,7 +3,7 @@
   import {
     HEAD_CONTEXT_KEY,
     HEAD_INSERTION_MARKER,
-  } from "../dist/runtime/constants.js";
+  } from "stack54/runtime/internals";
 
   /** @type {string} */
   const head = getContext(HEAD_CONTEXT_KEY);

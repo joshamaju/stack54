@@ -1,6 +1,6 @@
 import type { ComponentType } from "svelte";
-
 import { await as awaitter } from "stack54/render/streaming";
+
 import Await from "./Await.svelte";
 
 export function make<

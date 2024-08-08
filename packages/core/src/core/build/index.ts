@@ -12,7 +12,7 @@ import {
   runConfigResolved,
   runConfigSetup,
 } from "../integrations/hooks.js";
-import { makeVite } from "../utils/vite.js";
+import { getSvelte, makeVite } from "../utils/vite.js";
 import { buildServer } from "./server.js";
 import { buildViews } from "./view.js";
 
@@ -29,6 +29,8 @@ export function build() {
     let merged_config = yield* Effect.promise(() => {
       return runConfigSetup(user_config);
     });
+
+    merged_config.svelte = getSvelte(merged_config);
 
     const logger = yield* makeViteLogger();
 

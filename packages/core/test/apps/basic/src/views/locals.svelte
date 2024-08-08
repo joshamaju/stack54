@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getLocals } from "stack54/view";
+  import { getLocals } from "stack54/locals";
   const locals = getLocals();
 </script>
 
