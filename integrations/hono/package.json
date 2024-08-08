@@ -8,7 +8,11 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --w"
+    "dev": "tsc --w",
+    "changeset": "changeset",
+    "prepublish": "pnpm build",
+    "version": "changeset version",
+    "release": "changeset publish"
   },
   "keywords": [],
   "author": "Joshua Amaju",
