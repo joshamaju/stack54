@@ -1,6 +1,6 @@
 import * as url from "node:url";
 import type { Plugin } from "vite";
-import { RESOLVER_PREFIX } from "../preprocess/index.js";
+import { RESOLVER_PREFIX } from "../attach-full-path/index.js";
 
 export function resolveInlineImportsPlugin(): Plugin {
   return {
