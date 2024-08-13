@@ -5,7 +5,7 @@ import { RESOLVER_PREFIX } from "../attach-full-path/index.js";
 export function resolveInlineImportsPlugin(): Plugin {
   return {
     name: "stack54:resolve-inline-imports",
-    resolveId(source) {
+    async resolveId(source) {
       if (source.startsWith(RESOLVER_PREFIX)) {
         const id = source.replace(RESOLVER_PREFIX, "");
 
@@ -17,8 +17,8 @@ export function resolveInlineImportsPlugin(): Plugin {
         query.delete("file");
 
         if (file) {
-          const id = `${parsed.pathname}?${query.toString()}`;
-          console.log("\n", id);
+          const s = query.toString();
+          const id = `${parsed.pathname}${s.trim() == "" ? "" : `?${s}`}`;
           return this.resolve(id, file, { skipSelf: true });
         }
       }

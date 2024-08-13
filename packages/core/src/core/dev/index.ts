@@ -6,11 +6,15 @@ import { Effect } from "effect";
 import * as Config from "../config/index.js";
 import { defineServerEnv, load } from "../env.js";
 import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
-import { getSvelte, makeVite } from "../utils/vite.js";
+import { makeVite } from "../utils/vite.js";
 import { hotReloadPlugin } from "../vite-plugins/hot-reload/index.js";
-import { integrationsContainerPlugin } from "../vite-plugins/integrations/index.js";
+import {
+  islandIntegration,
+  islandPlugin,
+} from "../vite-plugins/island/index.js";
 import { attachFullPath } from "./attach-full-path/index.js";
 import { resolveInlineImportsPlugin } from "./resolve-inline-imports/index.js";
+import { arraify } from "../utils/index.js";
 
 const cwd = process.cwd();
 
@@ -22,11 +26,13 @@ export function dev() {
 
     const user_config = yield* Config.parse(inline_config);
 
+    user_config.integrations.push(islandIntegration());
+
     let merged_config = yield* Effect.promise(() => {
-      return runConfigSetup(user_config);
+      return runConfigSetup(user_config, { command: "serve" });
     });
 
-    let { assetPrefix } = merged_config.build;
+    let { assetPrefix } = user_config.build;
 
     if (assetPrefix) {
       try {
@@ -37,49 +43,41 @@ export function dev() {
       }
     }
 
-    const svelte_config = getSvelte(merged_config);
+    merged_config.svelte.preprocess = [
+      ...arraify(merged_config.svelte.preprocess ?? []),
+      attachFullPath({ assetPrefix }),
+    ];
 
-    merged_config.svelte = {
-      ...svelte_config,
-      preprocess: [
-        ...svelte_config.preprocess,
-        attachFullPath({ assetPrefix }),
-      ],
-    };
+    merged_config.vite.plugins = [
+      ...(merged_config.vite.plugins ?? []),
+      resolveInlineImportsPlugin(),
+      hotReloadPlugin(),
+    ];
 
-    // merged_config.integrations.push(liveReloadIntegration());
+    const resolved_config = yield* Effect.promise(() => {
+      return Config.preprocess(merged_config, { cwd });
+    });
 
-    const shared_vite_config = makeVite(merged_config, { mode: "dev" });
+    const shared_vite_config = makeVite(resolved_config, { mode: "dev" });
 
     const internal_vite_config: vite.InlineConfig = {
-      build: { rollupOptions: { input: merged_config.entry } },
-      plugins: [
-        integrationsContainerPlugin(merged_config),
-        resolveInlineImportsPlugin(),
-        hotReloadPlugin(),
-      ],
+      build: { rollupOptions: { input: resolved_config.entry } },
     };
 
     const config: typeof merged_config = {
-      ...merged_config,
+      ...resolved_config,
       vite: vite.mergeConfig(shared_vite_config, internal_vite_config),
     };
 
-    const resolved_config = yield* Effect.promise(() => {
-      return Config.preprocess(config, { cwd });
-    });
-
-    yield* Effect.promise(() => {
-      return runConfigResolved(resolved_config);
-    });
+    yield* Effect.promise(() => runConfigResolved(config));
 
     const mode = process.env.NODE_ENV ?? "development";
-    const env = load(resolved_config.env.dir ?? cwd, mode);
+    const env = load(config.env.dir ?? cwd, mode);
 
     defineServerEnv(env);
 
     const server = yield* Effect.tryPromise(() => {
-      return vite.createServer(resolved_config.vite);
+      return vite.createServer(config.vite);
     });
 
     yield* Effect.promise(() => server.listen());

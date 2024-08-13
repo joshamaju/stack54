@@ -67,6 +67,7 @@
     "sade": "^1.8.1",
     "set-cookie-parser": "^2.6.0",
     "sirv": "^2.0.4",
+    "ts-dedent": "^2.2.0",
     "zod": "^3.22.4"
   },
   "exports": {
@@ -80,6 +81,7 @@
     "./config": "./dist/exports/config.js",
     "./runtime": "./dist/runtime/index.js",
     "./components": "./components/index.ts",
+    "./client/*": "./dist/runtime/client/*.js",
     "./render": "./dist/runtime/render/index.js",
     "./runtime/internals": "./dist/runtime/constants.js",
     "./render/streaming": "./dist/runtime/render/streaming/index.js",

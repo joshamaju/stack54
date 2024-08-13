@@ -1,3 +1,4 @@
+import module from "node:module";
 import * as path from "node:path";
 import * as url from "node:url";
 
@@ -8,6 +9,7 @@ import type { BaseNode, Element, Text } from "svelte/types/compiler/interfaces";
 import * as lexer from "es-module-lexer";
 import MagicString from "magic-string";
 
+import { to_fs } from "../../utils/filesystem.js";
 import { Rule, Tags, rules } from "./rules.js";
 
 function isLocalPath(path: string) {
@@ -20,24 +22,11 @@ function isLocalPath(path: string) {
 }
 
 function walk(node: BaseNode, visitor: (node: BaseNode) => BaseNode): BaseNode {
-  if (node.children) {
-    node.children = node.children.map((_) => walk(_, visitor));
-  }
-
+  if (node.children) node.children = node.children.map((_) => walk(_, visitor));
   return visitor(node);
 }
 
-function posixify(str: string) {
-  return str.replace(/\\/g, "/");
-}
-
-function to_fs(str: string) {
-  str = posixify(str);
-  return `/@fs${
-    // Windows/Linux separation - Windows starts with a drive letter, we need a / in front there
-    str.startsWith("/") ? "" : "/"
-  }${str}`;
-}
+const DYNAMIC_IMPORT = 2;
 
 export const RESOLVER_PREFIX = "/@resolve:";
 
@@ -45,6 +34,8 @@ const rules_by_tag = rules.reduce((acc, rule) => {
   acc[rule.tag] = [...(acc[rule.tag] ?? []), rule];
   return acc;
 }, {} as Record<Tags, Rule[]>);
+
+const require = module.createRequire(import.meta.url);
 
 export function attachFullPath({
   assetPrefix = "/",
@@ -68,8 +59,6 @@ export function attachFullPath({
         enter(node) {
           // @ts-expect-error
           walk(node, (node) => {
-            // console.log(inspect(node, false, Infinity));
-
             if (node.type == "Element") {
               const node_: Element = node as any;
 
@@ -114,26 +103,46 @@ export function attachFullPath({
                     const ss = new MagicString(code).trimLines();
 
                     imports.forEach((imported) => {
-                      const slice = ss.slice(imported.s, imported.e);
-                      const { query, pathname } = url.parse(slice);
+                      const slice = imported.n;
 
-                      const q = new url.URLSearchParams(query || undefined);
+                      if (slice) {
+                        let resolved = slice;
+                        const { query, pathname } = url.parse(slice);
 
-                      q.set("file", filename);
+                        if (slice.startsWith("./") || slice.startsWith("../")) {
+                          const file = path.resolve(parsed.dir, pathname!);
+                          resolved = path.join(assetPrefix, to_fs(file));
+                        } else {
+                          try {
+                            resolved = to_fs(require.resolve(slice));
+                          } catch (error) {
+                            if (
+                              !slice.startsWith("/@fs") &&
+                              !slice.startsWith(RESOLVER_PREFIX)
+                            ) {
+                              /**
+                               * most likely an import alias, to be resolved by
+                               * the resolve-inline-imports plugin
+                               */
+                              const init = query || undefined;
+                              const q = new url.URLSearchParams(init);
+                              q.set("file", filename);
+                              resolved = `${RESOLVER_PREFIX}${pathname}?${q.toString()}`;
+                            }
+                          }
+                        }
 
-                      let resolved = "";
-
-                      if (isLocalPath(slice)) {
-                        const file = path.resolve(parsed.dir, pathname!);
-                        resolved = path.join(assetPrefix, to_fs(file));
-                      } else {
-                        resolved = `${RESOLVER_PREFIX}${pathname}?${q.toString()}`;
+                        ss.overwrite(
+                          imported.s,
+                          imported.e,
+                          imported.t == DYNAMIC_IMPORT
+                            ? `"${resolved}"`
+                            : resolved
+                        );
                       }
-
-                      ss.update(imported.s, imported.e, resolved);
                     });
 
-                    s.update(content.start, content.end, ss.toString());
+                    s.overwrite(content.start, content.end, ss.toString());
                   }
                 }
               }

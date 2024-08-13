@@ -10,8 +10,12 @@ import { Effect } from "effect";
 
 import type { ResolvedConfig } from "../config/index.js";
 import { define, Env } from "../env.js";
-import type { Output } from "./types.js";
+import {
+  runHtmlPostTransform,
+  runHtmlPreTransform,
+} from "../integrations/hooks.js";
 import * as Facade from "./facade.js";
+import type { Output } from "./types.js";
 
 const VITE_HTML_PLACEHOLDER = "<div data-obfuscation-placeholder></div>";
 
@@ -69,8 +73,12 @@ export function buildViews({
             return fs.readFile(view, "utf-8");
           });
 
+          const transformed = yield* Effect.tryPromise(() => {
+            return runHtmlPreTransform(config, { code, filename: view });
+          });
+
           const prepared = yield* Effect.tryPromise(() => {
-            return Facade.prepare_async(code, view, config.svelte);
+            return Facade.prepare_async(transformed, view, config.svelte);
           });
 
           // const prepared = Facade.prepare(code);
@@ -128,7 +136,7 @@ export function buildViews({
     const env_define = define(env);
 
     const inline_config: vite.InlineConfig = {
-      // logLevel: "silent",
+      logLevel: "silent",
       define: env_define,
       mode: "production",
       plugins: [resolve, obfuscate, deobfuscate],
@@ -159,7 +167,11 @@ export function buildViews({
           const { dir, name } = path.parse(original);
           const file = path.join(dir, `${name}.svelte`);
 
-          return [file, { code, file } as Output] as const;
+          const transformed = yield* Effect.tryPromise(() => {
+            return runHtmlPostTransform(config, { code, filename: file });
+          });
+
+          return [file, { file, code: transformed } as Output] as const;
         });
       },
       { concurrency: "unbounded" }

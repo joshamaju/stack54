@@ -1,39 +1,32 @@
-import { Hono } from "hono";
-import { setLocals } from "@stack54/hono/locals";
-import { render as middleware } from "@stack54/hono/render";
-import { render } from "./utils/view";
+import { register } from "@stack54/express/render";
+import express from "express";
+import { render } from "./utils/view.js";
 
-const app = new Hono();
+const app = express();
 
-// @ts-expect-error
-app.use("/*", middleware(render));
+register(app, render);
 
-app.get("/locals", (ctx) => {
-  // @ts-expect-error
-  setLocals(ctx, "user", "John");
-
-  // @ts-expect-error
-  return ctx.render("locals", {});
+app.get("/locals", (_, res) => {
+  res.locals.user = "John";
+  return res.render("locals", {});
 });
 
-app.get("/without-locals", (ctx) => {
+app.get("/without-locals", (_, res) => {
+  res.locals.user = "John";
   // @ts-expect-error
-  setLocals(ctx, "user", "John");
-
-  // @ts-expect-error
-  return ctx.html(render("locals", {}));
+  return res.send(render("locals", {}));
 });
 
-app.get("/leaf", (ctx) => ctx.render("leaf/page"));
+app.get("/leaf", (_, res) => res.render("leaf/page"));
 
-app.get("/client-assets", (ctx) => ctx.render("client-assets/page"));
-app.get("/script/inline", (ctx) => ctx.render("script-inline"));
+app.get("/client-assets", (_, res) => res.render("client-assets/page"));
+app.get("/script/inline", (_, res) => res.render("script-inline"));
 
-app.get("/css/inline", (ctx) => ctx.render("css/inline"));
-app.get("/css/nested", (ctx) => ctx.render("css/nested/index"));
+app.get("/css/inline", (_, res) => res.render("css/inline"));
+app.get("/css/nested", (_, res) => res.render("css/nested/index"));
 
-app.get("/head/missing", (ctx) => ctx.render("head/no-head"));
-app.get("/head/svelte", (ctx) => ctx.render("head/has-head"));
-app.get("/head/slotted", (ctx) => ctx.render("head/slotted-head"));
+app.get("/head/missing", (_, res) => res.render("head/no-head"));
+app.get("/head/svelte", (_, res) => res.render("head/has-head"));
+app.get("/head/slotted", (_, res) => res.render("head/slotted-head"));
 
 export default app;

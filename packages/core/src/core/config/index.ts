@@ -17,6 +17,17 @@ import z, { ZodError } from "zod";
 import type { MaybeAwait } from "../types.js";
 import { getSvelte } from "../utils/vite.js";
 
+export type Transformer = (
+  code: string,
+  filename: string,
+  opts: { ssr: boolean }
+) => MaybeAwait<void | string>;
+
+export type TransformerHTML = (
+  code: string,
+  filename: string
+) => MaybeAwait<void | string>;
+
 export const userConfigSchema = z.object({
   staticDir: z.string().default("static"),
   vite: z.custom<ViteUserConfig>().default({}),
@@ -53,11 +64,34 @@ export const userConfigSchema = z.object({
         name: z.string(),
         buildStart: z.custom<() => MaybeAwait<void>>().optional(),
         buildEnd: z.custom<() => MaybeAwait<void>>().optional(),
+        transform: z
+          .union([
+            z.custom<Transformer>(),
+            z.object({
+              order: z.enum(["pre", "post"]),
+              handle: z.custom<Transformer>(),
+            }),
+          ])
+          .optional(),
+        transformHtml: z
+          .union([
+            z.custom<TransformerHTML>(),
+            z.object({
+              order: z.enum(["pre", "post"]),
+              handle: z.custom<TransformerHTML>(),
+            }),
+          ])
+          .optional(),
         configResolved: z
           .custom<(config: any) => MaybeAwait<void>>()
           .optional(),
         config: z
-          .custom<(config: any) => MaybeAwait<object | undefined>>()
+          .custom<
+            (
+              config: any,
+              env: { command: "build" | "serve" }
+            ) => MaybeAwait<object | void>
+          >()
           .optional(),
         configureServer: z
           .custom<

@@ -57,7 +57,9 @@ export async function prepare_async(
 
   const s = new MagicString(processed.code);
 
-  const wrap = [ast.instance, ast.css].filter((_) => _ !== undefined);
+  const wrap = [ast.module, ast.instance, ast.css].filter(
+    (_) => _ !== undefined
+  );
 
   // @ts-ignore
   wrap.forEach(({ end, start }) => {

@@ -1,12 +1,16 @@
 // @ts-check
 
-import { serve } from "@hono/node-server";
-import { serveStatic } from "@hono/node-server/serve-static";
+import express from "express";
 
 import router from "./dist/server/index.js";
 
-router.use("/*", serveStatic({ root: "./dist/assets" }));
+const port = 3000;
 
-serve(router, (info) => {
-  console.log(`Server running ${info.address}:${info.port}`);
+const app = express();
+
+app.use(express.static("./dist"));
+app.use(router);
+
+app.listen(port, function () {
+  console.log(`Server listening on port ${port}!`);
 });
