@@ -3,9 +3,9 @@ import { dedent } from "ts-dedent";
 import type { PreprocessorGroup } from "svelte/compiler";
 import { parse, preprocess } from "svelte/compiler";
 
-import { ResolvedConfig } from "../../config/index.js";
-import { to_fs } from "../../utils/filesystem.js";
-import { arraify } from "../../utils/index.js";
+import { ResolvedConfig } from "../config/index.js";
+import { to_fs } from "../utils/filesystem.js";
+import { arraify } from "../utils/index.js";
 
 type Attr = Record<string, string | boolean>;
 
@@ -134,9 +134,12 @@ export async function makeIsland(
         
         <script type="module">
             import { decode } from "stack54/data";
-            import { hydrate } from 'stack54/client/island';
+            import { hydrate } from 'stack54/island/hydrate';
+            import * as directives from "stack54/island/directives";
+
             const load = () => import("${to_fs(filename)}");
-            load().then(module => hydrate(module.default));
+            const directive = directives["${directive}"];
+            hydrate(directive(load));
         </script>
     </svelte:head>
     

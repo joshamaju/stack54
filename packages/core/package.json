@@ -84,6 +84,8 @@
     "./client/*": "./dist/runtime/client/*.js",
     "./render": "./dist/runtime/render/index.js",
     "./runtime/internals": "./dist/runtime/constants.js",
+    "./island/hydrate": "./dist/core/island/hydrate.js",
+    "./island/directives": "./dist/core/island/directives/index.js",
     "./render/streaming": "./dist/runtime/render/streaming/index.js",
     "./components/Await": {
       "node": "./components/Await/node.ts",

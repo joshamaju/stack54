@@ -1,8 +1,5 @@
 import { ResolvedConfig } from "../config/index.js";
-import {
-  islandPlugin,
-  islandIntegration,
-} from "../vite-plugins/island/index.js";
+import { islandPlugin, islandIntegration } from "../island/index.js";
 import { getSvelte } from "./vite.js";
 
 export function makeSettings(user_config: ResolvedConfig): ResolvedConfig {

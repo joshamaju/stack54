@@ -1,9 +1,9 @@
 import { Plugin } from "vite";
 
-import { Integration, ResolvedConfig } from "../../config/index.js";
-import { is_view, parse_id } from "../../utils/view.js";
-import { makeIsland } from "./preprocess.js";
-import { ConfigEnv } from "../../integrations/hooks.js";
+import { Integration, ResolvedConfig } from "../config/index.js";
+import { is_view, parse_id } from "../utils/view.js";
+import { makeIsland } from "./process.js";
+import { ConfigEnv } from "../integrations/hooks.js";
 
 let islands = new Map<
   string,
@@ -225,6 +225,7 @@ export function islandIntegration(): Integration {
     transformHtml: {
       order: "pre",
       async handle(code, id) {
+        // only runs during build
         const { filename } = parse_id(id);
         const island = await makeIsland(code, filename, config);
         return island;
@@ -233,8 +234,6 @@ export function islandIntegration(): Integration {
     transform: {
       order: "pre",
       async handle(code, id) {
-        // console.log("making island", code);
-
         if (env.command == "build") return;
 
         const { filename } = parse_id(id);
