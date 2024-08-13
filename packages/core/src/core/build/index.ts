@@ -16,8 +16,8 @@ import { makeVite } from "../utils/vite.js";
 import { buildServer } from "./server.js";
 import { buildViews } from "./view.js";
 
+import { islandIntegration } from "../island/index.js";
 import { makeViteLogger } from "../logger.js";
-import { islandIntegration, islandPlugin } from "../island/index.js";
 
 const cwd = process.cwd();
 

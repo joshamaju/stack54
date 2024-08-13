@@ -63,7 +63,7 @@ program.command("build").action(async () => {
 
   const fiber = build().pipe(
     Effect.catchTag("InvalidConfig", (e) => log_config_error(e)),
-    Effect.catchAllCause((c) => Effect.logError(String(c))),
+    Effect.catchAllCause((c) => Effect.logError(Cause.prettyErrors(c))),
     Logger.withMinimumLogLevel(LogLevel.All),
     Effect.provide(layer),
     Effect.runFork
