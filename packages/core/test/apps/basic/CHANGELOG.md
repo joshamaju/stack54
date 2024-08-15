@@ -1,5 +1,13 @@
 # basic
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies [c75ad78]
+  - stack54@0.5.1
+  - @stack54/express@0.0.2
+
 ## 0.0.7
 
 ### Patch Changes
