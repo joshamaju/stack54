@@ -81,7 +81,6 @@
     "./config": "./dist/exports/config.js",
     "./runtime": "./dist/runtime/index.js",
     "./components": "./components/index.ts",
-    "./client/*": "./dist/runtime/client/*.js",
     "./internals": "./dist/exports/internals.js",
     "./render": "./dist/runtime/render/index.js",
     "./runtime/internals": "./dist/runtime/constants.js",
