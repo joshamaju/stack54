@@ -1,12 +1,12 @@
-import { Hono } from "hono";
-import { view } from "stack54/view";
+import express from "express";
+import { register } from "@stack54/express/render";
 
 import { render } from "./utils/view";
 
-const app = new Hono();
+const app = express();
 
-app.use(view(render));
+register(app, render);
 
-app.get("/", (ctx) => ctx.render("welcome", {}));
+app.get("/", (_, res) => res.render("welcome", {}));
 
 export default app;

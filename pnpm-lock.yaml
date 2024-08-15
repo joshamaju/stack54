@@ -89,6 +89,37 @@ importers:
         specifier: ^5.4.1
         version: 5.4.1
 
+  examples/with-svelte:
+    dependencies:
+      '@stack54/express':
+        specifier: ^0.0.2
+        version: 0.0.2(@sveltejs/vite-plugin-svelte@3.1.1)(express@4.19.2)(svelte@4.2.18)(vite@5.4.1)
+      express:
+        specifier: ^4.19.2
+        version: 4.19.2
+      stack54:
+        specifier: ^0.5.2
+        version: link:../../packages/core
+      svelte:
+        specifier: ^4.2.8
+        version: 4.2.18
+    devDependencies:
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^3.0.1
+        version: 3.1.1(svelte@4.2.18)(vite@5.4.1)
+      '@tsconfig/svelte':
+        specifier: ^5.0.2
+        version: 5.0.4
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      typescript:
+        specifier: ^5.3.3
+        version: 5.5.4
+      vite:
+        specifier: ^5.4.1
+        version: 5.4.1
+
   integrations/express:
     dependencies:
       sirv:
