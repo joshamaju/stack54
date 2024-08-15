@@ -1,5 +1,5 @@
 import type { ComponentType } from "svelte";
-import { await as awaitter } from "stack54/render/streaming";
+import { await as awaitter } from "stack54/streaming";
 
 import Await from "./Await.svelte";
 

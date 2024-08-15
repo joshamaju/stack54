@@ -6,18 +6,16 @@ import { Effect } from "effect";
 
 import * as Config from "../config/index.js";
 import { defineServerEnv, load, partition } from "../env.js";
+import { makeVite } from "../utils/vite.js";
+import { buildServer } from "./server.js";
+import { buildViews } from "./view.js";
+import { makeViteLogger } from "../logger.js";
 import {
   runBuildEnd,
   runBuildStart,
   runConfigResolved,
   runConfigSetup,
 } from "../integrations/hooks.js";
-import { makeVite } from "../utils/vite.js";
-import { buildServer } from "./server.js";
-import { buildViews } from "./view.js";
-
-import { islandIntegration } from "../island/index.js";
-import { makeViteLogger } from "../logger.js";
 
 const cwd = process.cwd();
 
@@ -26,8 +24,6 @@ export function build() {
     const inline_config = yield* Effect.tryPromise(() => Config.load(cwd));
 
     const user_config = yield* Config.parse(inline_config);
-
-    user_config.integrations.push(islandIntegration());
 
     let merged_config = yield* Effect.promise(() => {
       return runConfigSetup(user_config, { command: "build" });

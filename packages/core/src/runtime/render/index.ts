@@ -1,12 +1,11 @@
-import * as Either from "effect/Either";
-
-import {
+import type {
   Options,
   Output,
   Props,
   Template,
   TemplateModule,
 } from "../../types/template.js";
+
 import { HEAD_INSERTION_MARKER } from "../constants.js";
 import { renderToStream } from "./streaming/index.js";
 
@@ -15,11 +14,6 @@ export * from "./streaming/index.js";
 export interface Views {}
 
 type Lazy<T> = () => Promise<T>;
-
-export class RenderError {
-  readonly _tag = "RenderError";
-  constructor(public cause: unknown) {}
-}
 
 export function render(output: Output) {
   const head = output.head + `<style>${output.css.code}</style>`;
@@ -49,10 +43,7 @@ export function renderToString(
   template: Template | any,
   ...args: Parameters<Template["render"]>
 ) {
-  return Either.try({
-    try: () => unsafeRenderToString(template, ...args),
-    catch: (e) => new RenderError(e),
-  });
+  return unsafeRenderToString(template, ...args);
 }
 
 const isLazy = <T>(value: any): value is Lazy<T> => {
@@ -80,29 +71,7 @@ export function resolveComponent<T>(
   return isLazy(entry) ? entry().then((_) => _.default) : entry.default;
 }
 
-// export function unsafeMakeFactory<T extends Template>(
-//   f: (name: string) => T
-// ): <V extends Views, K extends keyof V, O extends Options>(
-//   name: K,
-//   props?: V[K],
-//   opts?: O
-// ) => O["stream"] extends undefined
-//   ? string
-//   : O["stream"] extends true
-//   ? ReadableStream
-//   : string;
-// export function unsafeMakeFactory<T extends Promise<Template>>(
-//   f: (name: string) => T
-// ): <V extends Views, K extends keyof V, O extends Options>(
-//   name: K,
-//   props?: V[K],
-//   opts?: O
-// ) => O["stream"] extends undefined
-//   ? Promise<string>
-//   : O["stream"] extends true
-//   ? Promise<ReadableStream>
-//   : Promise<string>;
-export function unsafeMakeFactory<T extends Template | Promise<Template>>(
+export function makeFactory<T extends Template | Promise<Template>>(
   f: (name: string) => T
 ) {
   return <V extends Views, K extends keyof V, O extends Options>(
@@ -128,34 +97,3 @@ export function unsafeMakeFactory<T extends Template | Promise<Template>>(
       : fn(output, props as Props, opts);
   };
 }
-
-export function makeFactory<T extends Template | Promise<Template>>(
-  f: (name: string) => T
-) {
-  return <V extends Views, K extends keyof V>(
-    name: K,
-    props?: V[K],
-    opts?: Options
-  ): T extends Promise<Template>
-    ? Promise<Either.Either<string, RenderError>>
-    : Either.Either<string, RenderError> => {
-    // @ts-expect-error
-    const output = f(name);
-    // @ts-expect-error
-    return output instanceof Promise
-      ? output.then((_) => renderToString(_, props as Props, opts))
-      : renderToString(output, props as Props, opts);
-  };
-}
-
-export const isOk = (
-  result: Either.Either<string, RenderError>
-): result is Either.Right<RenderError, string> => {
-  return Either.isRight(result);
-};
-
-export const isErr = (
-  result: Either.Either<string, RenderError>
-): result is Either.Left<RenderError, string> => {
-  return Either.isLeft(result);
-};

@@ -3,15 +3,14 @@ import { dedent } from "ts-dedent";
 import type { PreprocessorGroup } from "svelte/compiler";
 import { parse, preprocess } from "svelte/compiler";
 
-import { ResolvedConfig } from "../config/index.js";
-import { to_fs } from "../utils/filesystem.js";
-import { arraify } from "../utils/index.js";
+import { ResolvedConfig } from "stack54/config";
+import { arraify, to_fs } from "stack54/internals";
 
-type Attr = Record<string, string | boolean>;
+type Attributes = Record<string, string | boolean>;
 
-type Block = { content: string; attributes: Attr };
+type Block = { content: string; attributes: Attributes };
 
-const makeAttrs = (attrs: Attr) => {
+const makeAttrs = (attrs: Attributes) => {
   return Object.entries(attrs).map(([k, v]) =>
     typeof v == "boolean" ? `${k}` : `${k}="${v}"`
   );
@@ -20,6 +19,8 @@ const makeAttrs = (attrs: Attr) => {
 const makeBlock = (tag: string, { content, attributes }: Block) => {
   return `<${tag} ${makeAttrs(attributes).join(" ")}>${content}</${tag}>`;
 };
+
+const KEY = "island";
 
 export async function makeIsland(
   code: string,
@@ -40,7 +41,7 @@ export async function makeIsland(
         module = { attributes, content };
       }
 
-      if ("client" in attributes) {
+      if (KEY in attributes) {
         island = { content, attributes };
       }
     },
@@ -55,7 +56,7 @@ export async function makeIsland(
   });
 
   if (island) {
-    const directive = island.attributes.client;
+    const attr = island.attributes[KEY];
 
     const ast = parse(processed.code);
 
@@ -97,57 +98,54 @@ export async function makeIsland(
       }
     }
 
-    // const s = new MagicString(processed.code);
-
-    // const markup = s
-    //   .slice(ast.html.start, ast.html.end)
-    //   .replace(
-    //     /<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g,
-    //     ""
-    //   );
-
     const markup = processed.code.replace(
       /<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g,
       ""
     );
 
-    const { client, ...attr } = island.attributes;
+    delete island.attributes[KEY];
 
-    const attributes = makeAttrs(attr);
+    const attributes = makeAttrs(island.attributes);
 
     const serialized = props.map((prop) => prop.name);
+
+    const [directive, value] = (typeof attr == "boolean" ? "idle" : attr).split(
+      "::"
+    );
+
+    const __id__ = `island_${Date.now()}`;
+
+    const __value__ = value ? `"${value}"` : "undefined";
 
     const script = dedent`
     ${module ? makeBlock("script", module) : ""}
     
     <script ${attributes.join(" ")}>
-        import {encode} from "stack54/data";
-        
-        ${island.content}
-              
-        const __id__ = "island_${Date.now()}";
-        const __serialized__ = {${serialized.join(",")}};
+      import {raw_encode} from "stack54/data";
+      
+      ${island.content}
+      
+      const __id__ = "${__id__}";
+      const __serialized__ = {${serialized.join(",")}};
     </script>
     
     <svelte:head>
-        {@html encode(__serialized__, {id: __id__})}
+      <script type="module">
+        import { hydrate } from '@stack54/island/hydrate';
+        import * as directives from "@stack54/island/directives";
         
-        <script type="module">
-            import { decode } from "stack54/data";
-            import { hydrate } from 'stack54/island/hydrate';
-            import * as directives from "stack54/island/directives";
-
-            const load = () => import("${to_fs(filename)}");
-            const directive = directives["${directive}"];
-            hydrate(directive(load));
-        </script>
+        const directive = directives["${directive}"];
+        const load = () => import("${to_fs(filename)}");
+        hydrate(directive(load, {value: ${__value__}, name: "${directive}"}));
+      </script>
     </svelte:head>
     
-    <stack54-island key="{__id__}" style="display:contents;">
-        ${markup}
+    <stack54-island style="display:contents;" props="{raw_encode(__serialized__)}">
+      ${markup}
     </stack54-island>
     
-    ${style ? makeBlock("style", style) : ""}`;
+    ${style ? makeBlock("style", style) : ""}
+    `;
 
     return script;
   }

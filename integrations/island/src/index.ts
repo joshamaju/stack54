@@ -1,14 +1,9 @@
 import { Plugin } from "vite";
-
-import { Integration, ResolvedConfig } from "../config/index.js";
-import { is_view, parse_id } from "../utils/view.js";
+import { Integration, ResolvedConfig } from "stack54/config";
+import { is_view } from "stack54/internals";
 import { makeIsland } from "./process.js";
-import { ConfigEnv } from "../integrations/hooks.js";
 
-let islands = new Map<
-  string,
-  { code: string; original: string; loaded: boolean }
->();
+type Island = { code: string; original: string; complete: boolean };
 
 // export function islandPlugin(config: ResolvedConfig): Plugin {
 //   return {
@@ -182,31 +177,45 @@ let islands = new Map<
 //   };
 // }
 
-export function islandPlugin(): Plugin {
-  return {
-    name: "stack54:island",
-    buildStart() {
-      islands = new Map();
-    },
-    load: {
-      order: "pre",
-      handler(id) {
-        if (is_view(parse_id(id).filename)) {
-          const island = islands.get(id);
-
-          if (island) {
-            islands.set(id, { ...island, loaded: true });
-            return island.original;
-          }
-        }
-      },
-    },
-  };
-}
-
-export function islandIntegration(): Integration {
-  let env: ConfigEnv;
+export default function islandIntegration(): Integration {
   let config: ResolvedConfig;
+  let env: { command: string };
+
+  let islands = new Map<string, Island>();
+
+  function vitePlugin(): Plugin {
+    return {
+      name: "stack54:island",
+      load: {
+        order: "pre",
+        handler(id) {
+          const [filename] = id.split("?");
+
+          /**
+           * We wrap the original component and insert a script that imports itself
+           * for hydration on the client. We need to ensure that the client script doesn't
+           * load the wrapped version, but the original version, to avoid recursively making it an island
+           */
+          if (is_view(filename)) {
+            const island = islands.get(id);
+
+            if (island) {
+              islands.set(id, { ...island, complete: true });
+              return island.original;
+            }
+          }
+        },
+      },
+      configureServer(server) {
+        const fn = (file: string) => {
+          if (islands.has(file)) islands.delete(file);
+        };
+
+        server.watcher.on("change", fn);
+        server.watcher.on("unlink", fn);
+      },
+    };
+  }
 
   return {
     name: "stack54:island",
@@ -215,7 +224,7 @@ export function islandIntegration(): Integration {
 
       return {
         vite: {
-          plugins: [islandPlugin()],
+          plugins: [vitePlugin()],
         },
       };
     },
@@ -226,7 +235,7 @@ export function islandIntegration(): Integration {
       order: "pre",
       async handle(code, id) {
         // only runs during build
-        const { filename } = parse_id(id);
+        const [filename] = id.split("?");
         const island = await makeIsland(code, filename, config);
         return island;
       },
@@ -236,24 +245,30 @@ export function islandIntegration(): Integration {
       async handle(code, id) {
         if (env.command == "build") return;
 
-        const { filename } = parse_id(id);
+        const [filename] = id.split("?");
 
         if (is_view(filename)) {
           /**
-           * We wrap the original component and insert a script that imports itself
-           * for hydration on the client. We need to ensure that the client script doesn't
-           * import this wrapped version, but the original version to avoid recursive hydration
-           * which will blow out the stack
+           * If this is a second pass/transform as a result of the client script,
+           * we need to skip making it an island to avoid recursive loads and transform.
+           *
+           * This indicates that the cycle is complete, we've loaded the wrapped island server side
+           * which gets sent to the browser as plain HTML that includes the hydration script which
+           * triggered another import resolution to the original svelte component.
+           *
+           * So we remove every reference to to this component to avoid returning old code on any other request
            */
-
           const processed_island = islands.get(id);
 
-          if (processed_island?.loaded) return;
+          if (processed_island?.complete) {
+            islands.delete(id);
+            return;
+          }
 
           const island = await makeIsland(code, filename, config);
 
           if (island) {
-            islands.set(id, { loaded: false, original: code, code: island });
+            islands.set(id, { complete: false, original: code, code: island });
             return island;
           }
         }

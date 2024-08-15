@@ -8,7 +8,6 @@ import { defineServerEnv, load } from "../env.js";
 import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
 import { makeVite } from "../utils/vite.js";
 import { hotReloadPlugin } from "../vite-plugins/hot-reload/index.js";
-import { islandIntegration, islandPlugin } from "../island/index.js";
 import { attachFullPath } from "./attach-full-path/index.js";
 import { resolveInlineImportsPlugin } from "./resolve-inline-imports/index.js";
 import { arraify } from "../utils/index.js";
@@ -22,8 +21,6 @@ export function dev() {
     const inline_config = yield* Effect.tryPromise(() => Config.load(cwd));
 
     const user_config = yield* Config.parse(inline_config);
-
-    user_config.integrations.push(islandIntegration());
 
     let merged_config = yield* Effect.promise(() => {
       return runConfigSetup(user_config, { command: "serve" });

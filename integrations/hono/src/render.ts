@@ -1,11 +1,11 @@
 import type { MiddlewareHandler } from "hono";
 
 import { makeLocals } from "stack54/locals";
-import { unsafeMakeFactory } from "stack54/render";
+import { makeFactory } from "stack54/render";
 import { getLocals } from "./locals.js";
 
 export const render = (
-  fn: ReturnType<typeof unsafeMakeFactory>
+  fn: ReturnType<typeof makeFactory>
 ): MiddlewareHandler => {
   return async (ctx, next) => {
     ctx.setRenderer((...args) => {

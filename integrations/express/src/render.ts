@@ -1,12 +1,9 @@
 import type { Express } from "express";
 
 import { makeLocals } from "stack54/locals";
-import { unsafeMakeFactory } from "stack54/render";
+import { makeFactory } from "stack54/render";
 
-export const register = (
-  app: Express,
-  fn: ReturnType<typeof unsafeMakeFactory>
-) => {
+export const register = (app: Express, fn: ReturnType<typeof makeFactory>) => {
   app.use((_, __, next) => {
     // const renderer = app.render;
 
