@@ -1,5 +1,11 @@
 # mpa
 
+## 0.5.2
+
+### Patch Changes
+
+- 4d359ac: Fix package exports
+
 ## 0.5.1
 
 ### Patch Changes
