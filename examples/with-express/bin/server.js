@@ -1,11 +1,11 @@
 // @ts-check
 
-import express from "express";
-import router from "./entry.js";
+import express, {static as static_} from "express";
+import router from "../dist/server/index.js";
 
 const app = express();
 
-const serve_build = express.static("public/assets", {
+const serve_build_assets = static_("./dist", {
   immutable: true,
   maxAge: "1y",
 });
@@ -13,11 +13,11 @@ const serve_build = express.static("public/assets", {
 // http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
 app.disable("x-powered-by");
 
-app.use("/assets", serve_build);
+app.use(serve_build_assets);
 
-app.use(express.static("public", { maxAge: "1h" }));
+app.use(static_("static", { maxAge: "1h" }));
 
-app.all("*", toNodeHandler(router));
+app.use(router);
 
 const port = process.env.PORT || 3000;
 

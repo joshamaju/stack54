@@ -19,13 +19,13 @@ importers:
     dependencies:
       '@stack54/express':
         specifier: ^0.0.2
-        version: 0.0.2(@sveltejs/vite-plugin-svelte@3.1.1)(express@4.19.2)(hono@3.12.12)(svelte@4.2.18)(typescript@5.5.4)(vite@5.4.1)
+        version: link:../../integrations/express
       express:
         specifier: ^4.19.2
         version: 4.19.2
       stack54:
-        specifier: ^0.5.1
-        version: 0.5.1(@sveltejs/vite-plugin-svelte@3.1.1)(hono@3.12.12)(svelte@4.2.18)(typescript@5.5.4)(vite@5.4.1)
+        specifier: ^0.5.2
+        version: 0.5.2(@sveltejs/vite-plugin-svelte@3.1.1)(svelte@4.2.18)(vite@5.4.1)
       svelte:
         specifier: ^4.2.8
         version: 4.2.18
@@ -3893,25 +3893,6 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@remix-run/node@2.11.2(typescript@5.5.4):
-    resolution: {integrity: sha512-gRNFM61EOYWNmYgf+pvBt6MrirWlkDz1G6RQsJNowtRqbYoy05AdDe5HiHGF5w8ZMAZVeXnZiwbL0Nt7ykYBCA==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      typescript: ^5.1.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@remix-run/server-runtime': 2.11.2(typescript@5.5.4)
-      '@remix-run/web-fetch': 4.4.2
-      '@web3-storage/multipart-parser': 1.0.0
-      cookie-signature: 1.2.1
-      source-map-support: 0.5.21
-      stream-slice: 0.1.2
-      typescript: 5.5.4
-      undici: 6.19.7
-    dev: false
-
   /@remix-run/node@2.7.2(typescript@5.3.3):
     resolution: {integrity: sha512-smIWI9kNGDnY361WlDOTwxPfUw/KHcS7PCLjHlM/omx3ETD1Y2dc4Rt82LSJt0qsPSPA72ZOww08NoX+YGBvyQ==}
     engines: {node: '>=18.0.0'}
@@ -3935,30 +3916,6 @@ packages:
   /@remix-run/router@1.15.1:
     resolution: {integrity: sha512-zcU0gM3z+3iqj8UX45AmWY810l3oUmXM7uH4dt5xtzvMhRtYVhKGOmgOd1877dOPPepfCjUv57w+syamWIYe7w==}
     engines: {node: '>=14.0.0'}
-    dev: false
-
-  /@remix-run/router@1.19.1:
-    resolution: {integrity: sha512-S45oynt/WH19bHbIXjtli6QmwNYvaz+vtnubvNpNDvUOoA/OWh6j1OikIP3G+v5GHdxyC6EXoChG3HgYGEUfcg==}
-    engines: {node: '>=14.0.0'}
-    dev: false
-
-  /@remix-run/server-runtime@2.11.2(typescript@5.5.4):
-    resolution: {integrity: sha512-abG6ENj0X3eHqDxqO2thWM2NSEiPnqyt58z1BbiQCv+t8g0Zuqd5QHbB4wzdNvfS0vKhg+jJiigcJneAc4sZzw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      typescript: ^5.1.0
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@remix-run/router': 1.19.1
-      '@types/cookie': 0.6.0
-      '@web3-storage/multipart-parser': 1.0.0
-      cookie: 0.6.0
-      set-cookie-parser: 2.7.0
-      source-map: 0.7.4
-      turbo-stream: 2.3.0
-      typescript: 5.5.4
     dev: false
 
   /@remix-run/server-runtime@2.7.2(typescript@5.3.3):
@@ -4174,22 +4131,6 @@ packages:
 
   /@socket.io/component-emitter@3.1.2:
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
-
-  /@stack54/express@0.0.2(@sveltejs/vite-plugin-svelte@3.1.1)(express@4.19.2)(hono@3.12.12)(svelte@4.2.18)(typescript@5.5.4)(vite@5.4.1):
-    resolution: {integrity: sha512-7sGDFov0iJJ8JUxga+iNqz00TskVAKRuOs8m0ekXO2j1Jg4CByiA064Op5Vso+sp7/Tu74c5CKGmmk9ewDeRBA==}
-    peerDependencies:
-      express: ^4.19.2
-    dependencies:
-      express: 4.19.2
-      sirv: 2.0.4
-      stack54: 0.5.1(@sveltejs/vite-plugin-svelte@3.1.1)(hono@3.12.12)(svelte@4.2.18)(typescript@5.5.4)(vite@5.4.1)
-    transitivePeerDependencies:
-      - '@sveltejs/vite-plugin-svelte'
-      - hono
-      - svelte
-      - typescript
-      - vite
-    dev: false
 
   /@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.4.0):
     resolution: {integrity: sha512-9QX28IymvBlSCqsCll5t0kQVxipsfhFFL+L2t3nTWfXnddYwxBuAEtTtlaVQpRz9c37BhJjltSeY4AJSC03SSg==}
@@ -7167,12 +7108,12 @@ packages:
     resolution: {integrity: sha512-I/XvcbHypegNFWCr/arbfIR6pA+8JpSqv9wS4xOrgXypQMRj8H3wRorTcUiPmcQ0e6Ko67CdI2XZpjx7z0Ev/A==}
     dev: false
 
-  /effect@2.4.19:
-    resolution: {integrity: sha512-z/rn878Po3n522g/AYUDHD1SsZaZdvRxlTCLQ8xl8H6xA82nBwwooD1mdn/73Uywmp7d84oay3w3528r0Uyd0w==}
-    dev: false
-
   /effect@3.5.7:
     resolution: {integrity: sha512-PzEncc0R3ZZhqNTR+fXrSX+anF/4Ai6ftKie1ZrUUWY7WPE7d4KjB6wjpeWoGMOC7xWFPGSkBBUudyJN1mx3+g==}
+    dev: false
+
+  /effect@3.6.4:
+    resolution: {integrity: sha512-nNsn+Uw/n4bHKR8w45IIuYGLCgHsQodjRPB+BHreylQJ89W3iLc/Av9CiL9uvtO/ERp4e3oy5wrTO2J2pkbRRw==}
     dev: false
 
   /ejs@3.1.10:
@@ -8367,11 +8308,6 @@ packages:
       postcss-nested: 4.2.3
     transitivePeerDependencies:
       - supports-color
-    dev: false
-
-  /hono@3.12.12:
-    resolution: {integrity: sha512-5IAMJOXfpA5nT+K0MNjClchzz0IhBHs2Szl7WFAhrFOsbtQsYmNynFyJRg/a3IPsmCfxcrf8txUGiNShXpK5Rg==}
-    engines: {node: '>=16.0.0'}
     dev: false
 
   /hono@3.12.3:
@@ -12031,35 +11967,32 @@ packages:
       escape-string-regexp: 2.0.0
     dev: false
 
-  /stack54@0.5.1(@sveltejs/vite-plugin-svelte@3.1.1)(hono@3.12.12)(svelte@4.2.18)(typescript@5.5.4)(vite@5.4.1):
-    resolution: {integrity: sha512-3LBrvreRTKr1tFfVm/G02z4/+GbE1fobSSb+4oegx4gbvX+wBO5/TyqmoK57pIhN9wPZBnQdn1n9ADUVg+sntw==}
+  /stack54@0.5.2(@sveltejs/vite-plugin-svelte@3.1.1)(svelte@4.2.18)(vite@5.4.1):
+    resolution: {integrity: sha512-9CwWGzm21zl8w0nVhgrfD2RIDAU7shgPWYcXvCt/1El57k6H0E6nQ3gptS64Rc4qQJC0g+9DsEkhrHi5D58Ggw==}
+    hasBin: true
     peerDependencies:
       '@sveltejs/vite-plugin-svelte': ^3.0.1
-      hono: ^3.12.0
       svelte: ^4.2.8
-      vite: ^5.0.10
+      vite: ^5.3.5
     dependencies:
-      '@remix-run/node': 2.11.2(typescript@5.5.4)
-      '@remix-run/web-fetch': 4.4.2
       '@sveltejs/vite-plugin-svelte': 3.1.1(svelte@4.2.18)(vite@5.4.1)
       '@tsconfig/svelte': 5.0.4
       devalue: 4.3.3
-      effect: 2.4.19
+      effect: 3.6.4
+      es-module-lexer: 1.5.4
       fs-extra: 11.2.0
       glob: 10.4.5
-      hono: 3.12.12
       kleur: 4.1.5
       magic-string: 0.30.11
       mdsvex: 0.11.2(svelte@4.2.18)
       node-html-parser: 6.1.13
+      sade: 1.8.1
       set-cookie-parser: 2.7.0
       sirv: 2.0.4
       svelte: 4.2.18
       ts-dedent: 2.2.0
       vite: 5.4.1
       zod: 3.23.8
-    transitivePeerDependencies:
-      - typescript
     dev: false
 
   /stackback@0.0.2:
@@ -12696,10 +12629,6 @@ packages:
       yargs: 17.7.2
     dev: true
 
-  /turbo-stream@2.3.0:
-    resolution: {integrity: sha512-PhEr9mdexoVv+rJkQ3c8TjrN3DUghX37GNJkSMksoPR4KrXIPnM2MnqRt07sViIqX9IdlhrgtTSyjoVOASq6cg==}
-    dev: false
-
   /tweetnacl-util@0.15.1:
     resolution: {integrity: sha512-RKJBIj8lySrShN4w6i/BonWp2Z/uxwC3h4y7xsRrpP59ZboCd0GpEVsOnMDYLMmKBpYhb5TgHzZXy7wTfYFBRw==}
     dev: false
@@ -12806,6 +12735,7 @@ packages:
     resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
     engines: {node: '>=14.17'}
     hasBin: true
+    dev: true
 
   /ua-parser-js@1.0.38:
     resolution: {integrity: sha512-Aq5ppTOfvrCMgAPneW1HfWj66Xi7XL+/mIy996R1/CLS/rcyJQm6QZdsKrUeivDFQ+Oc9Wyuwor8Ze8peEoUoQ==}
@@ -12849,11 +12779,6 @@ packages:
     engines: {node: '>=14.0'}
     dependencies:
       '@fastify/busboy': 2.1.1
-    dev: false
-
-  /undici@6.19.7:
-    resolution: {integrity: sha512-HR3W/bMGPSr90i8AAp2C4DM3wChFdJPLrWYpIS++LxS8K+W535qftjt+4MyjNYHeWabMj1nvtmLIi7l++iq91A==}
-    engines: {node: '>=18.17'}
     dev: false
 
   /unicode-canonical-property-names-ecmascript@2.0.0:
