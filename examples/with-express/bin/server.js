@@ -1,5 +1,6 @@
+// @ts-check
+
 import express from "express";
-import { toNodeHandler } from "stack54/node";
 import router from "./entry.js";
 
 const app = express();
