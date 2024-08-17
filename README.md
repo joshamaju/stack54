@@ -19,7 +19,53 @@ stack54 is a build tool for building optimized multi page applications. We use s
 - [express](/integrations/express)
 - [hono](/integrations/hono)
 
+## Streaming
+
+```svelte
+<script>
+    import Await from "stack54/components/Await";
+
+    const wait = (ms, value) => {
+        return new Promise((resolve) => {
+            setTimeout(resolve, ms, value);
+        });
+    };
+</script>
+
+<Await let:value resolve="{wait(1000, 10)}">
+    <p slot="error" let:error>{error}</p>
+    <p slot="fallback">loading...</p>
+    <p>{value}</p>
+</Await>
+```
+
+## Island
+
+### Directives
+
+```svelte
+<script island="idle"></script>
+```
+
+```svelte
+<script island="load"></script>
+```
+
+```svelte
+<script island="media::(max-width: 50em)"></script>
+```
+
+```svelte
+<script island="visible"></script>
+// or
+<script island="visible::rootMargin=200px,threshold=1.0"></script>
+```
+
 ## Examples
+
+- [express](/examples/with-express)
+- [react](/examples/with-react)
+- [svelte](/examples/with-svelte)
 
 ## License
 
