@@ -1,11 +1,14 @@
 .DS_Store
 
 dist
-packages/*/build
-**/public/assets
 .stack54
+.facades
+**/.env.*
 node_modules
 test-results/
+packages/*/build
 
 playground
+examples/**/pnpm-lock.yaml
 templates/**/pnpm-lock.yaml
+examples/**/package-lock.json
