@@ -21,6 +21,7 @@ const makeBlock = (tag: string, { content, attributes }: Block) => {
 };
 
 const KEY = "island";
+const CONFIG = "value";
 
 export async function makeIsland(
   code: string,
@@ -47,16 +48,13 @@ export async function makeIsland(
     },
   };
 
-  const _preprocess = config.svelte.preprocess ?? [];
+  const processors = [...arraify(config.svelte.preprocess ?? []), get_island];
 
-  const processors = [...arraify(_preprocess), get_island];
-
-  const processed = await preprocess(code, processors, {
-    filename,
-  });
+  const processed = await preprocess(code, processors, { filename });
 
   if (island) {
-    const attr = island.attributes[KEY];
+    const opts = island.attributes[CONFIG];
+    const directive = island.attributes[KEY];
 
     const ast = parse(processed.code);
 
@@ -104,18 +102,11 @@ export async function makeIsland(
     );
 
     delete island.attributes[KEY];
+    delete island.attributes[CONFIG];
 
     const attributes = makeAttrs(island.attributes);
 
-    const serialized = props.map((prop) => prop.name);
-
-    const [directive, value] = (typeof attr == "boolean" ? "idle" : attr).split(
-      "::"
-    );
-
-    const __id__ = `island_${Date.now()}`;
-
-    const __value__ = value ? `"${value}"` : "undefined";
+    const value = opts ? `${JSON.stringify(opts)}` : "undefined";
 
     const script = dedent`
     ${module ? makeBlock("script", module) : ""}
@@ -125,8 +116,7 @@ export async function makeIsland(
       
       ${island.content}
       
-      const __id__ = "${__id__}";
-      const __serialized__ = {${serialized.join(",")}};
+      const __serialized__ = {${props.map((prop) => prop.name).join(",")}};
     </script>
     
     <svelte:head>
@@ -136,7 +126,7 @@ export async function makeIsland(
         
         const directive = directives["${directive}"];
         const load = () => import("${to_fs(filename)}");
-        hydrate(directive(load, {value: ${__value__}, name: "${directive}"}));
+        hydrate(directive(load, {value: ${value}}));
       </script>
     </svelte:head>
     
