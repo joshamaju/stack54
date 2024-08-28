@@ -32,7 +32,7 @@ export const userConfigSchema = z.object({
   staticDir: z.string().default("static"),
   vite: z.custom<ViteUserConfig>().default({}),
   entry: z.string().default("src/entry.{js,ts,mjs,mts}"),
-  views: z.union([z.string(), z.array(z.string())]).default(["**/*.svelte"]),
+  views: z.array(z.string()).default(["src/views/**/*.svelte"]),
   build: z
     .object({
       minify: z.boolean().default(true),
