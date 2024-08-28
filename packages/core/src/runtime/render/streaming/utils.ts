@@ -11,7 +11,7 @@ export function isPromise(value: any): value is Promise<any> {
 // script to query for the fallback and replace with content.
 // This is grouped into a global __AWAIT_SWAP__
 // to reduce the payload size for multiple await boundaries.
-export const swapScript = `
+export const swap_script = `
   <script data-await-swap-script>
     window.__AWAIT_SWAP__ = function (id) {
     var script = document.querySelector('[data-await-swap-init-script="' + id + '"]')
