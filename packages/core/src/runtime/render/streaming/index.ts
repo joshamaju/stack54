@@ -3,7 +3,12 @@ import { AsyncLocalStorage } from "node:async_hooks";
 import type { Chunk } from "./types.js";
 import type { Template } from "../../../types/template.js";
 import { HEAD_INSERTION_MARKER } from "../../constants.js";
-import { isPromise, renderChunk, renderFallback, swapScript } from "./utils.js";
+import {
+  isPromise,
+  renderChunk,
+  renderFallback,
+  swap_script,
+} from "./utils.js";
 
 type Slot<T = any> = (props: T) => string;
 
@@ -67,7 +72,7 @@ export function renderToStream(
 
       const html = Storage.run(suspend, () => {
         const out = template.render(...args);
-        const head = out.head + `<style>${out.css.code}</style>` + swapScript;
+        const head = out.head + `<style>${out.css.code}</style>` + swap_script;
         return out.html.replace(HEAD_INSERTION_MARKER, head);
       });
 

@@ -7,10 +7,10 @@ import * as Config from "../config/index.js";
 import { defineServerEnv, load } from "../env.js";
 import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
 import { makeVite } from "../utils/vite.js";
-import { hotReloadPlugin } from "../vite-plugins/hot-reload/index.js";
 import { attachFullPath } from "./attach-full-path/index.js";
-import { resolveInlineImportsPlugin } from "./resolve-inline-imports/index.js";
 import { arraify } from "../utils/index.js";
+import { resolveInlineImportsPlugin } from "./resolve-inline-imports-plugin/index.js";
+import { hotReloadPlugin } from "./hot-reload-plugin/index.js";
 
 const cwd = process.cwd();
 

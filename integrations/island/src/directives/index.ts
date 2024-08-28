@@ -66,15 +66,8 @@ export const visible: Directive = (load, options) => {
       hydrate(component.default);
     };
 
-    const str_opts = options.value?.split(",");
-
-    const raw_opts = str_opts?.map((opt) => {
-      const [k, v] = opt.split("=");
-      return [`"${k}": "${v}"`];
-    });
-
-    const opts = raw_opts
-      ? (JSON.parse(`{${raw_opts?.join(",")}}`) as ClientVisibleOptions)
+    const opts = options.value
+      ? (JSON.parse(options.value) as ClientVisibleOptions)
       : undefined;
 
     const ioOptions: IntersectionObserverInit = {

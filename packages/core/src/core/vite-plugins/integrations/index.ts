@@ -1,10 +1,8 @@
-import { Plugin, ResolvedConfig as ViteResolvedConfig } from "vite";
+import { Plugin } from "vite";
 import { ResolvedConfig } from "../../config/index.js";
 import {
-  runHtmlPostTransform,
-  runHtmlPreTransform,
   runPostTransform,
-  runPreTransform,
+  runPreTransform
 } from "../../integrations/hooks.js";
 
 export function integrationsContainerPlugin(config: ResolvedConfig): Plugin {
