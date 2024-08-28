@@ -177,12 +177,15 @@ export function buildViews({
       { concurrency: "unbounded" }
     );
 
-    yield* Effect.tryPromise(() => {
-      return fse.move(
-        path.join(build_dir, config.build.assetsDir),
-        path.join(outDir, config.build.assetsDir)
-      );
-    });
+    const assets = path.join(build_dir, config.build.assetsDir);
+
+    const has_assets = yield* Effect.tryPromise(() => fse.exists(assets));
+
+    if (has_assets) {
+      yield* Effect.tryPromise(() => {
+        return fse.move(assets, path.join(outDir, config.build.assetsDir));
+      });
+    }
 
     return new Map(modules);
   });
