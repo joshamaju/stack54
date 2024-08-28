@@ -78,10 +78,9 @@ export function buildViews({
           });
 
           const prepared = yield* Effect.tryPromise(() => {
-            return Facade.prepare_async(transformed, view, config.svelte);
+            return Facade.prepare(transformed, view, config.svelte);
           });
 
-          // const prepared = Facade.prepare(code);
           const facade = Facade.make(view, generated_dir);
 
           yield* Effect.tryPromise(() => {
