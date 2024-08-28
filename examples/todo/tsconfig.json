@@ -1,0 +1,4 @@
+{
+  "extends": "stack54/tsconfigs/base",
+  "include": ["src"]
+}
