@@ -4,7 +4,7 @@ import * as vite from "vite";
 import { Effect } from "effect";
 
 import * as Config from "../config/index.js";
-import { defineServerEnv, load } from "../env.js";
+import { define, defineServerEnv, load } from "../env.js";
 import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
 import { makeVite } from "../utils/vite.js";
 import { attachFullPath } from "./attach-full-path/index.js";
@@ -54,7 +54,11 @@ export function dev() {
 
     const shared_vite_config = makeVite(resolved_config, { mode: "dev" });
 
+    const mode = process.env.NODE_ENV ?? "development";
+    const env = load(resolved_config.env.dir ?? cwd, mode);
+
     const internal_vite_config: vite.InlineConfig = {
+      define: define(env),
       build: { rollupOptions: { input: resolved_config.entry } },
     };
 
@@ -64,9 +68,6 @@ export function dev() {
     };
 
     yield* Effect.promise(() => runConfigResolved(config));
-
-    const mode = process.env.NODE_ENV ?? "development";
-    const env = load(config.env.dir ?? cwd, mode);
 
     defineServerEnv(env);
 
