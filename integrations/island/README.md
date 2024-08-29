@@ -1,4 +1,4 @@
-# @stack54/island
+# stack54 island
 
 ## Directives
 
@@ -29,3 +29,21 @@
 ```
 
 > `value` has to be a valid JSON
+
+## Setup
+
+```bash
+npm install @stack54/island
+```
+
+```ts
+// stack.config.js
+
+import island from '@stack54/island'
+import { defineConfig } from "stack54/config";
+
+export default defineConfig({
+  integrations: [/** integrations */, island()],
+});
+
+```

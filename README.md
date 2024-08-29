@@ -15,7 +15,7 @@ stack54 is a build tool for building optimized multi page applications. We use s
 
 ## Integrations
 
-- [islands](/integrations/island)
+- [island](/integrations/island)
 - [express](/integrations/express)
 - [hono](/integrations/hono)
 
@@ -23,13 +23,13 @@ stack54 is a build tool for building optimized multi page applications. We use s
 
 ```svelte
 <script>
-    import Await from "stack54/components/Await";
+  import Await from "stack54/components/Await";
 
-    const wait = (ms, value) => {
-        return new Promise((resolve) => {
-            setTimeout(resolve, ms, value);
-        });
-    };
+  const wait = (ms, value) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms, value);
+    });
+  };
 </script>
 
 <Await let:value resolve="{wait(1000, 10)}">
@@ -37,28 +37,6 @@ stack54 is a build tool for building optimized multi page applications. We use s
     <p slot="fallback">loading...</p>
     <p>{value}</p>
 </Await>
-```
-
-## Island
-
-### Directives
-
-```svelte
-<script island="idle"></script>
-```
-
-```svelte
-<script island="load"></script>
-```
-
-```svelte
-<script island="media::(max-width: 50em)"></script>
-```
-
-```svelte
-<script island="visible"></script>
-// or
-<script island="visible::rootMargin=200px,threshold=1.0"></script>
 ```
 
 ## Examples
