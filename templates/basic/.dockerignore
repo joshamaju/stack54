@@ -1,7 +1,0 @@
-/node_modules
-*.log
-.DS_Store
-.env
-/.stack54
-/public/assets
-/dist
