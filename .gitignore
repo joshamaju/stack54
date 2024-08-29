@@ -3,7 +3,7 @@
 dist
 .stack54
 .facades
-**/.env.*
+**/.env*.
 node_modules
 test-results/
 packages/*/build

@@ -1,31 +1,10 @@
 import { Plugin } from "vite";
 import { ResolvedConfig } from "../../config/index.js";
-import {
-  runPostTransform,
-  runPreTransform
-} from "../../integrations/hooks.js";
+import { runPostTransform, runPreTransform } from "../../integrations/hooks.js";
 
 export function integrationsContainerPlugin(config: ResolvedConfig): Plugin {
-  // let vite_config: ViteResolvedConfig;
-
   return {
     name: "stack54:integrations",
-    // config(config, env) {
-    //   console.log("integrations container", env);
-    // },
-    // configResolved(config) {
-    //   vite_config = config;
-    // },
-    // async transform(code, id, options) {
-    //   await runPostTransform(config, {
-    //     code,
-    //     filename: id,
-    //     ssr: options?.ssr ?? true,
-    //   });
-    // },
-    // async transformIndexHtml(code, { filename }) {
-    //   await runPostTransform(config, { code, filename, ssr: false });
-    // },
     async configureServer(server) {
       const callbacks = await Promise.all(
         config.integrations.map((plugin) => {
@@ -49,12 +28,6 @@ export function integrationsContainerPluginPre(config: ResolvedConfig): Plugin {
         return runPreTransform(config, { ssr, code, filename });
       },
     },
-    // transformIndexHtml: {
-    //   order: "pre",
-    //   async handler(code, { filename }) {
-    //     await runHtmlPreTransform(config, { code, filename });
-    //   },
-    // },
   };
 }
 
@@ -69,11 +42,5 @@ export function integrationsContainerPluginPost(
         return runPostTransform(config, { ssr, code, filename });
       },
     },
-    // transformIndexHtml: {
-    //   order: "post",
-    //   handler(code, { filename }) {
-    //     return runHtmlPostTransform(config, { code, filename });
-    //   },
-    // },
   };
 }
