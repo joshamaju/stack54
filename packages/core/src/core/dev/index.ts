@@ -22,7 +22,7 @@ export function dev() {
 
     const user_config = yield* Config.parse(inline_config);
 
-    let merged_config = yield* Effect.promise(() => {
+    let merged_config = yield* Effect.tryPromise(() => {
       return runConfigSetup(user_config, { command: "serve" });
     });
 

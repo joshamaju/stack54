@@ -28,6 +28,7 @@ program.command("dev").action(async () => {
 
   dev().pipe(
     Effect.catchTag("InvalidConfig", (e) => log_config_error(e)),
+    Effect.catchAllCause((c) => Effect.logError(Cause.prettyErrors(c))),
     Effect.provide(layer),
     Scope.extend(scope),
     Effect.runFork
