@@ -4,57 +4,44 @@ import { makeLocals } from "stack54/locals";
 import { makeFactory } from "stack54/render";
 
 export const register = (app: Express, fn: ReturnType<typeof makeFactory>) => {
-  app.use((_, __, next) => {
-    // const renderer = app.render;
-
+  app.use((_, res, next) => {
     app.render = async function (name, options) {
       let done;
-      let opts = options;
-      let render_options: Record<string, any> = {};
+      let opts = typeof options === "function" ? {} : options;
 
       // support callback function as second arg
       if (typeof options === "function") {
         done = options;
-        opts = {};
       } else if (typeof arguments[2] === "function") {
         done = arguments[2];
       }
 
-      // merge app.locals
-      render_options = { ...render_options, ...this.locals };
+      let render_opts: Record<string, any> = opts || {};
 
-      // merge options._locals
-      // @ts-expect-error
-      if (opts?._locals) {
-        // @ts-expect-error
-        render_options = { ...render_options, ...opts._locals };
-      }
+      render_opts._locals = { ...this.locals, ...render_opts._locals };
 
-      // merge options
-      render_options = { ...render_options, ...opts };
+      const { _locals, stream: s, ...props } = render_opts;
 
-      const locals = makeLocals({ ...render_options._locals });
-
-      const { stream: s, ...props } = render_options;
-      const stream: boolean | undefined = s;
+      const locals = makeLocals({ ..._locals });
 
       const context = new Map<string, any>([
         ...locals,
-        // @ts-expect-error
-        ...(opts?.context ?? new Map()),
+        ...(render_opts.context ?? new Map()),
       ]);
+
+      const stream: boolean | undefined = s;
 
       try {
         // @ts-expect-error
         const view = await fn(name, props, { context, stream });
 
-        // @ts-expect-error
-        console.log("express: ", this.send, app.send);
-
-        // if (stream == true) {
-        //   // @ts-expect-error
-        //   this.send(view)
-        // }
+        if (stream == true) {
+          const { Readable } = await import("node:stream");
+          const stream = Readable.fromWeb(view as any);
+          res.setHeader("Transfer-Encoding", "chunked");
+          res.setHeader("Content-Type", "text/html");
+          return stream.pipe(res);
+        }
 
         done?.(null, view);
       } catch (error) {
@@ -66,61 +53,56 @@ export const register = (app: Express, fn: ReturnType<typeof makeFactory>) => {
   });
 };
 
-export const register_ = (fn: ReturnType<typeof makeFactory>): Handler => {
-  return function (_, res, next) {
-    // const renderer = app.render;
-
+export const middleware = (fn: ReturnType<typeof makeFactory>): Handler => {
+  return function (req, res, next) {
     res.render = async function (name, options) {
       let done;
-      let opts = options;
-      let render_options: Record<string, any> = {};
+      let opts = typeof options === "function" ? {} : options;
 
       // support callback function as second arg
       if (typeof options === "function") {
         done = options;
-        opts = {};
       } else if (typeof arguments[2] === "function") {
         done = arguments[2];
       }
 
-      // merge app.locals
-      render_options = { ...render_options, ...this.locals };
+      let render_options: Record<string, any> = opts || {};
 
-      // merge options._locals
-      // @ts-expect-error
-      if (opts?._locals) {
-        // @ts-expect-error
-        render_options = { ...render_options, ...opts._locals };
-      }
+      render_options._locals = { ...this.locals, ...render_options?._locals };
 
-      // merge options
-      render_options = { ...render_options, ...opts };
+      const { _locals, stream: s, ...props } = render_options;
 
-      const locals = makeLocals({ ...render_options._locals });
-
-      const { stream: s, ...props } = render_options;
-      const stream: boolean | undefined = s;
+      const locals = makeLocals({ ..._locals });
 
       const context = new Map<string, any>([
         ...locals,
-        // @ts-expect-error
-        ...(opts?.context ?? new Map()),
+        ...(render_options?.context ?? new Map()),
       ]);
+
+      const stream: boolean | undefined = s;
+
+      // default callback to respond
+      done =
+        done ||
+        ((err: unknown, str: string) => {
+          if (err) return req.next?.(err);
+          this.send(str);
+        });
 
       try {
         // @ts-expect-error
         const view = await fn(name, props, { context, stream });
 
         if (stream == true) {
-          const { pipeline } = await import("node:stream/promises");
+          const { Readable } = await import("node:stream");
+          const stream = Readable.fromWeb(view as any);
           this.setHeader("Transfer-Encoding", "chunked");
           this.setHeader("Content-Type", "text/html");
-          return await pipeline(view, res);
+          return stream.pipe(res);
         }
 
         done?.(null, view);
       } catch (error) {
-        console.log(error);
         done?.(error);
       }
     };
