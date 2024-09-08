@@ -54,9 +54,10 @@ export function renderToStream(
         controller.enqueue({ id, content: slots.default?.({ value }) ?? "" });
       })
       .catch((error) => {
-        console.log(error);
-        controller.enqueue({ id, content: slots.error?.({ error }) ?? "" });
-        setTimeout(() => controller.error(error), 0);
+        controller.enqueue({
+          id,
+          content: slots.error?.({ error }) ?? String(error),
+        });
       });
 
     const fallback = slots.fallback?.({}) ?? "";
