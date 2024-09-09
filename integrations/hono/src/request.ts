@@ -98,7 +98,7 @@ export function getRequest({
   request: IncomingMessage;
 }) {
   return new Request(base + request.url, {
-    // @ts-expect-error
+    // @ts-ignore
     duplex: "half",
     method: request.method,
     body: get_raw_body(request, bodySizeLimit),
