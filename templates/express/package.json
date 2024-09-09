@@ -15,7 +15,10 @@
   "keywords": [],
   "dependencies": {
     "@stack54/express": "^0.0.2",
+    "body-parser": "^1.20.2",
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "method-override": "^3.0.0",
     "stack54": "^0.5.2",
     "svelte": "^4.2.8"
   },
@@ -24,6 +27,8 @@
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@tsconfig/svelte": "^5.0.2",
     "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.0",
+    "@types/method-override": "^0.0.35",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
     "vitest": "^2.0.5"
