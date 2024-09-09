@@ -39,6 +39,8 @@ stack54 is a build tool for building optimized multi page applications. We use s
 </Await>
 ```
 
+> Requires node version with support for `ReadableStream`
+
 ## Examples
 
 - [express](/examples/with-express)
