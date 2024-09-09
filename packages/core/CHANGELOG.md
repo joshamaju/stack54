@@ -1,5 +1,18 @@
 # mpa
 
+## 0.6.0
+
+### Minor Changes
+
+- 1bf90c1: Add support for resolving view from multiple locations
+
+### Patch Changes
+
+- 06c05c6: Avoid ending streaming with error if Await promise rejects or errors
+- a13d2ea: Make view config entries array only
+- 5efe148: Provide environment variables in dev mode
+- 8070de9: Only move generated assets if folder exists
+
 ## 0.5.2
 
 ### Patch Changes
