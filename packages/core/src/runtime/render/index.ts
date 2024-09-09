@@ -51,7 +51,7 @@ const isLazy = <T>(value: any): value is Lazy<T> => {
 };
 
 export function resolveComponent<T>(
-  path: string,
+  path: string | string[],
   components: T
 ): T extends Record<string, infer R>
   ? R extends Lazy<infer R1>
@@ -66,7 +66,14 @@ export function resolveComponent<T>(
     string,
     TemplateModule | Lazy<TemplateModule>
   >;
-  const entry = components_[path];
+
+  const path_ = Array.isArray(path)
+    ? Object.keys(components_).find((entry) => path.includes(entry))
+    : path;
+
+  if (!path_) throw new Error("Template not found");
+
+  const entry = components_[path_];
   // @ts-expect-error
   return isLazy(entry) ? entry().then((_) => _.default) : entry.default;
 }
