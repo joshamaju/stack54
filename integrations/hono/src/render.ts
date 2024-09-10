@@ -20,7 +20,7 @@ export const render = (
         ...locals.entries(),
       ]);
 
-      // @ts-expect-error
+      // @ts-ignore
       return ctx.html(fn(name, props, { context }));
     });
 
