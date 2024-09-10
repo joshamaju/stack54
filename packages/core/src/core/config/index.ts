@@ -5,7 +5,6 @@ import * as url from "node:url";
 import { Effect } from "effect";
 
 import type { Arrayable } from "@sveltejs/vite-plugin-svelte";
-import { glob } from "glob";
 import type { CompileOptions, PreprocessorGroup } from "svelte/compiler";
 import type {
   PreviewServer,
@@ -15,6 +14,7 @@ import type {
 import z, { ZodError } from "zod";
 
 import type { MaybeAwait } from "../types.js";
+import { expand } from "../utils/filesystem.js";
 import { getSvelte } from "../utils/vite.js";
 
 export type Transformer = (
@@ -147,8 +147,8 @@ export async function preprocess(
   { cwd }: { cwd: string }
 ) {
   const [views, entry] = await Promise.all([
-    glob([...new Set(config.views)], { cwd, absolute: true }),
-    glob(config.entry, { cwd }),
+    expand([...new Set(config.views)], { cwd, absolute: true }),
+    expand(config.entry, { cwd }),
   ]);
 
   return { ...config, views, entry: entry[0], svelte: getSvelte(config) };
