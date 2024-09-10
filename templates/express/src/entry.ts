@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import session from "express-session";
+import compression from "compression";
 import methodOverride from "method-override";
 
 import { register } from "@stack54/express/render";
@@ -11,7 +12,15 @@ const app = express();
 
 register(app, render);
 
+app.use(compression());
+
 app.use(methodOverride());
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
 
 app.use(
   session({
@@ -21,12 +30,6 @@ app.use(
     cookie: { secure: import.meta.env.PROD },
   })
 );
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
-
-// parse application/json
-app.use(bodyParser.json());
 
 app.get("/", (_, res) => {
   return res.render("welcome", {});
