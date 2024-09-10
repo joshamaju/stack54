@@ -39,11 +39,10 @@ npm install @stack54/island
 ```ts
 // stack.config.js
 
-import island from '@stack54/island'
+import island from "@stack54/island";
 import { defineConfig } from "stack54/config";
 
 export default defineConfig({
-  integrations: [/** integrations */, island()],
+  integrations: [, /** integrations */ island()],
 });
-
 ```
