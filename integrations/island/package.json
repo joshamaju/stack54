@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "description": "",
   "type": "module",
+  "homepage": "https://github.com/joshamaju/stack54/blob/main/integrations/island/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshamaju/stack54.git",
+    "directory": "integrations/island"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --w",
