@@ -1,0 +1,48 @@
+{
+  "name": "create-stack54",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/joshamaju/stack54#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshamaju/stack54.git",
+    "directory": "packages/create"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --w",
+    "changeset": "changeset",
+    "prepublish": "pnpm build",
+    "version": "changeset version",
+    "release": "changeset publish"
+  },
+  "author": "Joshua Amaju",
+  "license": "ISC",
+  "keywords": [
+    "cli",
+    "stack54"
+  ],
+  "bin": "./cli.js",
+  "files": [
+    "dist",
+    "cli.js"
+  ],
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@types/node": "^20.10.6",
+    "@types/yargs": "^17.0.33",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^5.5.0",
+    "@octokit/core": "^6.1.2",
+    "giget": "^1.2.3",
+    "kleur": "^4.1.5",
+    "ora": "^8.1.0",
+    "yargs": "^17.7.2"
+  }
+}
