@@ -4,7 +4,7 @@
 
 ## Features
 
-- 🔌 BYOR (Bring Your Own Router)
+- 🔌 BYOF (Bring Your Own Framework)
 - 📡 Streaming
 - 🏝 Islands
 - 🔗 Integrations
