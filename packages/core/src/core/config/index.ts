@@ -6,11 +6,7 @@ import { Effect } from "effect";
 
 import type { Arrayable } from "@sveltejs/vite-plugin-svelte";
 import type { CompileOptions, PreprocessorGroup } from "svelte/compiler";
-import type {
-  PreviewServer,
-  ViteDevServer,
-  UserConfig as ViteUserConfig,
-} from "vite";
+import type { ViteDevServer, UserConfig as ViteUserConfig } from "vite";
 import z, { ZodError } from "zod";
 
 import type { MaybeAwait } from "../types.js";
@@ -97,13 +93,6 @@ export const userConfigSchema = z.object({
           .custom<
             (
               server: ViteDevServer
-            ) => MaybeAwait<void> | (() => MaybeAwait<void>)
-          >()
-          .optional(),
-        configurePreviewServer: z
-          .custom<
-            (
-              server: PreviewServer
             ) => MaybeAwait<void> | (() => MaybeAwait<void>)
           >()
           .optional(),
