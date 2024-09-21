@@ -4,6 +4,18 @@
   "references": [
     {
       "path": "packages/core"
-    }
+    },
+    {
+      "path": "packages/create"
+    },
+    {
+      "path": "integrations/express"
+    },
+    {
+      "path": "integrations/hono"
+    },
+    {
+      "path": "integrations/island"
+    },
   ]
 }

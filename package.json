@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
-    "playwright": "^1.41.1"
+    "playwright": "^1.41.1",
+    "typescript": "^5.3.3"
   }
 }

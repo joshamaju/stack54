@@ -6,8 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "stack54 dev",
-    "ls": "node ./ls.js",
-    "build": "stack54 build && pnpm ls",
+    "build": "stack54 build",
     "preview": "node ./server.js",
     "playwright:install": "pnpm exec playwright install",
     "test": "pnpm run playwright:install && playwright test"

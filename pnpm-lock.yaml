@@ -14,6 +14,9 @@ importers:
       playwright:
         specifier: ^1.41.1
         version: 1.41.1
+      typescript:
+        specifier: ^5.3.3
+        version: 5.5.4
 
   integrations/express:
     dependencies:
@@ -30,6 +33,9 @@ importers:
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
+      '@types/node':
+        specifier: ^20.10.6
+        version: 20.10.6
       express:
         specifier: ^4.19.2
         version: 4.19.2
@@ -38,7 +44,7 @@ importers:
         version: 5.3.3
       vite:
         specifier: ^5.3.5
-        version: 5.4.0(@types/node@22.5.4)(sass@1.70.0)(sugarss@2.0.0)(terser@5.31.6)
+        version: 5.4.0(@types/node@20.10.6)(sass@1.70.0)(sugarss@2.0.0)(terser@5.31.6)
 
   integrations/hono:
     dependencies:
