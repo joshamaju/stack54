@@ -1,5 +1,11 @@
 # @stack54/island
 
+## 0.2.0
+
+### Minor Changes
+
+- 134945d: Add support for island slots. Islands can now have slotted children, which includes other islands
+
 ## 0.1.0
 
 ### Minor Changes
