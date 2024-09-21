@@ -250,13 +250,13 @@ export default function islandIntegration(): Integration {
         if (is_view(filename)) {
           /**
            * If this is a second pass/transform as a result of the client script,
-           * we need to skip making it an island to avoid recursive loads and transform.
+           * we need to skip making it an island to avoid recursive loads and transforms.
            *
            * This indicates that the cycle is complete, we've loaded the wrapped island server side
            * which gets sent to the browser as plain HTML that includes the hydration script which
            * triggered another import resolution to the original svelte component.
            *
-           * So we remove every reference to to this component to avoid returning old code on any other request
+           * So we remove every reference to this component to avoid returning old code on any other request
            */
           const processed_island = islands.get(id);
 
