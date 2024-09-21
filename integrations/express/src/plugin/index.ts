@@ -1,5 +1,5 @@
 import type { Integration, ResolvedConfig } from "stack54/config";
-import { devServer, previewServer } from "./server.js";
+import { devServer } from "./server.js";
 
 export default function plugin(): Integration {
   let config: ResolvedConfig;
@@ -8,9 +8,6 @@ export default function plugin(): Integration {
     name: "@stack54/express",
     configResolved(conf) {
       config = conf;
-    },
-    configurePreviewServer(server) {
-      return () => previewServer(server);
     },
     configureServer(server) {
       return () => devServer(server, { entry: config.entry });

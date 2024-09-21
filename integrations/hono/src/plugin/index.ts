@@ -9,9 +9,6 @@ export default function plugin(): Integration {
     configResolved(conf) {
       config = conf;
     },
-    configurePreviewServer(server) {
-      return () => previewServer(server);
-    },
     configureServer(server) {
       return () => devServer(server, config);
     },
