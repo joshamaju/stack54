@@ -27,9 +27,6 @@ importers:
         specifier: workspace:^
         version: link:../../packages/core
     devDependencies:
-      '@types/connect':
-        specifier: ^3.4.38
-        version: 3.4.38
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
@@ -174,9 +171,6 @@ importers:
 
   packages/core/test/apps/basic:
     dependencies:
-      '@hono/node-server':
-        specifier: ^1.12.0
-        version: 1.12.0
       '@stack54/express':
         specifier: workspace:*
         version: link:../../../../../integrations/express
@@ -186,9 +180,6 @@ importers:
       express:
         specifier: ^4.19.2
         version: 4.19.2
-      hono:
-        specifier: ^4.5.5
-        version: 4.5.5
       stack54:
         specifier: workspace:*
         version: link:../../..
