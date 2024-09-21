@@ -36,7 +36,7 @@ jobs:
 
       - run: pnpm install
       - run: pnpm build
-      # - run: pnpm run test
+      - run: pnpm run test
 
       - name: create release pull request or publish
         uses: changesets/action@v1

@@ -21,6 +21,8 @@
   "author": "Joshua Amaju",
   "license": "ISC",
   "dependencies": {
+    "magic-string": "^0.30.5",
+    "magic-string-stack": "^0.1.1",
     "stack54": "workspace:^",
     "svelte": "^4.2.8",
     "ts-dedent": "^2.2.0",
@@ -32,6 +34,7 @@
     "./directives": "./dist/directives/index.js"
   },
   "devDependencies": {
-    "@types/node": "^20.10.6"
+    "@types/node": "^20.10.6",
+    "typescript": "^5.3.3"
   }
 }

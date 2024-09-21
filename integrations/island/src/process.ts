@@ -1,7 +1,9 @@
+import MagicStringStack from "magic-string-stack";
 import { dedent } from "ts-dedent";
 
 import type { PreprocessorGroup } from "svelte/compiler";
-import { parse, preprocess } from "svelte/compiler";
+import { parse, preprocess, walk } from "svelte/compiler";
+import { BaseNode, Element } from "svelte/types/compiler/interfaces";
 
 import { ResolvedConfig } from "stack54/config";
 import { arraify, to_fs } from "stack54/internals";
@@ -9,6 +11,12 @@ import { arraify, to_fs } from "stack54/internals";
 type Attributes = Record<string, string | boolean>;
 
 type Block = { content: string; attributes: Attributes };
+
+type Slot = {
+  end: number;
+  start: number;
+  name?: string;
+};
 
 const makeAttrs = (attrs: Attributes) => {
   return Object.entries(attrs).map(([k, v]) =>
@@ -96,10 +104,55 @@ export async function makeIsland(
       }
     }
 
-    const markup = processed.code.replace(
-      /<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g,
-      ""
-    );
+    function visit(
+      node: BaseNode,
+      visitor: (node: BaseNode) => BaseNode
+    ): BaseNode {
+      if (node.children) {
+        node.children = node.children.map((_) => visit(_, visitor));
+      }
+
+      return visitor(node);
+    }
+
+    const slots: Array<Slot> = [];
+
+    // @ts-expect-error
+    walk(ast.html, {
+      enter(node) {
+        // @ts-expect-error
+        visit(node, (node) => {
+          if (node.type == "Slot") {
+            const node_: Element = node as any;
+
+            const name_attr = node_.attributes.find(
+              (attr) => attr.type == "Attribute" && attr.name == "name"
+            );
+
+            const name = name_attr?.value.find(
+              (val: any) => val.type == "Text"
+            );
+
+            slots.push({ ...node, name: name?.data });
+          }
+        });
+      },
+    });
+
+    const ms = new MagicStringStack(processed.code);
+
+    slots.forEach(({ end, start, name }) => {
+      const slot = ms.slice(start, end);
+      const name_ = name ? `name="${name}"` : "";
+      const content = `<stack54-slot style="display:contents;" ${name_}>${slot}</stack54-slot>`;
+      ms.overwrite(start, end, content);
+    });
+
+    ms.commit();
+
+    const markup = ms
+      .toString()
+      .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, "");
 
     delete island.attributes[KEY];
     delete island.attributes[CONFIG];
@@ -108,7 +161,7 @@ export async function makeIsland(
 
     const value = opts ? `${JSON.stringify(opts)}` : "undefined";
 
-    const script = dedent`
+    const script = dedent/*html*/ `
     ${module ? makeBlock("script", module) : ""}
     
     <script ${attributes.join(" ")}>
@@ -121,16 +174,18 @@ export async function makeIsland(
     
     <svelte:head>
       <script type="module">
-        import { hydrate } from '@stack54/island/hydrate';
+        import '@stack54/island/hydrate';
         import * as directives from "@stack54/island/directives";
         
         const directive = directives["${directive}"];
         const load = () => import("${to_fs(filename)}");
-        hydrate(directive(load, {value: ${value}}));
+
+        window["${filename}"] = directive(load, {value: ${value}});
+        window.dispatchEvent(new Event("stack54:${directive}"));
       </script>
     </svelte:head>
     
-    <stack54-island style="display:contents;" props="{raw_encode(__serialized__)}">
+    <stack54-island file="${filename}" directive="${directive}" style="display:contents;" props="{raw_encode(__serialized__)}">
       ${markup}
     </stack54-island>
     

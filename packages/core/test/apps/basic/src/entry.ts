@@ -33,7 +33,11 @@ app.get("/env/client", (_, res) => res.render("env/client"));
 app.get("/env/public", (_, res) => res.render("env/public"));
 app.get("/env/in-view", (_, res) => res.render("env/in-view"));
 app.get("/env/server", (_, res) => {
+  // @ts-expect-error
   return res.render("env/server", { env: import.meta.env.ENV });
 });
+
+app.get("/island/no-slot", (_, res) => res.render("island/no-slot.page"));
+app.get("/island/with-slot", (_, res) => res.render("island/with-slot.page"));
 
 export default app;
