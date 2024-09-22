@@ -6,11 +6,11 @@ import { Effect } from "effect";
 import * as Config from "../config/index.js";
 import { define, defineServerEnv, load } from "../env.js";
 import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
+import { arraify } from "../utils/index.js";
 import { makeVite } from "../utils/vite.js";
 import { attachFullPath } from "./attach-full-path/index.js";
-import { arraify } from "../utils/index.js";
-import { resolveInlineImportsPlugin } from "./resolve-inline-imports-plugin/index.js";
 import { hotReloadPlugin } from "./hot-reload-plugin/index.js";
+import { resolveInlineImportsPlugin } from "./resolve-inline-imports-plugin/index.js";
 
 const cwd = process.cwd();
 
@@ -51,6 +51,40 @@ export function dev() {
     const resolved_config = yield* Effect.promise(() => {
       return Config.preprocess(merged_config, { cwd });
     });
+
+    /**
+     * We turn this off because our internal preprocessors i.e attach-actual-path get svelte style tag content
+     * as component markup, which is weird. Hopefully there's a fix for this.
+     *
+     * Take for example
+     *
+     * ```svelte
+     * <script lang="ts">
+     *   export let name: string;
+     * </script>
+     *
+     * <p>{name}</p>
+     *
+     * <style>
+     *   p {
+     *     color: red;
+     *   }
+     * </style>
+     * ```
+     *
+     * We get the processed (minified) content of the style tag instead of the `p` tag. So the
+     * following preprocessor markup hook gets the style tag content instead.
+     *
+     * ```ts
+     * const my_preprocessor = {
+     *   name: "my-preprocessor",
+     *   markup({ content }) {
+     *     // content is the style tag contents
+     *   }
+     * };
+     * ```
+     */
+    resolved_config.svelte.emitCss = false;
 
     const shared_vite_config = makeVite(resolved_config, { mode: "dev" });
 
