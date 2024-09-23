@@ -7,6 +7,7 @@ import methodOverride from "method-override";
 import { register } from "@stack54/express/render";
 
 import { render } from "./utils/view";
+import { errorHandler } from "./error";
 
 const app = express();
 
@@ -34,5 +35,7 @@ app.use(
 app.get("/", (_, res) => {
   return res.render("welcome", {});
 });
+
+app.use(errorHandler);
 
 export default app;
