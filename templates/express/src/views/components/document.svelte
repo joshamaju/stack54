@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Head } from "stack54/components";
+  import { Head, HotReload } from "stack54/components";
 </script>
 
 <!DOCTYPE html>
@@ -17,6 +17,7 @@
     />
 
     <Head />
+    <HotReload />
 
     <slot name="head" />
   </head>
