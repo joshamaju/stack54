@@ -4,6 +4,8 @@ import session from "express-session";
 import compression from "compression";
 import methodOverride from "method-override";
 
+import logger from "morgan";
+
 import { register } from "@stack54/express/render";
 
 import { render } from "./utils/view";
@@ -12,6 +14,8 @@ import { errorHandler } from "./error";
 const app = express();
 
 register(app, render);
+
+app.use(logger("dev"));
 
 app.use(compression());
 
