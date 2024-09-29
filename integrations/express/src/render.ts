@@ -38,8 +38,15 @@ export const register = (app: Express, fn: ReturnType<typeof makeFactory>) => {
         if (stream == true) {
           const { Readable } = await import("node:stream");
           const stream = Readable.fromWeb(view as any);
-          res.setHeader("Transfer-Encoding", "chunked");
-          res.setHeader("Content-Type", "text/html");
+
+          if (!res.hasHeader("Transfer-Encoding")) {
+            res.setHeader("Transfer-Encoding", "chunked");
+          }
+
+          if (!res.hasHeader("Content-Type")) {
+            res.setHeader("Content-Type", "text/html");
+          }
+
           return stream.pipe(res);
         }
 
@@ -96,8 +103,15 @@ export const middleware = (fn: ReturnType<typeof makeFactory>): Handler => {
         if (stream == true) {
           const { Readable } = await import("node:stream");
           const stream = Readable.fromWeb(view as any);
-          this.setHeader("Transfer-Encoding", "chunked");
-          this.setHeader("Content-Type", "text/html");
+
+          if (!this.hasHeader("Transfer-Encoding")) {
+            this.setHeader("Transfer-Encoding", "chunked");
+          }
+
+          if (!this.hasHeader("Content-Type")) {
+            this.setHeader("Content-Type", "text/html");
+          }
+
           return stream.pipe(res);
         }
 
