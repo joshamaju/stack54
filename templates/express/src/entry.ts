@@ -40,6 +40,18 @@ app.get("/", (_, res) => {
   return res.render("welcome", {});
 });
 
+app.get("/404", (_, __, next) => {
+  next();
+});
+
+app.get("/500", () => {
+  throw new Error("Internal server error");
+});
+
 app.use(errorHandler);
+
+app.use(function (_, res) {
+  res.status(404).render("404");
+});
 
 export default app;
