@@ -1,4 +1,9 @@
-import { makeFactory, resolveComponent } from "stack54/render";
+import {
+  makeFactory,
+  resolveComponent,
+  createRenderer,
+  renderToString,
+} from "stack54/render";
 import { type TemplateModule } from "stack54/types";
 
 const components = import.meta.glob<TemplateModule>("../views/**/*.svelte", {
@@ -7,4 +12,10 @@ const components = import.meta.glob<TemplateModule>("../views/**/*.svelte", {
 
 export const render = makeFactory((name) => {
   return resolveComponent(`../views/${name}.svelte`, components);
+});
+
+export const render2 = createRenderer({
+  render: (template, { props, ...opts }) =>
+    renderToString(template, props, opts),
+  resolve: (name) => resolveComponent(`../views/${name}.svelte`, components),
 });

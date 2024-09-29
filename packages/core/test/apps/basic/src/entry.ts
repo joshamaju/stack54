@@ -1,6 +1,9 @@
-import { register } from "@stack54/express/render";
 import express from "express";
-import { render } from "./utils/view.js";
+import { makeLocals } from "stack54/locals";
+import { register } from "@stack54/express/render";
+import { render, render2 } from "./utils/view.js";
+
+import Locals from "./views/locals.svelte";
 
 const app = express();
 
@@ -38,5 +41,22 @@ app.get("/env/server", (_, res) => {
 
 app.get("/island/no-slot", (_, res) => res.render("island/no-slot.page"));
 app.get("/island/with-slot", (_, res) => res.render("island/with-slot.page"));
+
+app.use((_, res, next) => {
+  res.locals.user = "John";
+  next();
+});
+
+app.get("/factory", (_, res) => {
+  const context = makeLocals(res.locals);
+  res.setHeader("Content-Type", "text/html");
+  res.send(render2("locals", {}, { context }));
+});
+
+app.get("/factory/direct", (_, res) => {
+  const context = makeLocals(res.locals);
+  res.setHeader("Content-Type", "text/html");
+  res.send(render2(Locals, {}, { context }));
+});
 
 export default app;

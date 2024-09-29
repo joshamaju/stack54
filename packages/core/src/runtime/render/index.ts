@@ -1,3 +1,5 @@
+import { SvelteComponent_1 } from "svelte";
+
 import type {
   Options,
   Output,
@@ -14,6 +16,15 @@ export * from "./streaming/index.js";
 export interface Views {}
 
 type Lazy<T> = () => Promise<T>;
+
+export function isTemplate(value: unknown): value is Template {
+  return (
+    value !== null &&
+    typeof value == "object" &&
+    "render" in value &&
+    typeof value.render == "function"
+  );
+}
 
 export function render(output: Output) {
   const head = output.head + `<style>${output.css.code}</style>`;
@@ -102,5 +113,48 @@ export function makeFactory<T extends Template | Promise<Template>>(
     return output instanceof Promise
       ? output.then((_) => fn(_, props as Props, opts))
       : fn(output, props as Props, opts);
+  };
+}
+
+type Streamable<O extends Options> = O["stream"] extends true
+  ? ReadableStream
+  : string;
+
+export function createRenderer<T extends Template | Promise<Template>>({
+  render,
+  resolve,
+}: {
+  resolve: (path_like: string) => T;
+  render(
+    template: Template | any,
+    options: { props?: Props } & Options
+  ): ReadableStream | string;
+}) {
+  return <
+    P extends string | Template | { new (...args: any[]): SvelteComponent_1 },
+    O extends Options
+  >(
+    path_or_template: P,
+    props?: Props,
+    options?: O
+  ): P extends string
+    ? T extends Promise<Template>
+      ? Promise<Streamable<O>>
+      : Streamable<O>
+    : Streamable<O> => {
+    const template = (
+      typeof path_or_template == "string"
+        ? resolve(path_or_template)
+        : path_or_template
+    ) as Template | Promise<Template>;
+
+    const { stream = false, ..._ } = options ?? {};
+
+    const opts = { ..._, props, stream };
+
+    // @ts-expect-error
+    return isTemplate(template)
+      ? render(template, opts)
+      : template.then((t) => render(t, opts));
   };
 }

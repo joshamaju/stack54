@@ -191,3 +191,15 @@ test.describe("Island", () => {
     expect(await text.textContent()).toBe("0");
   });
 });
+
+test("should render template from path name", async ({ page }) => {
+  await page.goto("/factory");
+  const text = page.getByTestId("locals");
+  expect(await text.textContent()).toBe("John");
+});
+
+test("should render template from raw component import", async ({ page }) => {
+  await page.goto("/factory/direct");
+  const text = page.getByTestId("locals");
+  expect(await text.textContent()).toBe("John");
+});
