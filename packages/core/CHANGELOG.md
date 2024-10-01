@@ -1,5 +1,15 @@
 # mpa
 
+## 0.7.0
+
+### Minor Changes
+
+- cfcb1bc: Remove hook to configure preview server. You should just run the build command and run your application server
+
+### Patch Changes
+
+- 2289c26: Switch off emitting css by the vite svelte plugin dev to avoid issues with internal preprocessors getting css content in place of actual component markup
+
 ## 0.6.0
 
 ### Minor Changes
