@@ -1,5 +1,17 @@
 # basic
 
+## 0.0.12
+
+### Patch Changes
+
+- Updated dependencies [2289c26]
+- Updated dependencies [f9fe588]
+- Updated dependencies [cfcb1bc]
+- Updated dependencies [f8b290e]
+  - stack54@0.7.0
+  - @stack54/express@0.2.0
+  - @stack54/island@0.2.1
+
 ## 0.0.11
 
 ### Patch Changes

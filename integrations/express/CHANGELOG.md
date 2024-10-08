@@ -1,5 +1,18 @@
 # @stack54/express
 
+## 0.2.0
+
+### Minor Changes
+
+- f9fe588: Added view constructor and view engine to play nice with other view engine
+
+### Patch Changes
+
+- f8b290e: Add headers for template streaming if not present
+- Updated dependencies [2289c26]
+- Updated dependencies [cfcb1bc]
+  - stack54@0.7.0
+
 ## 0.1.0
 
 ### Minor Changes
