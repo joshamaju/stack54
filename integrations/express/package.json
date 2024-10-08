@@ -39,6 +39,7 @@
   },
   "exports": {
     "./render": "./dist/render.js",
+    "./view": "./dist/view/index.js",
     "./plugin": "./dist/plugin/index.js"
   },
   "peerDependencies": {
