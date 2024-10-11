@@ -1,13 +1,13 @@
 import express from "express";
 import { makeLocals } from "stack54/locals";
-import { register } from "@stack54/express/render";
+import view from "@stack54/express/render";
 import { render, render2 } from "./utils/view.js";
 
 import Locals from "./views/locals.svelte";
 
 const app = express();
 
-register(app, render);
+app.use(view(render));
 
 app.get("/locals", (_, res) => {
   res.locals.user = "John";
