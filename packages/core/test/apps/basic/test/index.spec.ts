@@ -55,14 +55,16 @@ test("should include all component assets", async ({ page }) => {
   expect(color).toBe("rgb(255, 0, 0)");
 });
 
-test("should render template from path name", async ({ page }) => {
-  await page.goto("/factory");
+test("should render template without direct import using import.meta.glob", async ({
+  page,
+}) => {
+  await page.goto("/render-factory-function");
   const text = page.getByTestId("locals");
   expect(await text.textContent()).toBe("John");
 });
 
-test("should render template from bare component import", async ({ page }) => {
-  await page.goto("/factory/direct");
+test("should render template from bare import", async ({ page }) => {
+  await page.goto("/direct-import");
   const text = page.getByTestId("locals");
   expect(await text.textContent()).toBe("John");
 });

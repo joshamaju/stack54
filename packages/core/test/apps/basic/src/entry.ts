@@ -47,13 +47,13 @@ app.use((_, res, next) => {
   next();
 });
 
-app.get("/factory", (_, res) => {
+app.get("/render-factory-function", (_, res) => {
   const context = makeLocals(res.locals);
   res.setHeader("Content-Type", "text/html");
   res.send(render2("locals", {}, { context }));
 });
 
-app.get("/factory/direct", (_, res) => {
+app.get("/direct-import", (_, res) => {
   const context = makeLocals(res.locals);
   res.setHeader("Content-Type", "text/html");
   res.send(render2(Locals, {}, { context }));

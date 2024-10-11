@@ -10,12 +10,13 @@ const components = import.meta.glob<TemplateModule>("../views/**/*.svelte", {
   eager: true,
 });
 
-export const render = makeFactory((name) => {
+const resolver = (name: string) => {
   return resolveComponent(`../views/${name}.svelte`, components);
-});
+};
+
+export const render = makeFactory(resolver);
 
 export const render2 = createRenderer({
-  render: (template, { props, ...opts }) =>
-    renderToString(template, props, opts),
-  resolve: (name) => resolveComponent(`../views/${name}.svelte`, components),
+  resolve: resolver,
+  render: (template, { props, ..._ }) => renderToString(template, props, _),
 });
