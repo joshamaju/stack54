@@ -48,12 +48,27 @@ app.get("/", (req, res) => {
 export default app;
 ```
 
+#### Example
+
+```ts
+import { Readable } from "node:stream";
+
+app.get("/", (req, res) => {
+  return res.render("home", { /** props */ $stream: true }, (error, stream) => {
+    const content = Readable.fromWeb(stream);
+    content.pipe(res);
+  });
+});
+```
+
+---
+
 ### Middleware
 
 ```ts
 // src/entry.js
 import express from "express";
-import { middleware as view } from "@stack54/express/render";
+import view from "@stack54/express/render";
 import { render } from "./utils/view";
 
 const app = express();
@@ -70,23 +85,19 @@ app.get("/", (req, res) => {
 export default app;
 ```
 
-## Render Options
-
-- $context: context map
-
-- $stream `boolean`
-
-render view to streaming response
-
-### Streaming
+#### Example
 
 ```ts
-import { Readable } from "node:stream";
-
 app.get("/", (req, res) => {
-  return res.render("home", { /** props */ $stream: true }, (error, stream) => {
-    const content = Readable.fromWeb(stream);
-    content.pipe(res);
-  });
+  return res.render("home", { /** props */ $stream: true });
 });
 ```
+
+---
+
+## Options
+
+- $context: svelte context
+  - Type - `Map<string, unknown>`
+- $stream: render view to streaming response
+  - Type - `boolean`
