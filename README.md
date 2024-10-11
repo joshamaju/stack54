@@ -16,6 +16,7 @@
 - [express](/examples/with-express)
 - [react](/examples/with-react)
 - [svelte](/examples/with-svelte)
+- [todo](/examples/todo)
 
 ## License
 
