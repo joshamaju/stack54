@@ -2,25 +2,25 @@
 
 ## Directives
 
-# load
+### load
 
 ```svelte
 <script island="load"></script>
 ```
 
-## idle
+### idle
 
 ```svelte
 <script island="idle"></script>
 ```
 
-## media query
+### media query
 
 ```svelte
 <script island="media" value="(max-width: 50em)"></script>
 ```
 
-## visible
+### visible
 
 ```svelte
 <script island="visible"></script>
@@ -43,6 +43,6 @@ import island from "@stack54/island";
 import { defineConfig } from "stack54/config";
 
 export default defineConfig({
-  integrations: [, /** integrations */ island()],
+  integrations: [island()],
 });
 ```
