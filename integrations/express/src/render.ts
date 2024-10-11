@@ -17,17 +17,17 @@ export default function middleware(
         done = arguments[2];
       }
 
-      let render_options: Record<string, any> = opts || {};
+      let _opts: Record<string, any> = opts || {};
 
-      render_options._locals = { ...this.locals, ...render_options?._locals };
+      _opts._locals = { ...this.locals, ..._opts?._locals };
 
-      const { _locals, stream: s, ...props } = render_options;
+      const { _locals, stream: s, ...props } = _opts;
 
       const locals = makeLocals({ ..._locals });
 
       const context = new Map<string, any>([
         ...locals,
-        ...(render_options?.context ?? new Map()),
+        ...(_opts?.context ?? new Map()),
       ]);
 
       const stream: boolean | undefined = s;
