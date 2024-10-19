@@ -102,7 +102,8 @@ export function buildViews({
       { concurrency: "unbounded" }
     );
 
-    const facades = new Map(facade_keypairs);
+    // @ts-ignore build gets the filtered type wrong
+    const facades = new Map(facade_keypairs.filter((_) => _ !== undefined));
 
     const resolve: Plugin = {
       name: "facade-resolver",
