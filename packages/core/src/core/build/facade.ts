@@ -46,7 +46,7 @@ export async function prepare(
   // tags that we'll need to move back to their original location
   const moves: Array<string> = [];
 
-  // tags that we need to remove temporarily
+  // tags that we need to remove temporarily because they break the build
   const replacements: Array<[string, string]> = [];
 
   const processed = await compiler.preprocess(code, config.preprocess ?? [], {
