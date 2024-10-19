@@ -81,6 +81,11 @@ export function buildViews({
             return Facade.prepare(transformed, view, config.svelte);
           });
 
+          // skip views with no client assets to process
+          if (prepared.moves.length <= 0) {
+            return;
+          }
+
           const facade = Facade.make(view, generated_dir);
 
           yield* Effect.tryPromise(() => {
