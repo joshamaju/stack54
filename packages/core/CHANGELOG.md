@@ -1,5 +1,17 @@
 # mpa
 
+## 0.7.0
+
+### Minor Changes
+
+- cfcb1bc: Remove hook to configure preview server. You should just run the build command and run your application server
+
+### Patch Changes
+
+- 5fcf548: Adds ClientOnly component that only renders its child on client browser
+- 2289c26: Switch off emitting css by the vite svelte plugin dev to avoid issues with internal preprocessors getting css content in place of actual component markup
+- acb1100: This change speeds up build by skipping views with no client assets and avoids module preload script injected by vite
+
 ## 0.6.0
 
 ### Minor Changes

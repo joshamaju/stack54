@@ -1,5 +1,24 @@
 # @stack54/express
 
+## 1.0.0
+
+### Major Changes
+
+- 86b3aa8: Removes express render function override
+
+### Minor Changes
+
+- f9fe588: Added view constructor and view engine to play nice with other view engine
+
+### Patch Changes
+
+- f8b290e: Add headers for template streaming if not present
+- Updated dependencies [5fcf548]
+- Updated dependencies [2289c26]
+- Updated dependencies [acb1100]
+- Updated dependencies [cfcb1bc]
+  - stack54@0.7.0
+
 ## 0.1.0
 
 ### Minor Changes
