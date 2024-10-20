@@ -11,6 +11,8 @@
 
 [Documentation](https://github.com/joshamaju/stack54/wiki)
 
+![Alt](https://repobeats.axiom.co/api/embed/99a03cfcb8e87022b4773ffadba818affd9ee58d.svg "Repobeats analytics image")
+
 ## Examples
 
 - [express](/examples/with-express)
