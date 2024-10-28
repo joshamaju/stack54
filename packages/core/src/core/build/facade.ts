@@ -10,6 +10,7 @@ import type { ResolvedConfig } from "../config/index.js";
 
 export type PreparedFacade = {
   code: string;
+  extension: string;
 
   // tags that we'll need to move back to their original location
   moves: Array<string>;
@@ -31,7 +32,7 @@ export async function prepare(
   code: string,
   filename: string,
   config: ResolvedConfig["svelte"]
-) {
+): Promise<PreparedFacade> {
   function walk(
     node: BaseNode,
     visitor: (node: BaseNode) => BaseNode
@@ -92,7 +93,12 @@ export async function prepare(
     },
   });
 
-  return { moves, replacements, code: s.toString() };
+  return {
+    moves,
+    replacements,
+    code: s.toString(),
+    extension: path.extname(filename),
+  };
 }
 
 export function reconstruct({ code, moves, replacements }: PreparedFacade) {
