@@ -15,12 +15,6 @@ import { getSvelte } from "../utils/vite.js";
 
 export type Transformer = (
   code: string,
-  filename: string,
-  opts: { ssr: boolean }
-) => MaybeAwait<void | string>;
-
-export type TransformerHTML = (
-  code: string,
   filename: string
 ) => MaybeAwait<void | string>;
 
@@ -66,15 +60,6 @@ export const userConfigSchema = z.object({
             z.object({
               order: z.enum(["pre", "post"]),
               handle: z.custom<Transformer>(),
-            }),
-          ])
-          .optional(),
-        transformHtml: z
-          .union([
-            z.custom<TransformerHTML>(),
-            z.object({
-              order: z.enum(["pre", "post"]),
-              handle: z.custom<TransformerHTML>(),
             }),
           ])
           .optional(),

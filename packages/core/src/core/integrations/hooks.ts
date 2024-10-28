@@ -37,56 +37,6 @@ export async function runBuildEnd(config: ResolvedConfig) {
   }
 }
 
-export async function runPreTransform(
-  config: ResolvedConfig,
-  { code, filename, ...opts }: { code: string; filename: string; ssr: boolean }
-) {
-  const { integrations } = config;
-
-  let _code = code;
-
-  for (const integration of integrations) {
-    const v = integration.transform;
-
-    if (v && typeof v !== "function" && v.order == "pre") {
-      const code = await v.handle.call(integration, _code, filename, opts);
-      if (code) _code = code;
-    }
-  }
-
-  return _code;
-}
-
-export async function runPostTransform(
-  config: ResolvedConfig,
-  { code, filename, ...opts }: { code: string; filename: string; ssr: boolean }
-) {
-  const { integrations } = config;
-
-  let _code = code;
-
-  for (const integration of integrations) {
-    let fn;
-
-    const value = integration.transform;
-
-    if (value) {
-      if (typeof value == "function") {
-        fn = value;
-      } else if (value.order == "post") {
-        fn = value.handle;
-      }
-    }
-
-    if (fn) {
-      const code = await fn.call(integration, _code, filename, opts);
-      if (code) _code = code;
-    }
-  }
-
-  return _code;
-}
-
 export async function runHtmlPreTransform(
   config: ResolvedConfig,
   { code, filename }: { code: string; filename: string }
@@ -96,7 +46,7 @@ export async function runHtmlPreTransform(
   let _code = code;
 
   for (const integration of integrations) {
-    const v = integration.transformHtml;
+    const v = integration.transform;
 
     if (v && typeof v !== "function" && v.order == "pre") {
       const code = await v.handle.call(integration, _code, filename);
@@ -118,7 +68,7 @@ export async function runHtmlPostTransform(
   for (const integration of integrations) {
     let fn;
 
-    const value = integration.transformHtml;
+    const value = integration.transform;
 
     if (value) {
       if (typeof value == "function") {

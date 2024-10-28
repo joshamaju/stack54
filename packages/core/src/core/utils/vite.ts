@@ -3,11 +3,7 @@ import * as vite from "vite";
 
 import { ResolvedConfig } from "../config/index.js";
 import { arraify } from "./index.js";
-import {
-  integrationsContainerPlugin,
-  integrationsContainerPluginPre,
-  integrationsContainerPluginPost,
-} from "../vite-plugins/integrations/index.js";
+import { integrationsContainerPlugin } from "../vite-plugins/integrations/index.js";
 
 type CreateViteOptions = {
   mode: "dev" | "build" | string;
@@ -46,8 +42,6 @@ export function makeVite(
     plugins: [
       svelte(config.svelte) as vite.PluginOption,
       integrationsContainerPlugin(config),
-      integrationsContainerPluginPre(config),
-      integrationsContainerPluginPost(config),
     ],
     build: {
       copyPublicDir: false,
