@@ -1,6 +1,6 @@
 /**
  * https://github.com/expressjs/express/blob/4.13.1/lib/view.js
- * We modify the view constructor in express so that users can still use other view engines alongside ours
+ * Modify the view constructor in express so that users can still use other view engines alongside ours
  */
 
 import fs from "node:fs";
