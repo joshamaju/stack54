@@ -170,7 +170,7 @@ export function buildViews({
           const original = view.replace(path.join(cwd, build, generated), "");
 
           const { dir, name } = path.parse(original);
-          const file = path.join(dir, `${name}.svelte`);
+          const file = path.join(dir, `${name}${prepared.extension}`);
 
           const transformed = yield* Effect.tryPromise(() => {
             return runHtmlPostTransform(config, { code, filename: file });

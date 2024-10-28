@@ -80,6 +80,9 @@
     "./components": "./components/index.ts",
     "./internals": "./dist/exports/internals.js",
     "./render": "./dist/runtime/render/index.js",
+    "./render/utils": "./dist/runtime/render/utils.js",
+    "./render/static": "./dist/runtime/render/static.js",
+    "./render/streaming": "./dist/runtime/render/streaming/index.js",
     "./runtime/internals": "./dist/runtime/constants.js",
     "./streaming": "./dist/runtime/render/streaming/index.js",
     "./components/Await": {

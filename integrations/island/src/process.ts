@@ -165,7 +165,7 @@ export async function makeIsland(
     ${module ? makeBlock("script", module) : ""}
     
     <script ${attributes.join(" ")}>
-      import {raw_encode} from "stack54/data";
+      import {stringify} from "stack54/data";
       
       ${island.content}
       
@@ -185,7 +185,7 @@ export async function makeIsland(
       </script>
     </svelte:head>
     
-    <stack54-island file="${filename}" directive="${directive}" style="display:contents;" props="{raw_encode(__serialized__)}">
+    <stack54-island file="${filename}" directive="${directive}" style="display:contents;" props="{stringify(__serialized__)}">
       ${markup}
     </stack54-island>
     

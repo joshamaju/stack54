@@ -1,10 +1,12 @@
 import type { Handler } from "express";
 
 import { makeLocals } from "stack54/locals";
-import { makeFactory } from "stack54/render";
+import type { Options } from "stack54/types";
+
+type Return = string | ReadableStream;
 
 export default function middleware(
-  fn: ReturnType<typeof makeFactory>
+  fn: (name: string, props: object, opts: Options) => Return | Promise<Return>
 ): Handler {
   return function (req, res, next) {
     res.render = async function (name, options) {
@@ -41,7 +43,6 @@ export default function middleware(
         });
 
       try {
-        // @ts-expect-error
         const view = await fn(name, props, { context, stream });
 
         if (stream == true) {

@@ -1,13 +1,15 @@
 import type { Template } from "stack54";
 import { makeLocals } from "stack54/locals";
-import { renderToString, renderToStream, isTemplate } from "stack54/render";
+import { renderToString, renderToStream, is_template } from "stack54/render";
 
+// Add {string} to maintain type compatibility with express engine parameter types
+// But we should get back only a {Template} or {Promise<Template>} from the View constructor
 export async function engine(
   str: string | Template | Promise<Template>,
   options: object,
   fn: (e: any, rendered?: any) => void
 ) {
-  let template = isTemplate(str) ? Promise.resolve(str) : str;
+  let template = is_template(str) ? Promise.resolve(str) : str;
 
   const {
     cache,
@@ -31,9 +33,9 @@ export async function engine(
   const context = new Map<string, any>([...locals, ...$context]);
 
   try {
-    const view = await (template as Promise<Template>);
+    const view = typeof template == "string" ? template : await template;
     const render = stream ? renderToStream : renderToString;
-    const html = render(view, _props, { context });
+    const html = render(view as Template, _props, { context });
     fn(null, html);
   } catch (error) {
     fn(error);

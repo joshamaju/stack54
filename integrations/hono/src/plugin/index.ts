@@ -1,5 +1,5 @@
 import { Integration, ResolvedConfig } from "stack54/config";
-import { devServer, previewServer } from "./server.js";
+import { devServer } from "./server.js";
 
 export default function plugin(): Integration {
   let config: ResolvedConfig;

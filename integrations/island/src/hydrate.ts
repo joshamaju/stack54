@@ -102,8 +102,8 @@ class Island extends HTMLElement {
     const target = this;
 
     load((Component) => {
-      import("stack54/data").then(({ raw_decode }) => {
-        const props = raw_decode(this.getAttribute("props")!);
+      import("stack54/data").then(({ parse }) => {
+        const props = parse(this.getAttribute("props")!);
         const slots = this.querySelectorAll("stack54-slot");
 
         const slotted: Array<[string, Element]> = [];

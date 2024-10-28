@@ -1,11 +1,15 @@
 import type { MiddlewareHandler } from "hono";
 
 import { makeLocals } from "stack54/locals";
-import { makeFactory } from "stack54/render";
+import { Options } from "stack54/types";
 import { getLocals } from "./locals.js";
 
 export const render = (
-  fn: ReturnType<typeof makeFactory>
+  fn: (
+    name: string,
+    props: object,
+    opts: Options
+  ) => Promise<string | ReadableStream>
 ): MiddlewareHandler => {
   return async (ctx, next) => {
     ctx.setRenderer((...args) => {
