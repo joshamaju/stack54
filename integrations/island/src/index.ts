@@ -214,6 +214,44 @@ export default function islandIntegration(): Integration {
         server.watcher.on("change", fn);
         server.watcher.on("unlink", fn);
       },
+      transform: {
+        order: "pre",
+        async handler(code, id) {
+          if (env.command == "build") return;
+
+          const [filename] = id.split("?");
+
+          if (is_view(filename)) {
+            /**
+             * If this is a second pass/transform as a result of the client script,
+             * we need to skip making it an island to avoid recursive loads and transforms.
+             *
+             * This indicates that the cycle is complete, we've loaded the wrapped island server side
+             * which gets sent to the browser as plain HTML that includes the hydration script which
+             * triggered another import resolution to the original svelte component.
+             *
+             * So we remove every reference to this component to avoid returning old code on any other request
+             */
+            const processed_island = islands.get(id);
+
+            if (processed_island?.complete) {
+              islands.delete(id);
+              return;
+            }
+
+            const island = await makeIsland(code, filename, config);
+
+            if (island) {
+              islands.set(id, {
+                complete: false,
+                original: code,
+                code: island,
+              });
+              return island;
+            }
+          }
+        },
+      },
     };
   }
 
@@ -231,47 +269,12 @@ export default function islandIntegration(): Integration {
     configResolved(config_) {
       config = config_;
     },
-    transformHtml: {
-      order: "pre",
-      async handle(code, id) {
-        // only runs during build
-        const [filename] = id.split("?");
-        const island = await makeIsland(code, filename, config);
-        return island;
-      },
-    },
     transform: {
       order: "pre",
       async handle(code, id) {
-        if (env.command == "build") return;
-
         const [filename] = id.split("?");
-
-        if (is_view(filename)) {
-          /**
-           * If this is a second pass/transform as a result of the client script,
-           * we need to skip making it an island to avoid recursive loads and transforms.
-           *
-           * This indicates that the cycle is complete, we've loaded the wrapped island server side
-           * which gets sent to the browser as plain HTML that includes the hydration script which
-           * triggered another import resolution to the original svelte component.
-           *
-           * So we remove every reference to this component to avoid returning old code on any other request
-           */
-          const processed_island = islands.get(id);
-
-          if (processed_island?.complete) {
-            islands.delete(id);
-            return;
-          }
-
-          const island = await makeIsland(code, filename, config);
-
-          if (island) {
-            islands.set(id, { complete: false, original: code, code: island });
-            return island;
-          }
-        }
+        const island = await makeIsland(code, filename, config);
+        return island;
       },
     },
   };
