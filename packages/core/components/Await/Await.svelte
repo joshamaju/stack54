@@ -7,7 +7,6 @@
     fallback: any;
   }
 
-  // @ts-expect-error
   export let resolve: PromiseLike<T> = null;
   const error = null as any as Error;
   const value = null as any as T;
