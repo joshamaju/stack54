@@ -1,7 +1,6 @@
 import {
-  makeFactory,
-  resolveComponent,
-  createRenderer,
+  resolve_component,
+  create_renderer,
   renderToString,
 } from "stack54/render";
 import { type TemplateModule } from "stack54/types";
@@ -11,12 +10,10 @@ const components = import.meta.glob<TemplateModule>("../views/**/*.svelte", {
 });
 
 const resolver = (name: string) => {
-  return resolveComponent(`../views/${name}.svelte`, components);
+  return resolve_component(`../views/${name}.svelte`, components);
 };
 
-export const render = makeFactory(resolver);
-
-export const render2 = createRenderer({
+export const render = create_renderer({
   resolve: resolver,
   render: (template, { props, ..._ }) => renderToString(template, props, _),
 });

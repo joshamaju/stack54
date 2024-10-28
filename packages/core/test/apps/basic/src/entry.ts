@@ -1,7 +1,7 @@
 import express from "express";
 import { makeLocals } from "stack54/locals";
 import view from "@stack54/express/render";
-import { render, render2 } from "./utils/view.js";
+import { render } from "./utils/view.js";
 
 import Locals from "./views/locals.svelte";
 
@@ -16,7 +16,6 @@ app.get("/locals", (_, res) => {
 
 app.get("/without-locals", (_, res) => {
   res.locals.user = "John";
-  // @ts-expect-error
   return res.send(render("locals", {}));
 });
 
@@ -50,13 +49,13 @@ app.use((_, res, next) => {
 app.get("/render-factory-function", (_, res) => {
   const context = makeLocals(res.locals);
   res.setHeader("Content-Type", "text/html");
-  res.send(render2("locals", {}, { context }));
+  res.send(render("locals", {}, { context }));
 });
 
 app.get("/direct-import", (_, res) => {
   const context = makeLocals(res.locals);
   res.setHeader("Content-Type", "text/html");
-  res.send(render2(Locals, {}, { context }));
+  res.send(render(Locals, {}, { context }));
 });
 
 app.get("/components/client-only", (_, res) => res.render("client-only.page"));
