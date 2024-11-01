@@ -29,7 +29,6 @@
   "dependencies": {
     "@remix-run/node": "^2.7.2",
     "set-cookie-parser": "^2.6.0",
-    "sirv": "^2.0.4",
     "stack54": "workspace:^"
   },
   "devDependencies": {

@@ -27,7 +27,6 @@
     "dist"
   ],
   "dependencies": {
-    "sirv": "^2.0.4",
     "stack54": "workspace:^"
   },
   "devDependencies": {
