@@ -38,4 +38,22 @@ test.describe("Island", () => {
     await dec.click();
     expect(await text.textContent()).toBe("0");
   });
+
+  test("should merge user defined svelte:head with island generated svelte:head", async ({
+    page,
+  }) => {
+    await page.goto("/island/head");
+
+    expect(await page.title()).toBe("Merged heads");
+
+    const inc = page.getByTestId("inc");
+    const dec = page.getByTestId("dec");
+    const text = page.getByTestId("text");
+
+    await inc.click();
+    expect(await text.textContent()).toBe("1");
+
+    await dec.click();
+    expect(await text.textContent()).toBe("0");
+  });
 });

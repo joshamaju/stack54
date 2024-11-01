@@ -40,6 +40,7 @@ app.get("/env/server", (_, res) => {
 
 app.get("/island/no-slot", (_, res) => res.render("island/no-slot.page"));
 app.get("/island/with-slot", (_, res) => res.render("island/with-slot.page"));
+app.get("/island/head", (_, res) => res.render("island/head/index.page"));
 
 app.use((_, res, next) => {
   res.locals.user = "John";
