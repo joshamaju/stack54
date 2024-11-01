@@ -6,7 +6,7 @@ import { parse, preprocess, walk } from "svelte/compiler";
 import { BaseNode, Element } from "svelte/types/compiler/interfaces";
 
 import { ResolvedConfig } from "stack54/config";
-import { arraify, to_fs } from "stack54/internals";
+import { to_fs } from "stack54/internals";
 
 type Attributes = Record<string, string | boolean>;
 
@@ -56,7 +56,16 @@ export async function makeIsland(
     },
   };
 
-  const processors = [...arraify(config.svelte.preprocess ?? []), get_island];
+  const preprocess_ = config.svelte.preprocess;
+
+  const processors = [
+    ...(preprocess_
+      ? Array.isArray(preprocess_)
+        ? preprocess_
+        : [preprocess_]
+      : []),
+    get_island,
+  ];
 
   const processed = await preprocess(code, processors, { filename });
 
