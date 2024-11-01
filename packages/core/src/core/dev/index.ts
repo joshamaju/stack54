@@ -9,7 +9,7 @@ import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
 import { array } from "../utils/index.js";
 import { makeVite } from "../utils/vite.js";
 import { attachFullPath } from "./attach-full-path/index.js";
-import { hotReloadPlugin } from "./hot-reload-plugin/index.js";
+import { live_reload_plugin } from "./hot-reload-plugin/index.js";
 import { resolveInlineImportsPlugin } from "./resolve-inline-imports-plugin/index.js";
 
 const cwd = process.cwd();
@@ -21,6 +21,11 @@ export function dev() {
     const inline_config = yield* Effect.tryPromise(() => Config.load(cwd));
 
     const user_config = yield* Config.parse(inline_config);
+
+    user_config.integrations = [
+      ...(user_config.integrations ?? []),
+      live_reload_plugin(),
+    ];
 
     let merged_config = yield* Effect.tryPromise(() => {
       return runConfigSetup(user_config, { command: "serve" });
@@ -45,11 +50,6 @@ export function dev() {
     merged_config.vite.plugins = [
       ...(merged_config.vite.plugins ?? []),
       resolveInlineImportsPlugin(),
-    ];
-
-    merged_config.integrations = [
-      ...(merged_config.integrations ?? []),
-      hotReloadPlugin(),
     ];
 
     const resolved_config = yield* Effect.promise(() => {
