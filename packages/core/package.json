@@ -77,6 +77,7 @@
     "./locals": "./dist/runtime/locals.js",
     "./config": "./dist/exports/config.js",
     "./components": "./components/index.ts",
+    "./components/*": "./components/*.svelte",
     "./internals": "./dist/exports/internals.js",
     "./render": "./dist/runtime/render/index.js",
     "./render/utils": "./dist/runtime/render/utils.js",
