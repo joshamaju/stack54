@@ -1,5 +1,5 @@
 import { mergeConfig as mergeViteConfig } from "vite";
-import { arraify } from "../utils/index.js";
+import { array } from "../utils/index.js";
 import { UserConfig } from "./index.js";
 
 // /** Cross-realm compatible URL */
@@ -108,8 +108,8 @@ export function merge(defaults: UserConfig, overrides: UserConfig): UserConfig {
         ...(overrides.svelte?.extensions ?? []),
       ],
       preprocess: [
-        ...arraify(defaults.svelte?.preprocess ?? []),
-        ...arraify(overrides.svelte?.preprocess ?? []),
+        ...array(defaults.svelte?.preprocess ?? []),
+        ...array(overrides.svelte?.preprocess ?? []),
       ],
       compilerOptions: {
         ...defaults.svelte?.compilerOptions,

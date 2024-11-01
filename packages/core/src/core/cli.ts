@@ -34,14 +34,6 @@ program.command("dev").action(async () => {
     Effect.runFork
   );
 
-  const events = ["SIGINT", "SIGTERM"] as const;
-
-  // process.on("SIGINT", async () => {
-  //   console.log(`\n${color.dim("---")}`);
-  //   await Effect.runPromise(Scope.close(scope, Exit.void));
-  //   process.exit(0);
-  // });
-
   const close = () => Effect.runPromise(Scope.close(scope, Exit.void));
 
   const shutdown = async () => {

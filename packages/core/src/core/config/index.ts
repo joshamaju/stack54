@@ -9,9 +9,10 @@ import type { CompileOptions, PreprocessorGroup } from "svelte/compiler";
 import type { ViteDevServer, UserConfig as ViteUserConfig } from "vite";
 import z, { ZodError } from "zod";
 
-import type { MaybeAwait } from "../types.js";
 import { expand } from "../utils/filesystem.js";
 import { getSvelte } from "../utils/vite.js";
+
+type MaybeAwait<T> = T | Promise<T>;
 
 export type Transformer = (
   code: string,

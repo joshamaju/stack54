@@ -2,7 +2,7 @@ import { svelte, vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import * as vite from "vite";
 
 import { ResolvedConfig } from "../config/index.js";
-import { arraify } from "./index.js";
+import { array } from "./index.js";
 import { integrationsContainerPlugin } from "../vite-plugins/integrations/index.js";
 
 type CreateViteOptions = {
@@ -18,7 +18,7 @@ export function getSvelte(config: ResolvedConfig) {
   const svelte_config = config.svelte;
 
   const preprocess = svelte_config.preprocess
-    ? arraify(svelte_config.preprocess)
+    ? array(svelte_config.preprocess)
     : [];
 
   const preprocessors = [...defaultPreprocessors, ...preprocess];

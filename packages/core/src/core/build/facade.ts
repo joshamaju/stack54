@@ -54,7 +54,7 @@ export async function prepare(
     filename,
   });
 
-  const ast = compiler.parse(processed.code);
+  const ast = compiler.parse(processed.code, { filename });
 
   const s = new MagicString(processed.code);
 

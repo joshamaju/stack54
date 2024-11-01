@@ -6,7 +6,7 @@ import { Effect } from "effect";
 import * as Config from "../config/index.js";
 import { define, defineServerEnv, load } from "../env.js";
 import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
-import { arraify } from "../utils/index.js";
+import { array } from "../utils/index.js";
 import { makeVite } from "../utils/vite.js";
 import { attachFullPath } from "./attach-full-path/index.js";
 import { hotReloadPlugin } from "./hot-reload-plugin/index.js";
@@ -38,13 +38,17 @@ export function dev() {
     }
 
     merged_config.svelte.preprocess = [
-      ...arraify(merged_config.svelte.preprocess ?? []),
+      ...array(merged_config.svelte.preprocess ?? []),
       attachFullPath({ assetPrefix }),
     ];
 
     merged_config.vite.plugins = [
       ...(merged_config.vite.plugins ?? []),
       resolveInlineImportsPlugin(),
+    ];
+
+    merged_config.integrations = [
+      ...(merged_config.integrations ?? []),
       hotReloadPlugin(),
     ];
 
