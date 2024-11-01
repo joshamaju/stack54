@@ -4,7 +4,7 @@ import { Plugin, ResolvedConfig as ViteResolvedConfig } from "vite";
 import { parse_id } from "../../utils/view.js";
 import { Integration, ResolvedConfig } from "../../config/index.js";
 
-const markup = /<\s*HotReload\s*\/\s*>/;
+const markup = /<\s*LiveReload\s*\/\s*>/;
 
 const script = '<script type="module" src="@vite/client"></script>';
 
