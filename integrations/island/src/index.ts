@@ -1,6 +1,6 @@
-import { Plugin } from "vite";
+import * as path from "node:path";
+import type { Plugin } from "vite";
 import { Integration, ResolvedConfig } from "stack54/config";
-import { is_view } from "stack54/internals";
 import { makeIsland } from "./process.js";
 
 type Island = { code: string; original: string; complete: boolean };
@@ -19,12 +19,16 @@ export default function islandIntegration(): Integration {
         handler(id) {
           const [filename] = id.split("?");
 
+          const is_view = config.svelte.extensions.includes(
+            path.extname(filename)
+          );
+
           /**
            * We wrap the original component and insert a script that imports itself
            * for hydration on the client. We need to ensure that the client script doesn't
            * load the wrapped version, but the original version, to avoid recursively making it an island
            */
-          if (is_view(filename)) {
+          if (is_view) {
             const island = islands.get(id);
 
             if (island) {
@@ -49,7 +53,11 @@ export default function islandIntegration(): Integration {
 
           const [filename] = id.split("?");
 
-          if (is_view(filename)) {
+          const is_view = config.svelte.extensions.includes(
+            path.extname(filename)
+          );
+
+          if (is_view) {
             /**
              * If this is a second pass/transform as a result of the client script,
              * we need to skip making it an island to avoid recursive loads and transforms.
