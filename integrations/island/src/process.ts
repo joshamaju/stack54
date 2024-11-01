@@ -1,4 +1,4 @@
-import MagicStringStack from "magic-string-stack";
+import MagicString from "magic-string";
 import { dedent } from "ts-dedent";
 
 import type { PreprocessorGroup } from "svelte/compiler";
@@ -17,6 +17,8 @@ type Slot = {
   start: number;
   name?: string;
 };
+
+type Loc = { start: number; end: number };
 
 const makeAttrs = (attrs: Attributes) => {
   return Object.entries(attrs).map(([k, v]) =>
@@ -39,6 +41,7 @@ export async function makeIsland(
   let style: Block | undefined;
   let module: Block | undefined;
   let island: Block | undefined;
+  let head: (Loc & { content: Loc }) | undefined;
 
   const get_island: PreprocessorGroup = {
     name: "is-island",
@@ -74,6 +77,7 @@ export async function makeIsland(
     const directive = island.attributes[KEY];
 
     const ast = parse(processed.code);
+    const ms = new MagicString(processed.code);
 
     let props: Array<{ name: string; kind: string }> = [];
 
@@ -129,11 +133,30 @@ export async function makeIsland(
     // @ts-expect-error
     walk(ast.html, {
       enter(node) {
+        // console.log(inspect(node, false, Infinity));
+
         // @ts-expect-error
         visit(node, (node) => {
-          if (node.type == "Slot") {
-            const node_: Element = node as any;
+          const node_: Element = node as any;
 
+          if (node_.type == "Head") {
+            const first = node_.children?.[0];
+            const last = node_.children?.[node_.children.length - 1];
+
+            // console.log(node_.children);
+
+            if (first && last) {
+              head = {
+                end: node_.end,
+                start: node_.start,
+                content: { start: first.start, end: last.end },
+              };
+
+              // console.log(ms.slice(first.start, last.end));
+            }
+          }
+
+          if (node.type == "Slot") {
             const name_attr = node_.attributes.find(
               (attr) => attr.type == "Attribute" && attr.name == "name"
             );
@@ -144,11 +167,26 @@ export async function makeIsland(
 
             slots.push({ ...node, name: name?.data });
           }
+
+          return node;
         });
       },
     });
 
-    const ms = new MagicStringStack(processed.code);
+    delete island.attributes[KEY];
+    delete island.attributes[CONFIG];
+
+    const attributes = makeAttrs(island.attributes);
+
+    const value = opts ? `${JSON.stringify(opts)}` : "undefined";
+
+    let head_ = "";
+
+    if (head) {
+      const { end, start, content } = head;
+      head_ = ms.slice(content.start, content.end);
+      ms.overwrite(start, end, "");
+    }
 
     slots.forEach(({ end, start, name }) => {
       const slot = ms.slice(start, end);
@@ -157,18 +195,9 @@ export async function makeIsland(
       ms.overwrite(start, end, content);
     });
 
-    ms.commit();
-
     const markup = ms
       .toString()
       .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, "");
-
-    delete island.attributes[KEY];
-    delete island.attributes[CONFIG];
-
-    const attributes = makeAttrs(island.attributes);
-
-    const value = opts ? `${JSON.stringify(opts)}` : "undefined";
 
     const script = dedent/*html*/ `
     ${module ? makeBlock("script", module) : ""}
@@ -182,6 +211,8 @@ export async function makeIsland(
     </script>
     
     <svelte:head>
+      ${head_}
+      
       <script type="module">
         import '@stack54/island/hydrate';
         import * as directives from "@stack54/island/directives";
