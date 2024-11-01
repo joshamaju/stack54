@@ -9,7 +9,7 @@ import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
 import { array } from "../utils/index.js";
 import { makeVite } from "../utils/vite.js";
 import { attachFullPath } from "./attach-full-path/index.js";
-import { live_reload_plugin } from "./hot-reload-plugin/index.js";
+import { live_reload_plugin } from "./live-reload-plugin/index.js";
 import { resolveInlineImportsPlugin } from "./resolve-inline-imports-plugin/index.js";
 
 const cwd = process.cwd();
