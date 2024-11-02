@@ -13,7 +13,7 @@ export function live_reload_plugin(): Integration {
   let vite_config: ViteResolvedConfig;
 
   const vite_plugin: Plugin = {
-    name: "stack54:hot-reload",
+    name: "stack54:live-reload",
     configResolved(conf) {
       vite_config = conf;
     },
@@ -34,7 +34,7 @@ export function live_reload_plugin(): Integration {
   };
 
   return {
-    name: "stack54:hot-reload",
+    name: "stack54:live-reload",
     config() {
       return { vite: { plugins: [vite_plugin] } };
     },
