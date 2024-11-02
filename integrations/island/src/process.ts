@@ -12,13 +12,9 @@ type Attributes = Record<string, string | boolean>;
 
 type Block = { content: string; attributes: Attributes };
 
-type Slot = {
-  end: number;
-  start: number;
-  name?: string;
-};
-
 type Loc = { start: number; end: number };
+
+type Slot = Loc & { name?: string };
 
 const makeAttrs = (attrs: Attributes) => {
   return Object.entries(attrs).map(([k, v]) =>
