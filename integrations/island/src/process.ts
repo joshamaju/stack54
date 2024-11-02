@@ -129,8 +129,6 @@ export async function makeIsland(
     // @ts-expect-error
     walk(ast.html, {
       enter(node) {
-        // console.log(inspect(node, false, Infinity));
-
         // @ts-expect-error
         visit(node, (node) => {
           const node_: Element = node as any;
@@ -139,16 +137,12 @@ export async function makeIsland(
             const first = node_.children?.[0];
             const last = node_.children?.[node_.children.length - 1];
 
-            // console.log(node_.children);
-
             if (first && last) {
               head = {
                 end: node_.end,
                 start: node_.start,
                 content: { start: first.start, end: last.end },
               };
-
-              // console.log(ms.slice(first.start, last.end));
             }
           }
 
