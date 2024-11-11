@@ -87,7 +87,8 @@ export default function make({
     this.engine = opts.engines[this.ext];
 
     // lookup path
-    this.path = this.lookup(fileName);
+    this.path = this.lookup(name);
+    this.path ??= this.lookup(fileName);
   }
 
   /**
