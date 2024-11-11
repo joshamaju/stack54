@@ -75,7 +75,7 @@ export default function islandIntegration(): Integration {
               return;
             }
 
-            const island = await make(code, filename);
+            const island = await make(code, filename, config);
 
             if (island) {
               islands.set(id, {
@@ -109,7 +109,7 @@ export default function islandIntegration(): Integration {
       order: "pre",
       async handle(code, id) {
         const [filename] = id.split("?");
-        const island = await make(code, filename);
+        const island = await make(code, filename, config);
         return island;
       },
     },

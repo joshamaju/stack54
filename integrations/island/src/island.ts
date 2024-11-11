@@ -6,6 +6,7 @@ import { parse, preprocess, walk } from "svelte/compiler";
 import { BaseNode, Element } from "svelte/types/compiler/interfaces";
 
 import { to_fs } from "stack54/internals";
+import { ResolvedConfig } from "stack54/config";
 
 type Attributes = Record<string, string | boolean>;
 
@@ -14,12 +15,6 @@ type Loc = { start: number; end: number };
 type Slot = Loc & { name?: string };
 
 type Head = Loc & { content: Loc };
-
-const make_attrs = (attrs: Attributes) => {
-  return Object.entries(attrs).map(([k, v]) =>
-    typeof v == "boolean" ? `${k}` : `${k}="${v}"`
-  );
-};
 
 function visit(
   node: BaseNode,
@@ -37,7 +32,11 @@ const CONFIG = "value";
 
 const SFC_script_style = /<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g;
 
-export async function make(code: string, filename: string) {
+export async function make(
+  code: string,
+  filename: string,
+  config: ResolvedConfig
+) {
   let script: { content: string; attributes: Attributes } | undefined;
 
   const processor: PreprocessorGroup = {
@@ -49,7 +48,14 @@ export async function make(code: string, filename: string) {
     },
   };
 
-  const processed = await preprocess(code, [processor], { filename });
+  const preprocess_ = config.svelte.preprocess ?? [];
+
+  const processors = [
+    ...(Array.isArray(preprocess_) ? preprocess_ : [preprocess_]),
+    processor,
+  ];
+
+  const processed = await preprocess(code, processors, { filename });
 
   if (!script) return;
 
@@ -139,7 +145,9 @@ export async function make(code: string, filename: string) {
   delete script.attributes[KEY];
   delete script.attributes[CONFIG];
 
-  const attributes = make_attrs(script.attributes);
+  const attributes = Object.entries(script.attributes).map(([k, v]) =>
+    typeof v == "boolean" ? `${k}` : `${k}="${v}"`
+  );
 
   const value = opts ? `${JSON.stringify(opts)}` : "undefined";
 
@@ -177,7 +185,7 @@ export async function make(code: string, filename: string) {
   <script ${attributes.join(" ")}>
     import {stringify} from "stack54/data";
     ${script.content}
-    const __serialized__ = {${props.map((prop) => prop.name).join(",")}};
+    const __props__ = {${props.map((prop) => prop.name).join(",")}};
   </script>
   
   <svelte:head>
@@ -195,7 +203,7 @@ export async function make(code: string, filename: string) {
     </script>
   </svelte:head>
   
-  <stack54-island file="${filename}" directive="${directive}" style="display:contents;" props="{stringify(__serialized__)}">
+  <stack54-island file="${filename}" directive="${directive}" style="display:contents;" props="{stringify(__props__)}">
     ${markup}
   </stack54-island>
   
