@@ -34,7 +34,7 @@ export function makeVite(
     appType: "custom",
     configFile: false,
     clearScreen: false,
-    // customLogger: logger,
+    customLogger: logger,
     envDir: config.env.dir,
     publicDir: config.staticDir,
     base: config.build.assetPrefix,
