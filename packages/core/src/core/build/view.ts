@@ -3,6 +3,8 @@ import * as path from "node:path";
 
 import fse from "fs-extra";
 
+import type { Processed } from "svelte/compiler";
+import * as compiler from "svelte/compiler";
 import type { Plugin } from "vite";
 import * as vite from "vite";
 
@@ -60,6 +62,8 @@ export function buildViews({
   const build_dir = path.join(cwd, build);
   const generated_dir = path.join(cwd, generated);
 
+  const preprocessors = config.svelte.preprocess ?? [];
+
   const program = Effect.gen(function* () {
     yield* Effect.tryPromise(() => fse.remove(root_dir));
 
@@ -67,18 +71,25 @@ export function buildViews({
 
     const facade_keypairs = yield* Effect.forEach(
       config.views,
-      (view) => {
+      (filename) => {
         return Effect.gen(function* () {
           const code = yield* Effect.tryPromise(() => {
-            return fs.readFile(view, "utf-8");
+            return fs.readFile(filename, "utf-8");
+          });
+
+          const processed: Processed = yield* Effect.tryPromise(() => {
+            return compiler.preprocess(code, preprocessors, { filename });
           });
 
           const transformed = yield* Effect.tryPromise(() => {
-            return runHtmlPreTransform(config, { code, filename: view });
+            return runHtmlPreTransform(config, {
+              code: processed.code,
+              filename,
+            });
           });
 
           const prepared = yield* Effect.tryPromise(() => {
-            return Facade.prepare(transformed, view, config.svelte);
+            return Facade.prepare(transformed, filename);
           });
 
           // skip views with no client assets to process
@@ -86,7 +97,7 @@ export function buildViews({
             return;
           }
 
-          const facade = Facade.make(view, generated_dir);
+          const facade = Facade.make(filename, generated_dir);
 
           yield* Effect.tryPromise(() => {
             return fs.mkdir(path.dirname(facade), { recursive: true });

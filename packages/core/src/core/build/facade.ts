@@ -6,8 +6,6 @@ import * as html from "node-html-parser";
 import * as compiler from "svelte/compiler";
 import type { BaseNode, Element } from "svelte/types/compiler/interfaces";
 
-import type { ResolvedConfig } from "../config/index.js";
-
 export type PreparedFacade = {
   code: string;
   extension: string;
@@ -30,8 +28,7 @@ const make_marker = () => `<build-marker>${make_id()}</build-marker>`;
 
 export async function prepare(
   code: string,
-  filename: string,
-  config: ResolvedConfig["svelte"]
+  filename: string
 ): Promise<PreparedFacade> {
   function walk(
     node: BaseNode,
@@ -50,13 +47,9 @@ export async function prepare(
   // tags that we need to remove temporarily because they break the build
   const replacements: Array<[string, string]> = [];
 
-  const processed = await compiler.preprocess(code, config.preprocess ?? [], {
-    filename,
-  });
+  const ast = compiler.parse(code, { filename });
 
-  const ast = compiler.parse(processed.code, { filename });
-
-  const s = new MagicString(processed.code);
+  const s = new MagicString(code);
 
   const wrap = [ast.module, ast.instance, ast.css].filter(
     (_) => _ !== undefined
