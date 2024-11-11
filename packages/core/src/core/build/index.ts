@@ -3,6 +3,7 @@ import * as path from "node:path";
 import fs from "fs-extra";
 
 import { Effect } from "effect";
+import color from "kleur";
 
 import * as Config from "../config/index.js";
 import { defineServerEnv, load, partition } from "../env.js";
@@ -58,7 +59,12 @@ export function build() {
     yield* Effect.log("building views...");
 
     const opts = { cwd, outDir, config: config, env: public_ };
+
+    const start = performance.now();
     const views = yield* buildViews(opts);
+    const time = performance.now() - start;
+
+    yield* Effect.log(`built views in ${Math.round(time)} ${color.dim("ms")}`);
 
     yield* Effect.log("building server...");
 
