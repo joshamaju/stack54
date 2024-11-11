@@ -5,7 +5,6 @@ import type { PreprocessorGroup } from "svelte/compiler";
 import { parse, preprocess, walk } from "svelte/compiler";
 import { BaseNode, Element } from "svelte/types/compiler/interfaces";
 
-import { ResolvedConfig } from "stack54/config";
 import { to_fs } from "stack54/internals";
 
 type Attributes = Record<string, string | boolean>;
@@ -38,14 +37,10 @@ const CONFIG = "value";
 
 const SFC_script_style = /<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g;
 
-export async function makeIsland(
-  code: string,
-  filename: string,
-  config: ResolvedConfig
-) {
+export async function make(code: string, filename: string) {
   let script: { content: string; attributes: Attributes } | undefined;
 
-  const get_island: PreprocessorGroup = {
+  const processor: PreprocessorGroup = {
     name: "is-island",
     script({ attributes, content }) {
       if (KEY in attributes) {
@@ -54,14 +49,7 @@ export async function makeIsland(
     },
   };
 
-  const preprocess_ = config.svelte.preprocess ?? [];
-
-  const processors = [
-    ...(Array.isArray(preprocess_) ? preprocess_ : [preprocess_]),
-    get_island,
-  ];
-
-  const processed = await preprocess(code, processors, { filename });
+  const processed = await preprocess(code, [processor], { filename });
 
   if (!script) return;
 

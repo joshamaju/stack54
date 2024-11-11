@@ -1,7 +1,7 @@
 import * as path from "node:path";
 import type { Plugin } from "vite";
 import { Integration, ResolvedConfig } from "stack54/config";
-import { makeIsland } from "./process.js";
+import { make } from "./island.js";
 
 type Island = { code: string; original: string; complete: boolean };
 
@@ -75,7 +75,7 @@ export default function islandIntegration(): Integration {
               return;
             }
 
-            const island = await makeIsland(code, filename, config);
+            const island = await make(code, filename);
 
             if (island) {
               islands.set(id, {
@@ -109,7 +109,7 @@ export default function islandIntegration(): Integration {
       order: "pre",
       async handle(code, id) {
         const [filename] = id.split("?");
-        const island = await makeIsland(code, filename, config);
+        const island = await make(code, filename);
         return island;
       },
     },
