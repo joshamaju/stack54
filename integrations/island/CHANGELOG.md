@@ -1,5 +1,20 @@
 # @stack54/island
 
+## 0.3.0
+
+### Minor Changes
+
+- 3c97e59: Keep transform hook for only html files. Use vite transform hook for svelte files
+
+### Patch Changes
+
+- 9dee624: Fixes duplicate svelte:head tag error during compilation caused by having more than one svelte:head tag due to having user defined svelte:head and island generated svelte:head tag
+- Updated dependencies [f0a541e]
+- Updated dependencies [2152754]
+- Updated dependencies [3c97e59]
+- Updated dependencies [4a07e92]
+  - stack54@0.8.0
+
 ## 0.2.1
 
 ### Patch Changes

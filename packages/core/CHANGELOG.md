@@ -1,5 +1,17 @@
 # mpa
 
+## 0.8.0
+
+### Minor Changes
+
+- 2152754: Rename HotReload component to LiveReload to properly communicate its purpose, because it actually reloads the page instead of hot module replacement
+- 3c97e59: Keep transform hook for only html files. Use vite transform hook for svelte files
+- 4a07e92: Use original file extension instead of hardcoded .svelte to support user custom extension i.e markdown (.svex)
+
+### Patch Changes
+
+- f0a541e: Preprocess views before passing on to integrations to improve performance during build
+
 ## 0.7.0
 
 ### Minor Changes
