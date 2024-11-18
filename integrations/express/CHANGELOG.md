@@ -1,5 +1,16 @@
 # @stack54/express
 
+## 1.0.1
+
+### Patch Changes
+
+- 6a4c5cd: Lookup view without extension using resolver and then with extension if none found
+- Updated dependencies [f0a541e]
+- Updated dependencies [2152754]
+- Updated dependencies [3c97e59]
+- Updated dependencies [4a07e92]
+  - stack54@0.8.0
+
 ## 1.0.0
 
 ### Major Changes
