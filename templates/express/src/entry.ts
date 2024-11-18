@@ -6,14 +6,16 @@ import methodOverride from "method-override";
 
 import logger from "morgan";
 
-import { register } from "@stack54/express/render";
+import { engine, View } from "@stack54/express/view";
 
-import { render } from "./utils/view";
+import { resolver } from "./utils/view";
 import { errorHandler } from "./error";
 
 const app = express();
 
-register(app, render);
+app.engine("svelte", engine);
+app.set("view engine", "svelte");
+app.set("view", View({ resolve: resolver }));
 
 app.use(logger("dev"));
 

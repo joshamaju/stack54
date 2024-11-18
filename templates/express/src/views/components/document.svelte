@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Head, HotReload } from "stack54/components";
+  import { Head, LiveReload } from "stack54/components";
 </script>
 
 <!DOCTYPE html>
@@ -17,7 +17,7 @@
     />
 
     <Head />
-    <HotReload />
+    <LiveReload />
 
     <slot name="head" />
   </head>
