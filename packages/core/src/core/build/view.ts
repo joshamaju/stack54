@@ -116,56 +116,60 @@ export function buildViews({
     // @ts-ignore build gets the filtered type wrong
     const facades = new Map(facade_keypairs.filter((_) => _ !== undefined));
 
-    const resolve: Plugin = {
-      name: "facade-resolver",
-      async resolveId(source, importer) {
-        if (importer) {
-          const [importer_] = importer.split("?");
+    if (facades.size > 0) {
+      const resolve: Plugin = {
+        name: "facade-resolver",
+        async resolveId(source, importer) {
+          if (importer) {
+            const [importer_] = importer.split("?");
 
-          /**
-           * resolves imports (including import aliases) inside inline script and modules script tags
-           * i.e
-           * <script type="module">
-           * import module from '@/aliased/module'
-           * import module from './file/path'
-           * import module form 'installed/node-module'
-           * </script>
-           */
-          if (facades.has(importer_)) {
-            // reconstruct the original svelte file name from the html facade
-            const original = importer_.replace(generated_dir, "");
+            /**
+             * resolves imports (including import aliases) inside inline script and modules script tags
+             * i.e
+             * <script type="module">
+             * import module from '@/aliased/module'
+             * import module from './file/path'
+             * import module form 'installed/node-module'
+             * </script>
+             */
+            if (facades.has(importer_)) {
+              // reconstruct the original svelte file name from the html facade
+              const original = importer_.replace(generated_dir, "");
 
-            const { dir, name } = path.parse(original);
-            const view = path.join(dir, `${name}.svelte`);
+              const { dir, name } = path.parse(original);
+              const view = path.join(dir, `${name}.svelte`);
 
-            const resolved = await this.resolve(source, view);
+              const resolved = await this.resolve(source, view);
 
-            if (resolved) return resolved;
+              if (resolved) return resolved;
 
-            const file = path.resolve(path.dirname(original), source);
-            if (await fse.exists(file)) return file;
+              const file = path.resolve(path.dirname(original), source);
+              if (await fse.exists(file)) return file;
+            }
           }
-        }
-      },
-    };
+        },
+      };
 
-    const env_define = define(env);
+      const env_define = define(env);
 
-    const inline_config: vite.InlineConfig = {
-      logLevel: "silent",
-      define: env_define,
-      mode: "production",
-      plugins: [resolve, obfuscate, deobfuscate],
-      build: {
-        ssr: false,
-        outDir: build_dir,
-        rollupOptions: { input: [...facades.keys()] },
-      },
-    };
+      const inline_config: vite.InlineConfig = {
+        logLevel: "silent",
+        define: env_define,
+        mode: "production",
+        plugins: [resolve, obfuscate, deobfuscate],
+        build: {
+          ssr: false,
+          outDir: build_dir,
+          rollupOptions: { input: [...facades.keys()] },
+        },
+      };
 
-    yield* Effect.tryPromise(() => {
-      return vite.build(vite.mergeConfig(config.vite, inline_config));
-    });
+      yield* Effect.tryPromise(() => {
+        return vite.build(vite.mergeConfig(config.vite, inline_config));
+      });
+    } else {
+      yield* Effect.logWarning("No views to build");
+    }
 
     const modules = yield* Effect.forEach(
       facades,

@@ -1,0 +1,25 @@
+{
+  "name": "stack54-monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Joshua Amaju",
+  "license": "ISC",
+  "private": true,
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshamaju/stack54.git"
+  },
+  "scripts": {
+    "test": "pnpm test -r",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish",
+    "build": "tsc -b tsconfig.build.json"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "playwright": "^1.41.1",
+    "typescript": "^5.3.3"
+  }
+}
