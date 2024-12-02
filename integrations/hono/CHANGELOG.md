@@ -1,5 +1,12 @@
 # @stack54/hono
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [af66f61]
+  - stack54@0.8.1
+
 ## 0.0.6
 
 ### Patch Changes

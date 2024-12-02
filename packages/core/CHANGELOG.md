@@ -1,5 +1,11 @@
 # mpa
 
+## 0.8.1
+
+### Patch Changes
+
+- af66f61: Fixes views build failure caused by when no view found in project directory
+
 ## 0.8.0
 
 ### Minor Changes
