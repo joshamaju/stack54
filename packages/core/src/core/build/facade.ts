@@ -41,7 +41,14 @@ export async function prepare(
     return visitor(node);
   }
 
-  // tags that we'll need to move back to their original location
+  /**
+   * Users should be able to place script tags anywhere in the document, but vite hoists module script
+   * tags into the document head.
+   *
+   * So we need to wrap them in a html and head tag to make vite keep them in the same location, if not vite
+   * will hoist the module to the beginning of the document (breaks the build during svelte compilation) or the
+   * user defined head tag if any.
+   */
   const moves: Array<string> = [];
 
   // tags that we need to remove temporarily because they break the build
