@@ -8,7 +8,7 @@ import * as compiler from "svelte/compiler";
 import type { Plugin } from "vite";
 import * as vite from "vite";
 
-import { Effect } from "effect";
+import { all, call } from "effection";
 
 import type { ResolvedConfig } from "../config/index.js";
 import { define, Env } from "../env.js";
@@ -18,6 +18,7 @@ import {
 } from "../integrations/hooks.js";
 import * as Facade from "./facade.js";
 import type { Output } from "./types.js";
+import { useLogger } from "../logger.js";
 
 const VITE_HTML_PLACEHOLDER = "<div data-obfuscation-placeholder></div>";
 
@@ -64,31 +65,32 @@ export function buildViews({
 
   const preprocessors = config.svelte.preprocess ?? [];
 
-  const program = Effect.gen(function* () {
-    yield* Effect.tryPromise(() => fse.remove(root_dir));
+  return function* () {
+    const logger = yield* useLogger();
 
-    yield* Effect.tryPromise(() => fs.mkdir(root_dir));
+    yield* call(() => fse.remove(root_dir));
 
-    const facade_keypairs = yield* Effect.forEach(
-      config.views,
-      (filename) => {
-        return Effect.gen(function* () {
-          const code = yield* Effect.tryPromise(() => {
+    yield* call(() => fs.mkdir(root_dir));
+
+    const facade_keypairs = yield* all(
+      config.views.map((filename) => {
+        return call(function* () {
+          const code = yield* call(() => {
             return fs.readFile(filename, "utf-8");
           });
 
-          const processed: Processed = yield* Effect.tryPromise(() => {
+          const processed: Processed = yield* call(() => {
             return compiler.preprocess(code, preprocessors, { filename });
           });
 
-          const transformed = yield* Effect.tryPromise(() => {
+          const transformed = yield* call(() => {
             return runHtmlPreTransform(config, {
               code: processed.code,
               filename,
             });
           });
 
-          const prepared = yield* Effect.tryPromise(() => {
+          const prepared = yield* call(() => {
             return Facade.prepare(transformed, filename);
           });
 
@@ -99,18 +101,17 @@ export function buildViews({
 
           const facade = Facade.make(filename, generated_dir);
 
-          yield* Effect.tryPromise(() => {
+          yield* call(() => {
             return fs.mkdir(path.dirname(facade), { recursive: true });
           });
 
-          yield* Effect.tryPromise(() => {
+          yield* call(() => {
             return fs.writeFile(facade, prepared.code);
           });
 
           return [facade, prepared] as const;
         });
-      },
-      { concurrency: "unbounded" }
+      })
     );
 
     // @ts-ignore build gets the filtered type wrong
@@ -164,20 +165,19 @@ export function buildViews({
         },
       };
 
-      yield* Effect.tryPromise(() => {
+      yield* call(() => {
         return vite.build(vite.mergeConfig(config.vite, inline_config));
       });
     } else {
-      yield* Effect.logWarning("No views to build");
+      logger.warn("No views to build");
     }
 
-    const modules = yield* Effect.forEach(
-      facades,
-      ([facade, prepared]) => {
-        return Effect.gen(function* () {
+    const modules = yield* all(
+      [...facades.entries()].map(([facade, prepared]) => {
+        return call(function* () {
           const view = path.join(build_dir, facade.replace(cwd, ""));
 
-          const html = yield* Effect.tryPromise(() => {
+          const html = yield* call(() => {
             return fs.readFile(view, "utf-8");
           });
 
@@ -187,30 +187,30 @@ export function buildViews({
           const { dir, name } = path.parse(original);
           const file = path.join(dir, `${name}${prepared.extension}`);
 
-          const transformed = yield* Effect.tryPromise(() => {
+          const transformed = yield* call(() => {
             return runHtmlPostTransform(config, { code, filename: file });
           });
 
           return [file, { file, code: transformed } as Output] as const;
         });
-      },
-      { concurrency: "unbounded" }
+      })
     );
 
     const assets = path.join(build_dir, config.build.assetsDir);
 
-    const has_assets = yield* Effect.tryPromise(() => fse.exists(assets));
+    const has_assets = yield* call(() => fse.exists(assets));
 
     if (has_assets) {
-      yield* Effect.tryPromise(() => {
+      yield* call(() => {
         return fse.move(assets, path.join(outDir, config.build.assetsDir));
       });
     }
 
-    return new Map(modules);
-  });
+    try {
+    } finally {
+      yield* call(fse.remove(root_dir));
+    }
 
-  return program.pipe(
-    Effect.ensuring(Effect.promise(() => fse.remove(root_dir)))
-  );
+    return new Map(modules);
+  };
 }
