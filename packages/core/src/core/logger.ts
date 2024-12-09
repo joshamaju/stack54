@@ -2,8 +2,6 @@ import color from "kleur";
 
 import type { Rollup, Logger as ViteLogger } from "vite";
 
-import { createContext, Operation } from "effection";
-
 export const dateTimeFormat = new Intl.DateTimeFormat([], {
   hour12: false,
   hour: "2-digit",
@@ -51,7 +49,7 @@ const colors = {
   [LogLevel.Warning.label]: color.yellow("warn"),
 };
 
-export const simpleLogger: Logger = ({ date, label, message, logLevel }) => {
+export const logger: Logger = ({ date, label, message, logLevel }) => {
   const timestamp = `${dateTimeFormat.format(date)}`;
   const prefix = [color.dim(timestamp), colors[logLevel.label]];
 
@@ -65,14 +63,9 @@ export const simpleLogger: Logger = ({ date, label, message, logLevel }) => {
   );
 };
 
-const LoggerSymbol = "Logger";
-const LoggerContext = createContext<Logger>(LoggerSymbol, simpleLogger);
-
-export function* useLogger(
+export function useLogger(
   label?: string
-): Operation<Pick<Console, "error" | "warn" | "info">> {
-  const logger = yield* LoggerContext;
-
+): Pick<Console, "error" | "warn" | "info"> {
   const log = (logLevel: Level, message: string | string[]) => {
     logger({ label, date: new Date(), message, logLevel });
   };
@@ -90,33 +83,31 @@ export function* useLogger(
   };
 }
 
-export function* makeViteLogger() {
-  const log = yield* LoggerContext;
-
+export function makeViteLogger() {
   const run = (logLevel: Level, message: string | string[]) => {
-    log({ date: new Date(), message, logLevel, label: "vite" });
+    logger({ date: new Date(), message, logLevel, label: "vite" });
   };
 
   const warnedMessages = new Set<string>();
   const loggedErrors = new WeakSet<Error | Rollup.RollupError>();
 
-  const logger: ViteLogger = {
+  const logger_: ViteLogger = {
     hasWarned: false,
     info(message) {
       run(LogLevel.Info, message);
     },
     warn(message) {
-      logger.hasWarned = true;
+      logger_.hasWarned = true;
       run(LogLevel.Warning, message);
     },
     warnOnce(message) {
       if (warnedMessages.has(message)) return;
-      logger.hasWarned = true;
+      logger_.hasWarned = true;
       run(LogLevel.Warning, message);
       warnedMessages.add(message);
     },
     error(message, opts) {
-      logger.hasWarned = true;
+      logger_.hasWarned = true;
       run(LogLevel.Error, message);
     },
     // Don't allow clear screen
@@ -126,5 +117,5 @@ export function* makeViteLogger() {
     },
   };
 
-  return logger;
+  return logger_;
 }

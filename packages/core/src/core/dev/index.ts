@@ -16,7 +16,7 @@ import { useLogger } from "../logger.js";
 const cwd = process.cwd();
 
 export function* dev() {
-  const logger = yield* useLogger();
+  const logger = useLogger();
 
   const start = performance.now();
 
@@ -29,9 +29,9 @@ export function* dev() {
     live_reload_plugin(),
   ];
 
-  let merged_config = yield* call(() => {
-    return runConfigSetup(user_config, { command: "serve" });
-  });
+  let merged_config = yield* call(
+    runConfigSetup(user_config, { command: "serve" })
+  );
 
   let { assetPrefix } = user_config.build;
 
@@ -54,9 +54,9 @@ export function* dev() {
     resolveInlineImportsPlugin(),
   ];
 
-  const resolved_config = yield* call(() => {
-    return Config.preprocess(merged_config, { cwd });
-  });
+  const resolved_config = yield* call(
+    Config.preprocess(merged_config, { cwd })
+  );
 
   /**
    * We turn this off because our internal preprocessors i.e attach-actual-path get svelte style tag content
@@ -111,9 +111,9 @@ export function* dev() {
 
   defineServerEnv(env);
 
-  const server = yield* call(() => vite.createServer(config.vite));
+  const server = yield* call(vite.createServer(config.vite));
 
-  yield* call(() => server.listen());
+  yield* call(server.listen());
 
   console.log();
 
@@ -137,7 +137,7 @@ export function* dev() {
     yield* suspend();
   } finally {
     logger.info("stopping server...");
-    yield* call(() => server.close());
+    yield* call(server.close());
     logger.info("stopped server");
   }
 }

@@ -21,21 +21,23 @@ import { buildViews } from "./view.js";
 const cwd = process.cwd();
 
 export function* build() {
-  const console = yield* useLogger();
+  const start = performance.now();
 
-  const inline_config = yield* call(() => Config.load(cwd));
+  const console = useLogger();
+
+  const inline_config = yield* call(Config.load(cwd));
 
   const user_config = Config.parse(inline_config);
 
-  let merged_config = yield* call(() => {
-    return runConfigSetup(user_config, { command: "build" });
-  });
+  let merged_config = yield* call(
+    runConfigSetup(user_config, { command: "build" })
+  );
 
-  const resolved_config = yield* call(() => {
-    return Config.preprocess(merged_config, { cwd });
-  });
+  const resolved_config = yield* call(
+    Config.preprocess(merged_config, { cwd })
+  );
 
-  const logger = yield* makeViteLogger();
+  const logger = makeViteLogger();
 
   const shared_vite_config = makeVite(resolved_config, {
     logger,
@@ -44,7 +46,7 @@ export function* build() {
 
   const config = { ...resolved_config, vite: shared_vite_config };
 
-  yield* call(() => runConfigResolved(config));
+  yield* call(runConfigResolved(config));
 
   const outDir = path.join(cwd, config.build.outDir);
 
@@ -53,29 +55,25 @@ export function* build() {
   const env = load(config.env.dir ?? cwd, mode);
   const { public: public_ } = partition(env, config.env.publicPrefix);
 
-  yield* call(() => fs.remove(outDir));
+  yield* call(fs.remove(outDir));
 
-  yield* call(() => runBuildStart(config));
+  yield* call(runBuildStart(config));
 
   console.info("building views...");
 
   const opts = { cwd, outDir, config: config, env: public_ };
 
-  const start = performance.now();
-  const views = yield* buildViews(opts)();
-  const time = performance.now() - start;
-
-  // console.info(`built views in ${Math.round(time)} ${color.dim("ms")}`);
+  const views = yield* buildViews(opts);
 
   console.info("building server...");
 
   defineServerEnv(env);
 
-  yield* call(() => {
-    return buildServer(views, { env, outDir, config });
-  });
+  yield* call(buildServer(views, { env, outDir, config }));
 
-  yield* call(() => runBuildEnd(config));
+  yield* call(runBuildEnd(config));
 
-  console.info("✔︎ build done");
+  const time = performance.now() - start;
+
+  console.info(`✔︎ build done in ${Math.round(time)} ${color.dim("ms")}`);
 }

@@ -15,6 +15,8 @@ const pkg = JSON.parse(fs.readFileSync(pkg_path, "utf-8"));
 
 const program = sade("stack54-cli").version(pkg.version);
 
+const logger = useLogger();
+
 program.command("dev").action(async () => {
   const { dev } = await import("./dev/index.js");
 
@@ -28,7 +30,7 @@ program.command("dev").action(async () => {
   };
 
   process.on("unhandledRejection", async (error) => {
-    console.log(error);
+    logger.error(error);
     await close();
     process.exit(1);
   });
@@ -41,8 +43,6 @@ program.command("build").action(async () => {
   const { build } = await import("./build/index.js");
 
   const task = run(function* () {
-    const logger = yield* useLogger();
-
     try {
       yield* build();
     } catch (error) {
