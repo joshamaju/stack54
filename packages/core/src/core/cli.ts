@@ -1,4 +1,5 @@
 import sade from "sade";
+import color from "kleur";
 
 import * as fs from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -17,10 +18,32 @@ const program = sade("stack54-cli").version(pkg.version);
 
 const logger = useLogger();
 
+const handle_error = (error: unknown) => {
+  if (error instanceof InvalidConfig) {
+    logger.error(formatConfigErrorMessage(error.cause));
+  } else if ((error as any).name == "ParseError") {
+    const { frame, start, filename } = error as any;
+    logger.error(`[ParseError] ${filename}:${start.line}:${start.column}`);
+    console.log(color.red(frame));
+  } else {
+    logger.error(error);
+  }
+
+  console.log();
+
+  process.exit(1);
+};
+
 program.command("dev").action(async () => {
   const { dev } = await import("./dev/index.js");
 
-  const task = run(dev);
+  const task = run(function* () {
+    try {
+      yield* dev();
+    } catch (error) {
+      handle_error(error);
+    }
+  });
 
   const close = () => task.halt();
 
@@ -46,12 +69,7 @@ program.command("build").action(async () => {
     try {
       yield* build();
     } catch (error) {
-      if (error instanceof InvalidConfig) {
-        logger.error(formatConfigErrorMessage(error.cause));
-        return;
-      }
-
-      logger.error(error);
+      handle_error(error);
     }
   });
 
