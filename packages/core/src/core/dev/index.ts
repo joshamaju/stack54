@@ -115,8 +115,6 @@ export function* dev() {
 
   yield* call(server.listen());
 
-  console.log();
-
   server.printUrls();
 
   const time = performance.now() - start;
@@ -124,12 +122,6 @@ export function* dev() {
   console.log();
 
   logger.info(`server ready in ${Math.round(time)} ${color.dim("ms")}`);
-
-  logger.info(
-    `logs for your project will appear below. ${color.dim(
-      "Press Ctrl+C to exit."
-    )}`
-  );
 
   logger.info("watching for changes...");
 

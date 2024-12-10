@@ -2,7 +2,7 @@ import * as path from "node:path";
 
 import fs from "fs-extra";
 
-import { call } from "effection";
+import { call, all } from "effection";
 import color from "kleur";
 
 import * as Config from "../config/index.js";
@@ -18,12 +18,12 @@ import { makeVite } from "../utils/vite.js";
 import { buildServer } from "./server.js";
 import { buildViews } from "./view.js";
 
-const cwd = process.cwd();
-
 export function* build() {
   const start = performance.now();
 
-  const console = useLogger();
+  const cwd = process.cwd();
+
+  const logger = useLogger();
 
   const inline_config = yield* call(Config.load(cwd));
 
@@ -37,10 +37,10 @@ export function* build() {
     Config.preprocess(merged_config, { cwd })
   );
 
-  const logger = makeViteLogger();
+  const vite_logger = makeViteLogger();
 
   const shared_vite_config = makeVite(resolved_config, {
-    logger,
+    logger: vite_logger,
     mode: "build",
   });
 
@@ -50,22 +50,20 @@ export function* build() {
 
   const outDir = path.join(cwd, config.build.outDir);
 
+  yield* all([call(fs.remove(outDir)), call(runBuildStart(config))]);
+
   const mode = process.env.NODE_ENV ?? "production";
 
   const env = load(config.env.dir ?? cwd, mode);
   const { public: public_ } = partition(env, config.env.publicPrefix);
 
-  yield* call(fs.remove(outDir));
-
-  yield* call(runBuildStart(config));
-
-  console.info("building views...");
-
   const opts = { cwd, outDir, config: config, env: public_ };
+
+  logger.info("building views...");
 
   const views = yield* buildViews(opts);
 
-  console.info("building server...");
+  logger.info("building server...");
 
   defineServerEnv(env);
 
@@ -75,5 +73,5 @@ export function* build() {
 
   const time = performance.now() - start;
 
-  console.info(`✔︎ build done in ${Math.round(time)} ${color.dim("ms")}`);
+  logger.info(`✔︎ build done in ${Math.round(time)} ${color.dim("ms")}`);
 }
