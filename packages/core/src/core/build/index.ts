@@ -19,7 +19,7 @@ import { buildServer } from "./server.js";
 import { buildViews } from "./view.js";
 
 export function* build() {
-  const start = performance.now();
+  const start = process.hrtime.bigint();
 
   const cwd = process.cwd();
 
@@ -59,11 +59,11 @@ export function* build() {
 
   const opts = { cwd, outDir, config: config, env: public_ };
 
-  logger.info("building views...");
+  // logger.info("building views...");
 
   const views = yield* buildViews(opts);
 
-  logger.info("building server...");
+  // logger.info("building server...");
 
   defineServerEnv(env);
 
@@ -71,7 +71,8 @@ export function* build() {
 
   yield* call(runBuildEnd(config));
 
-  const time = performance.now() - start;
+  const end = process.hrtime.bigint();
+  const time = Number(end - start) / 1e6;
 
   logger.info(`✔︎ build done in ${Math.round(time)} ${color.dim("ms")}`);
 }
