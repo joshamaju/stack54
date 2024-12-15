@@ -1,5 +1,12 @@
 # @stack54/express
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [d945998]
+  - stack54@0.9.0
+
 ## 1.0.2
 
 ### Patch Changes
