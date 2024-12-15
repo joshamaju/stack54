@@ -1,19 +1,14 @@
 import sade from "sade";
+import color from "kleur";
 
 import * as fs from "node:fs";
 import { fileURLToPath } from "node:url";
 
-import { Effect, Exit, Fiber, Logger, LogLevel, Scope, Cause } from "effect";
+import { run } from "effection";
 
 import { InvalidConfig } from "./config/index.js";
-import { simpleLogger } from "./logger.js";
+import { useLogger } from "./logger.js";
 import { formatConfigErrorMessage } from "./message.js";
-
-const log_config_error = (e: InvalidConfig) => {
-  return Effect.logError(formatConfigErrorMessage(e.cause));
-};
-
-const layer = Logger.replace(Logger.defaultLogger, simpleLogger);
 
 const pkg_path = fileURLToPath(new URL("../../package.json", import.meta.url));
 
@@ -21,20 +16,36 @@ const pkg = JSON.parse(fs.readFileSync(pkg_path, "utf-8"));
 
 const program = sade("stack54-cli").version(pkg.version);
 
+const logger = useLogger();
+
+const handle_error = (error: unknown) => {
+  if (error instanceof InvalidConfig) {
+    logger.error(formatConfigErrorMessage(error.cause));
+  } else if ((error as any).name == "ParseError") {
+    const { frame, start, filename } = error as any;
+    logger.error(`[ParseError] ${filename}:${start.line}:${start.column}`);
+    console.log(color.red(frame));
+  } else {
+    logger.error(error);
+  }
+
+  console.log();
+
+  process.exit(1);
+};
+
 program.command("dev").action(async () => {
   const { dev } = await import("./dev/index.js");
 
-  const scope = Effect.runSync(Scope.make());
+  const task = run(function* () {
+    try {
+      yield* dev();
+    } catch (error) {
+      handle_error(error);
+    }
+  });
 
-  dev().pipe(
-    Effect.catchTag("InvalidConfig", (e) => log_config_error(e)),
-    Effect.catchAllCause((c) => Effect.logError(Cause.prettyErrors(c))),
-    Effect.provide(layer),
-    Scope.extend(scope),
-    Effect.runFork
-  );
-
-  const close = () => Effect.runPromise(Scope.close(scope, Exit.void));
+  const close = () => task.halt();
 
   const shutdown = async () => {
     await close();
@@ -42,7 +53,7 @@ program.command("dev").action(async () => {
   };
 
   process.on("unhandledRejection", async (error) => {
-    console.log(error);
+    logger.error(error);
     await close();
     process.exit(1);
   });
@@ -54,16 +65,16 @@ program.command("dev").action(async () => {
 program.command("build").action(async () => {
   const { build } = await import("./build/index.js");
 
-  const fiber = build().pipe(
-    Effect.catchTag("InvalidConfig", (e) => log_config_error(e)),
-    Effect.catchAllCause((c) => Effect.logError(Cause.prettyErrors(c))),
-    Logger.withMinimumLogLevel(LogLevel.All),
-    Effect.provide(layer),
-    Effect.runFork
-  );
+  const task = run(function* () {
+    try {
+      yield* build();
+    } catch (error) {
+      handle_error(error);
+    }
+  });
 
   const shutdown = async () => {
-    await Effect.runPromise(Fiber.interrupt(fiber));
+    await task.halt();
     process.exit(0);
   };
 

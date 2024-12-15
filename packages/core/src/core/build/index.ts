@@ -2,80 +2,77 @@ import * as path from "node:path";
 
 import fs from "fs-extra";
 
-import { Effect } from "effect";
+import { call, all } from "effection";
 import color from "kleur";
 
 import * as Config from "../config/index.js";
 import { defineServerEnv, load, partition } from "../env.js";
-import { makeVite } from "../utils/vite.js";
-import { buildServer } from "./server.js";
-import { buildViews } from "./view.js";
-import { makeViteLogger } from "../logger.js";
 import {
   runBuildEnd,
   runBuildStart,
   runConfigResolved,
   runConfigSetup,
 } from "../integrations/hooks.js";
+import { makeViteLogger, useLogger } from "../logger.js";
+import { makeVite } from "../utils/vite.js";
+import { buildServer } from "./server.js";
+import { buildViews } from "./view.js";
 
-const cwd = process.cwd();
+export function* build() {
+  const start = process.hrtime.bigint();
 
-export function build() {
-  return Effect.gen(function* () {
-    const inline_config = yield* Effect.tryPromise(() => Config.load(cwd));
+  const cwd = process.cwd();
 
-    const user_config = yield* Config.parse(inline_config);
+  const logger = useLogger();
 
-    let merged_config = yield* Effect.promise(() => {
-      return runConfigSetup(user_config, { command: "build" });
-    });
+  const inline_config = yield* call(Config.load(cwd));
 
-    const resolved_config = yield* Effect.tryPromise(() => {
-      return Config.preprocess(merged_config, { cwd });
-    });
+  const user_config = Config.parse(inline_config);
 
-    const logger = yield* makeViteLogger();
+  let merged_config = yield* call(
+    runConfigSetup(user_config, { command: "build" })
+  );
 
-    const shared_vite_config = makeVite(resolved_config, {
-      logger,
-      mode: "build",
-    });
+  const resolved_config = yield* call(
+    Config.preprocess(merged_config, { cwd })
+  );
 
-    const config = { ...resolved_config, vite: shared_vite_config };
+  const vite_logger = makeViteLogger();
 
-    yield* Effect.tryPromise(() => runConfigResolved(config));
-
-    const outDir = path.join(cwd, config.build.outDir);
-
-    const mode = process.env.NODE_ENV ?? "production";
-
-    const env = load(config.env.dir ?? cwd, mode);
-    const { public: public_ } = partition(env, config.env.publicPrefix);
-
-    yield* Effect.tryPromise(() => fs.remove(outDir));
-
-    yield* Effect.promise(() => runBuildStart(config));
-
-    yield* Effect.log("building views...");
-
-    const opts = { cwd, outDir, config: config, env: public_ };
-
-    const start = performance.now();
-    const views = yield* buildViews(opts);
-    const time = performance.now() - start;
-
-    yield* Effect.log(`built views in ${Math.round(time)} ${color.dim("ms")}`);
-
-    yield* Effect.log("building server...");
-
-    defineServerEnv(env);
-
-    yield* Effect.promise(() => {
-      return buildServer(views, { env, outDir, config });
-    });
-
-    yield* Effect.promise(() => runBuildEnd(config));
-
-    yield* Effect.log("✔︎ build done");
+  const shared_vite_config = makeVite(resolved_config, {
+    logger: vite_logger,
+    mode: "build",
   });
+
+  const config = { ...resolved_config, vite: shared_vite_config };
+
+  yield* call(runConfigResolved(config));
+
+  const outDir = path.join(cwd, config.build.outDir);
+
+  yield* all([call(fs.remove(outDir)), call(runBuildStart(config))]);
+
+  const mode = process.env.NODE_ENV ?? "production";
+
+  const env = load(config.env.dir ?? cwd, mode);
+  const { public: public_ } = partition(env, config.env.publicPrefix);
+
+  const opts = { cwd, outDir, config: config, env: public_ };
+
+  // logger.info("building views...");
+
+  const views = yield* buildViews(opts);
+
+  // logger.info("building server...");
+
+  defineServerEnv(env);
+
+  yield* call(buildServer(views, { env, outDir, config }));
+
+  yield* call(runBuildEnd(config));
+
+  const end = process.hrtime.bigint();
+  const time = Number(end - start) / 1e6;
+
+  logger.info(`✔︎ build done in ${Math.round(time)} ${color.dim("ms")}`);
 }
