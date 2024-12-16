@@ -2,7 +2,7 @@ import * as path from "node:path";
 
 import fs from "fs-extra";
 
-import { all, call } from "effection";
+import { all, call, spawn } from "effection";
 import color from "kleur";
 
 import * as Config from "../config/index.js";
@@ -41,11 +41,21 @@ export function* build() {
 
   const config = { ...resolved_config, vite: shared_vite_config };
 
-  yield* call(runConfigResolved(config));
+  if (config.integrations.length > 0) {
+    yield* call(runConfigResolved(config));
+  }
 
   const outDir = path.join(cwd, config.build.outDir);
 
-  yield* all([call(fs.remove(outDir)), call(runBuildStart(config))]);
+  const clean = spawn(function* () {
+    yield* call(fs.remove(outDir));
+  });
+
+  if (config.integrations.length > 0) {
+    yield* call(runBuildStart(config));
+  }
+
+  yield* clean;
 
   const mode = process.env.NODE_ENV ?? "production";
 
@@ -60,7 +70,9 @@ export function* build() {
 
   yield* call(buildServer(views, { env, outDir, config }));
 
-  yield* call(runBuildEnd(config));
+  if (config.integrations.length > 0) {
+    yield* call(runBuildEnd(config));
+  }
 
   const end = process.hrtime.bigint();
   const time = Number(end - start) / 1e6;

@@ -26,10 +26,7 @@ const make_id = () => `${Math.random()}${Math.random()}`;
 
 const make_marker = () => `<build-marker>${make_id()}</build-marker>`;
 
-export async function prepare(
-  code: string,
-  filename: string
-): Promise<PreparedFacade> {
+export function prepare(code: string, filename: string): PreparedFacade {
   function walk(
     node: BaseNode,
     visitor: (node: BaseNode) => BaseNode

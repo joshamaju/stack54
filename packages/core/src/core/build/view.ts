@@ -80,14 +80,17 @@ export function* buildViews({
           compiler.preprocess(code, preprocessors, { filename })
         );
 
-        const transformed = yield* call(
-          runHtmlPreTransform(config, {
-            code: processed.code,
-            filename,
-          })
-        );
+        const transformed =
+          config.integrations.length <= 0
+            ? processed.code
+            : yield* call(
+                runHtmlPreTransform(config, {
+                  code: processed.code,
+                  filename,
+                })
+              );
 
-        const prepared = yield* call(Facade.prepare(transformed, filename));
+        const prepared = Facade.prepare(transformed, filename);
 
         // skip views with no client assets to process
         if (prepared.moves.length <= 0) {
@@ -177,9 +180,12 @@ export function* buildViews({
         const { dir, name } = path.parse(original);
         const file = path.join(dir, `${name}${prepared.extension}`);
 
-        const transformed = yield* call(
-          runHtmlPostTransform(config, { code, filename: file })
-        );
+        const transformed =
+          config.integrations.length <= 0
+            ? code
+            : yield* call(
+                runHtmlPostTransform(config, { code, filename: file })
+              );
 
         return [file, { file, code: transformed } as Output] as const;
       });
