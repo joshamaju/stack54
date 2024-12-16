@@ -1,6 +1,6 @@
 {
   "name": "stack54",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "The fun Javascript stack",
   "type": "module",
   "publishConfig": {
@@ -57,7 +57,9 @@
     "@tsconfig/svelte": "^5.0.2",
     "devalue": "^4.3.2",
     "effect": "^3.5.7",
+    "effection": "^3.0.3",
     "es-module-lexer": "^1.5.4",
+    "fp-ts": "^2.16.9",
     "fs-extra": "^11.2.0",
     "glob": "^10.3.10",
     "kleur": "^4.1.5",

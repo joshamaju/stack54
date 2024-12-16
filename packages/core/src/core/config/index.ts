@@ -113,8 +113,8 @@ export class InvalidConfig {
 
 export function parse(config: UserConfig | null = {}) {
   const result = userConfigSchema.safeParse(config);
-  if (result.success) return Effect.succeed(result.data);
-  return Effect.fail(new InvalidConfig(result.error));
+  if (result.success) return result.data;
+  throw new InvalidConfig(result.error);
 }
 
 export async function preprocess(
