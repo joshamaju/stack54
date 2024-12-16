@@ -7,6 +7,7 @@ import { ResolvedConfig } from "../config/index.js";
 import { define, Env } from "../env.js";
 import { parse_id } from "../utils/view.js";
 import { Output } from "./types.js";
+import { makeViteLogger } from "../logger.js";
 
 type Opts = { config: ResolvedConfig; outDir: string; env: Env };
 
@@ -26,10 +27,13 @@ export async function buildServer(
 
   const env_define = define(env);
 
+  const vite_logger = makeViteLogger("server");
+
   const inline_config: vite.InlineConfig = {
     define: env_define,
     plugins: [resolve],
     mode: "production",
+    customLogger: vite_logger,
     build: {
       ssr: true,
       // target: "esnext",

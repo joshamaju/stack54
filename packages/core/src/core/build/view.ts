@@ -18,7 +18,7 @@ import {
 } from "../integrations/hooks.js";
 import * as Facade from "./facade.js";
 import type { Output } from "./types.js";
-import { useLogger } from "../logger.js";
+import { makeViteLogger, useLogger } from "../logger.js";
 
 const VITE_HTML_PLACEHOLDER = "<div data-obfuscation-placeholder></div>";
 
@@ -144,10 +144,13 @@ export function* buildViews({
 
     const env_define = define(env);
 
+    const vite_logger = makeViteLogger("client");
+
     const inline_config: vite.InlineConfig = {
       logLevel: "silent",
       define: env_define,
       mode: "production",
+      customLogger: vite_logger,
       plugins: [resolve, obfuscate, deobfuscate],
       build: {
         ssr: false,

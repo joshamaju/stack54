@@ -83,9 +83,9 @@ export function useLogger(
   };
 }
 
-export function makeViteLogger() {
+export function makeViteLogger(scope: "client" | "server") {
   const run = (logLevel: Level, message: string | string[]) => {
-    logger({ date: new Date(), message, logLevel, label: "vite" });
+    logger({ date: new Date(), message, logLevel, label: scope });
   };
 
   const warnedMessages = new Set<string>();

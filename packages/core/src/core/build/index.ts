@@ -2,7 +2,7 @@ import * as path from "node:path";
 
 import fs from "fs-extra";
 
-import { call, all } from "effection";
+import { all, call } from "effection";
 import color from "kleur";
 
 import * as Config from "../config/index.js";
@@ -13,7 +13,7 @@ import {
   runConfigResolved,
   runConfigSetup,
 } from "../integrations/hooks.js";
-import { makeViteLogger, useLogger } from "../logger.js";
+import { useLogger } from "../logger.js";
 import { makeVite } from "../utils/vite.js";
 import { buildServer } from "./server.js";
 import { buildViews } from "./view.js";
@@ -37,12 +37,7 @@ export function* build() {
     Config.preprocess(merged_config, { cwd })
   );
 
-  const vite_logger = makeViteLogger();
-
-  const shared_vite_config = makeVite(resolved_config, {
-    logger: vite_logger,
-    mode: "build",
-  });
+  const shared_vite_config = makeVite(resolved_config, { mode: "build" });
 
   const config = { ...resolved_config, vite: shared_vite_config };
 
@@ -59,11 +54,7 @@ export function* build() {
 
   const opts = { cwd, outDir, config: config, env: public_ };
 
-  // logger.info("building views...");
-
   const views = yield* buildViews(opts);
-
-  // logger.info("building server...");
 
   defineServerEnv(env);
 
