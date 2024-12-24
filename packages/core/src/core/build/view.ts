@@ -20,30 +20,6 @@ import * as Facade from "./facade.js";
 import type { Output } from "./types.js";
 import { makeViteLogger, useLogger } from "../logger.js";
 
-const VITE_HTML_PLACEHOLDER = "<div data-obfuscation-placeholder></div>";
-
-const obfuscate: Plugin = {
-  name: "view-obfuscator",
-  /**
-   * we need to execute this before any vite html parser sees it and throws an error because of the
-   * svelte script at the beginning of the markup, to trick it into accepting the markup as valid HTML
-   */
-  transformIndexHtml: {
-    order: "pre",
-    handler(html) {
-      return `${VITE_HTML_PLACEHOLDER}\n${html}`;
-    },
-  },
-};
-
-const deobfuscate: Plugin = {
-  enforce: "post",
-  name: "view-deobfuscator",
-  transformIndexHtml(html) {
-    return html.replace(`${VITE_HTML_PLACEHOLDER}`, "");
-  },
-};
-
 export function* buildViews({
   env,
   cwd,
@@ -153,8 +129,8 @@ export function* buildViews({
       logLevel: "silent",
       define: env_define,
       mode: "production",
+      plugins: [resolve],
       customLogger: vite_logger,
-      plugins: [resolve, obfuscate, deobfuscate],
       build: {
         ssr: false,
         outDir: build_dir,

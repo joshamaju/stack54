@@ -2,7 +2,7 @@ import * as path from "node:path";
 
 import fs from "fs-extra";
 
-import { all, call, spawn } from "effection";
+import { call, spawn } from "effection";
 import color from "kleur";
 
 import * as Config from "../config/index.js";
@@ -25,13 +25,16 @@ export function* build() {
 
   const logger = useLogger();
 
+  logger.info("loading configuration");
+
   const inline_config = yield* call(Config.load(cwd));
 
   const user_config = Config.parse(inline_config);
 
-  let merged_config = yield* call(
-    runConfigSetup(user_config, { command: "build" })
-  );
+  let merged_config =
+    user_config.integrations.length <= 0
+      ? user_config
+      : yield* call(runConfigSetup(user_config, { command: "build" }));
 
   const resolved_config = yield* call(
     Config.preprocess(merged_config, { cwd })
@@ -62,7 +65,7 @@ export function* build() {
   const env = load(config.env.dir ?? cwd, mode);
   const { public: public_ } = partition(env, config.env.publicPrefix);
 
-  const opts = { cwd, outDir, config: config, env: public_ };
+  const opts = { cwd, outDir, config, env: public_ };
 
   const views = yield* buildViews(opts);
 
