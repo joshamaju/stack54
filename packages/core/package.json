@@ -18,7 +18,8 @@
     "changeset": "changeset",
     "prepublish": "pnpm build",
     "version": "changeset version",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "generate-version": "node ./scripts/version.js"
   },
   "author": "Joshua Amaju",
   "license": "ISC",

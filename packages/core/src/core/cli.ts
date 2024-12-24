@@ -1,8 +1,5 @@
-import sade from "sade";
 import color from "kleur";
-
-import * as fs from "node:fs";
-import { fileURLToPath } from "node:url";
+import sade from "sade";
 
 import { run } from "effection";
 
@@ -10,11 +7,10 @@ import { InvalidConfig } from "./config/index.js";
 import { useLogger } from "./logger.js";
 import { formatConfigErrorMessage } from "./message.js";
 
-const pkg_path = fileURLToPath(new URL("../../package.json", import.meta.url));
+// @ts-expect-error generated at build time
+import { VERSION } from "../../version.js";
 
-const pkg = JSON.parse(fs.readFileSync(pkg_path, "utf-8"));
-
-const program = sade("stack54-cli").version(pkg.version);
+const program = sade("stack54-cli").version(VERSION);
 
 const logger = useLogger();
 
