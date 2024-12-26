@@ -6,15 +6,13 @@ import { run } from "effection";
 import { InvalidConfig } from "./config/index.js";
 import { useLogger } from "./logger.js";
 import { formatConfigErrorMessage } from "./message.js";
-
-// @ts-expect-error generated at build time
 import { VERSION } from "../../version.js";
 
 const program = sade("stack54-cli").version(VERSION);
 
 const logger = useLogger();
 
-const handle_error = (error: unknown) => {
+function handle_error(error: unknown) {
   if (error instanceof InvalidConfig) {
     logger.error(formatConfigErrorMessage(error.cause));
   } else if ((error as any).name == "ParseError") {
@@ -28,7 +26,7 @@ const handle_error = (error: unknown) => {
   console.log();
 
   process.exit(1);
-};
+}
 
 program.command("dev").action(async () => {
   const { dev } = await import("./dev/index.js");
