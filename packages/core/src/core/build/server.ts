@@ -15,7 +15,7 @@ export async function buildServer(
   modules: Map<string, Output>,
   { env, config, outDir }: Opts
 ) {
-  // We substitute the original svelte file with our preprocessed html version
+  // Substitutes the original svelte file with the preprocessed html version
   const resolve: Plugin = {
     name: "stack54:facade-resolver",
     load(id) {

@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
@@ -67,7 +68,7 @@ export function* buildViews({
 
   const logger = useLogger();
 
-  yield* call(fse.remove(root_dir));
+  yield* call(fs.rm(root_dir, { recursive: true, force: true }));
 
   yield* call(fs.mkdir(root_dir));
 
@@ -194,7 +195,7 @@ export function* buildViews({
 
   const assets = path.join(build_dir, config.build.assetsDir);
 
-  const has_assets = yield* call(fse.exists(assets));
+  const has_assets = existsSync(assets);
 
   if (has_assets) {
     yield* call(fse.move(assets, path.join(outDir, config.build.assetsDir)));
@@ -202,7 +203,7 @@ export function* buildViews({
 
   try {
   } finally {
-    yield* call(fse.remove(root_dir));
+    yield* call(fs.rm(root_dir, { recursive: true, force: true }));
   }
 
   return new Map(modules);

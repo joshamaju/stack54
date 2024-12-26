@@ -1,9 +1,7 @@
+import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
-import fs from "fs-extra";
-
 import { call, spawn } from "effection";
-import color from "kleur";
 
 import * as Config from "../config/index.js";
 import { defineServerEnv, load, partition } from "../env.js";
@@ -14,6 +12,7 @@ import {
   runConfigSetup,
 } from "../integrations/hooks.js";
 import { useLogger } from "../logger.js";
+import { displayTime } from "../utils/index.js";
 import { makeVite } from "../utils/vite.js";
 import { buildServer } from "./server.js";
 import { buildViews } from "./view.js";
@@ -50,8 +49,8 @@ export function* build() {
 
   const outDir = path.join(cwd, config.build.outDir);
 
-  const clean = spawn(function* () {
-    yield* call(fs.remove(outDir));
+  const clean = yield* spawn(function* () {
+    yield* call(fs.rm(outDir, { recursive: true, force: true }));
   });
 
   if (config.integrations.length > 0) {
@@ -80,5 +79,5 @@ export function* build() {
   const end = process.hrtime.bigint();
   const time = Number(end - start) / 1e6;
 
-  logger.info(`✔︎ build done in ${Math.round(time)} ${color.dim("ms")}`);
+  logger.info(`✔︎ build done in ${displayTime(Math.round(time))}`);
 }
