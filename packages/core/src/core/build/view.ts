@@ -2,8 +2,6 @@ import { existsSync } from "node:fs";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
-import fse from "fs-extra";
-
 import type { Processed } from "svelte/compiler";
 import * as compiler from "svelte/compiler";
 import type { Plugin } from "vite";
@@ -163,7 +161,7 @@ export function* buildViews({
             if (resolved) return resolved;
 
             const file = path.resolve(path.dirname(original), source);
-            if (await fse.exists(file)) return file;
+            if (existsSync(file)) return file;
           }
         }
       },

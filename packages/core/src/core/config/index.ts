@@ -2,8 +2,6 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as url from "node:url";
 
-import { Effect } from "effect";
-
 import type { Arrayable } from "@sveltejs/vite-plugin-svelte";
 import type { CompileOptions, PreprocessorGroup } from "svelte/compiler";
 import type { ViteDevServer, UserConfig as ViteUserConfig } from "vite";
