@@ -45,6 +45,29 @@ const deobfuscate: Plugin = {
   },
 };
 
+async function copyDir(srcDir: string, destDir: string) {
+  await fs.mkdir(destDir, { recursive: true });
+
+  const files = await fs.readdir(srcDir);
+
+  for (const file of files) {
+    const srcFile = path.resolve(srcDir, file);
+
+    if (srcFile === destDir) {
+      continue;
+    }
+
+    const destFile = path.resolve(destDir, file);
+    const stat = await fs.stat(srcFile);
+
+    if (stat.isDirectory()) {
+      await copyDir(srcFile, destFile);
+    } else {
+      await fs.copyFile(srcFile, destFile);
+    }
+  }
+}
+
 export function* buildViews({
   env,
   cwd,
@@ -198,7 +221,7 @@ export function* buildViews({
   const has_assets = existsSync(assets);
 
   if (has_assets) {
-    yield* call(fse.move(assets, path.join(outDir, config.build.assetsDir)));
+    yield* call(copyDir(assets, path.join(outDir, config.build.assetsDir)));
   }
 
   try {
