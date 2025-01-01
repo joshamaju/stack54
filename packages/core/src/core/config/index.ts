@@ -1,6 +1,6 @@
-import * as fs from "node:fs";
+import { existsSync } from "node:fs";
 import * as path from "node:path";
-import * as url from "node:url";
+import { pathToFileURL } from "node:url";
 
 import type { Arrayable } from "@sveltejs/vite-plugin-svelte";
 import type { CompileOptions, PreprocessorGroup } from "svelte/compiler";
@@ -8,7 +8,7 @@ import type { ViteDevServer, UserConfig as ViteUserConfig } from "vite";
 import z, { ZodError } from "zod";
 
 import { expand } from "../utils/filesystem.js";
-import { getSvelte } from "../utils/vite.js";
+import { get_svelte_config } from "../utils/vite.js";
 
 type MaybeAwait<T> = T | Promise<T>;
 
@@ -93,19 +93,18 @@ export type Integration = ResolvedConfig["integrations"][number];
 export async function load(cwd = process.cwd()): Promise<UserConfig | null> {
   const config_file = path.join(cwd, "stack.config.js");
 
-  if (!fs.existsSync(config_file)) {
+  if (!existsSync(config_file)) {
     return null;
   }
 
   const config = await import(
-    `${url.pathToFileURL(config_file).href}?ts=${Date.now()}`
+    `${pathToFileURL(config_file).href}?ts=${Date.now()}`
   );
 
   return config.default;
 }
 
 export class InvalidConfig {
-  readonly _tag = "InvalidConfig";
   constructor(public cause: ZodError<UserConfig>) {}
 }
 
@@ -124,5 +123,10 @@ export async function preprocess(
     expand(config.entry, { cwd }),
   ]);
 
-  return { ...config, views, entry: entry[0], svelte: getSvelte(config) };
+  return {
+    ...config,
+    views,
+    entry: entry[0],
+    svelte: get_svelte_config(config),
+  };
 }

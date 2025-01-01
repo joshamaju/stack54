@@ -13,9 +13,9 @@ import {
 } from "../integrations/hooks.js";
 import { useLogger } from "../logger.js";
 import { displayTime } from "../utils/index.js";
-import { makeVite } from "../utils/vite.js";
-import { buildServer } from "./server.js";
-import { buildViews } from "./view.js";
+import { make_vite_config } from "../utils/vite.js";
+import { build_server } from "./server.js";
+import { build_views } from "./view.js";
 
 export function* build() {
   const start = process.hrtime.bigint();
@@ -39,7 +39,9 @@ export function* build() {
     Config.preprocess(merged_config, { cwd })
   );
 
-  const shared_vite_config = makeVite(resolved_config, { mode: "build" });
+  const shared_vite_config = make_vite_config(resolved_config, {
+    mode: "build",
+  });
 
   const config = { ...resolved_config, vite: shared_vite_config };
 
@@ -66,11 +68,11 @@ export function* build() {
 
   const opts = { cwd, outDir, config, env: public_ };
 
-  const views = yield* buildViews(opts);
+  const views = yield* build_views(opts);
 
   defineServerEnv(env);
 
-  yield* call(buildServer(views, { env, outDir, config }));
+  yield* call(build_server(views, { env, outDir, config }));
 
   if (config.integrations.length > 0) {
     yield* call(runBuildEnd(config));

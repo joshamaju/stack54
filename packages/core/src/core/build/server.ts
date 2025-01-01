@@ -1,6 +1,6 @@
 import * as path from "node:path";
 
-import type { Plugin } from "vite";
+import type { Plugin, InlineConfig } from "vite";
 import * as vite from "vite";
 
 import { ResolvedConfig } from "../config/index.js";
@@ -11,7 +11,7 @@ import { makeViteLogger } from "../logger.js";
 
 type Opts = { config: ResolvedConfig; outDir: string; env: Env };
 
-export async function buildServer(
+export async function build_server(
   modules: Map<string, Output>,
   { env, config, outDir }: Opts
 ) {
@@ -29,7 +29,7 @@ export async function buildServer(
 
   const vite_logger = makeViteLogger("server");
 
-  const inline_config: vite.InlineConfig = {
+  const inline_config: InlineConfig = {
     define: env_define,
     plugins: [resolve],
     mode: "production",

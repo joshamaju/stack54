@@ -22,9 +22,9 @@ export function make(view: string, out_dir: string) {
   return path.join(out_dir, dir, `${name}.html`);
 }
 
-const make_id = () => `${Math.random()}${Math.random()}`;
+const identifier = () => `${Math.random()}${Math.random()}`;
 
-const make_marker = () => `<build-marker>${make_id()}</build-marker>`;
+const marker = () => `<build-marker>${identifier()}</build-marker>`;
 
 export function prepare(code: string, filename: string): PreparedFacade {
   function walk(
@@ -61,7 +61,7 @@ export function prepare(code: string, filename: string): PreparedFacade {
 
   // @ts-ignore
   wrap.forEach(({ end, start }) => {
-    const placeholder = make_marker();
+    const placeholder = marker();
     replacements.push([placeholder, s.slice(start, end)]);
     s.update(start, end, placeholder);
   });
@@ -78,7 +78,7 @@ export function prepare(code: string, filename: string): PreparedFacade {
           if (name == "link" || name == "script") {
             const { end, start } = node_;
 
-            const id = make_id();
+            const id = identifier();
             const content = s.slice(start, end);
             const wrapped = `<html data-move="${id}"><head>${content}</head></html>`;
 

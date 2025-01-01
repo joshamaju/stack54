@@ -14,7 +14,7 @@ type CreateViteOptions = {
 
 const defaultPreprocessors = [vitePreprocess()];
 
-export function getSvelte(config: ResolvedConfig) {
+export function get_svelte_config(config: ResolvedConfig) {
   const svelte_config = config.svelte;
 
   const preprocess = svelte_config.preprocess
@@ -26,7 +26,7 @@ export function getSvelte(config: ResolvedConfig) {
   return { ...svelte_config, preprocess: preprocessors };
 }
 
-export function makeVite(
+export function make_vite_config(
   config: ResolvedConfig,
   { mode, logger }: CreateViteOptions
 ) {

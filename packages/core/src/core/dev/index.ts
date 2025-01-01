@@ -7,7 +7,7 @@ import * as Config from "../config/index.js";
 import { define, defineServerEnv, load } from "../env.js";
 import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
 import { array } from "../utils/index.js";
-import { makeVite } from "../utils/vite.js";
+import { make_vite_config } from "../utils/vite.js";
 import { attachFullPath } from "./attach-full-path/index.js";
 import { live_reload_plugin } from "./live-reload-plugin/index.js";
 import { resolveInlineImportsPlugin } from "./resolve-inline-imports-plugin/index.js";
@@ -92,7 +92,7 @@ export function* dev() {
    */
   resolved_config.svelte.emitCss = false;
 
-  const shared_vite_config = makeVite(resolved_config, { mode: "dev" });
+  const shared_vite_config = make_vite_config(resolved_config, { mode: "dev" });
 
   const mode = process.env.NODE_ENV ?? "development";
   const env = load(resolved_config.env.dir ?? cwd, mode);

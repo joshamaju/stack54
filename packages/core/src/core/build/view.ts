@@ -66,7 +66,7 @@ async function copyDir(srcDir: string, destDir: string) {
   }
 }
 
-export function* buildViews({
+export function* build_views({
   env,
   cwd,
   outDir,
