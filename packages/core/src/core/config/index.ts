@@ -10,17 +10,30 @@ import z, { ZodError } from "zod";
 import { expand } from "../utils/filesystem.js";
 import { get_svelte_config } from "../utils/vite.js";
 
-type MaybeAwait<T> = T | Promise<T>;
+type Maybe<T> = T | Promise<T>;
 
-export type Transformer = (
-  code: string,
-  filename: string
-) => MaybeAwait<void | string>;
+type Transformer = (code: string, filename: string) => Maybe<void | string>;
+
+type Command = { command: "build" | "serve" };
+
+interface Hooks {
+  buildEnd: () => Maybe<void>;
+  buildStart: () => Maybe<void>;
+  configResolved: (config: ResolvedConfig) => Maybe<void>;
+  config: (config: UserConfig, env: Command) => Maybe<object | void>;
+  transform: Transformer | { handle: Transformer; order: "pre" | "post" };
+  configureServer: (server: ViteDevServer) => Maybe<void> | (() => Maybe<void>);
+}
+
+export interface Integration extends Partial<Hooks> {
+  name: string;
+}
 
 export const userConfigSchema = z.object({
   staticDir: z.string().default("static"),
   vite: z.custom<ViteUserConfig>().default({}),
   entry: z.string().default("src/entry.{js,ts,mjs,mts}"),
+  integrations: z.array(z.custom<Integration>()).default([]),
   views: z.array(z.string()).default(["src/views/**/*.svelte"]),
   build: z
     .object({
@@ -47,48 +60,10 @@ export const userConfigSchema = z.object({
         .default({ hydratable: true }),
     })
     .default({}),
-  integrations: z
-    .array(
-      z.object({
-        name: z.string(),
-        buildStart: z.custom<() => MaybeAwait<void>>().optional(),
-        buildEnd: z.custom<() => MaybeAwait<void>>().optional(),
-        transform: z
-          .union([
-            z.custom<Transformer>(),
-            z.object({
-              order: z.enum(["pre", "post"]),
-              handle: z.custom<Transformer>(),
-            }),
-          ])
-          .optional(),
-        configResolved: z
-          .custom<(config: any) => MaybeAwait<void>>()
-          .optional(),
-        config: z
-          .custom<
-            (
-              config: any,
-              env: { command: "build" | "serve" }
-            ) => MaybeAwait<object | void>
-          >()
-          .optional(),
-        configureServer: z
-          .custom<
-            (
-              server: ViteDevServer
-            ) => MaybeAwait<void> | (() => MaybeAwait<void>)
-          >()
-          .optional(),
-      })
-    )
-    .default([]),
 });
 
 export type UserConfig = z.input<typeof userConfigSchema>;
 export type ResolvedConfig = z.infer<typeof userConfigSchema>;
-
-export type Integration = ResolvedConfig["integrations"][number];
 
 export async function load(cwd = process.cwd()): Promise<UserConfig | null> {
   const config_file = path.join(cwd, "stack.config.js");
