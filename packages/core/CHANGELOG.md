@@ -1,5 +1,11 @@
 # mpa
 
+## 0.9.2
+
+### Patch Changes
+
+- 9a73fa2: Adds types for the user and resolved config parameters passed to integration hooks
+
 ## 0.9.1
 
 ### Patch Changes
