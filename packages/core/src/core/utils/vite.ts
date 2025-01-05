@@ -3,7 +3,7 @@ import * as vite from "vite";
 
 import { ResolvedConfig } from "../config/index.js";
 import { array } from "./index.js";
-import { integrationsContainerPlugin } from "../vite-plugins/integrations/index.js";
+import { integrations_container_plugin } from "../vite-plugins/integrations/index.js";
 
 type CreateViteOptions = {
   mode: "dev" | "build" | string;
@@ -12,7 +12,7 @@ type CreateViteOptions = {
   logger?: vite.Logger;
 };
 
-const defaultPreprocessors = [vitePreprocess()];
+const default_preprocessors = [vitePreprocess()];
 
 export function get_svelte_config(config: ResolvedConfig) {
   const svelte_config = config.svelte;
@@ -21,7 +21,7 @@ export function get_svelte_config(config: ResolvedConfig) {
     ? array(svelte_config.preprocess)
     : [];
 
-  const preprocessors = [...defaultPreprocessors, ...preprocess];
+  const preprocessors = [...default_preprocessors, ...preprocess];
 
   return { ...svelte_config, preprocess: preprocessors };
 }
@@ -41,7 +41,7 @@ export function make_vite_config(
     envPrefix: config.env.publicPrefix,
     plugins: [
       svelte(config.svelte) as vite.PluginOption,
-      integrationsContainerPlugin(config),
+      integrations_container_plugin(config),
     ],
     build: {
       copyPublicDir: false,

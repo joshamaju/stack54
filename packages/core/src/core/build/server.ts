@@ -7,7 +7,7 @@ import { ResolvedConfig } from "../config/index.js";
 import { define, Env } from "../env.js";
 import { parse_id } from "../utils/view.js";
 import { Output } from "./types.js";
-import { makeViteLogger } from "../logger.js";
+import { make_vite_logger } from "../logger.js";
 
 type Opts = { config: ResolvedConfig; outDir: string; env: Env };
 
@@ -27,7 +27,7 @@ export async function build_server(
 
   const env_define = define(env);
 
-  const vite_logger = makeViteLogger("server");
+  const vite_logger = make_vite_logger("server");
 
   const inline_config: InlineConfig = {
     define: env_define,

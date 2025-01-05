@@ -12,12 +12,12 @@ import { all, call } from "effection";
 import type { ResolvedConfig } from "../config/index.js";
 import { define, Env } from "../env.js";
 import {
-  runHtmlPostTransform,
-  runHtmlPreTransform,
+  run_html_post_transform,
+  run_html_pre_transform,
 } from "../integrations/hooks.js";
 import * as Facade from "./facade.js";
 import type { Output } from "./types.js";
-import { makeViteLogger, useLogger } from "../logger.js";
+import { make_vite_logger, use_logger } from "../logger.js";
 
 const VITE_HTML_PLACEHOLDER = "<div data-obfuscation-placeholder></div>";
 
@@ -87,7 +87,7 @@ export function* build_views({
 
   const preprocessors = config.svelte.preprocess ?? [];
 
-  const logger = useLogger();
+  const logger = use_logger();
 
   yield* call(fs.rm(root_dir, { recursive: true, force: true }));
 
@@ -106,7 +106,7 @@ export function* build_views({
           config.integrations.length <= 0
             ? processed.code
             : yield* call(
-                runHtmlPreTransform(config, {
+                run_html_pre_transform(config, {
                   code: processed.code,
                   filename,
                 })
@@ -169,7 +169,7 @@ export function* build_views({
 
     const env_define = define(env);
 
-    const vite_logger = makeViteLogger("client");
+    const vite_logger = make_vite_logger("client");
 
     const inline_config: vite.InlineConfig = {
       logLevel: "silent",
@@ -206,7 +206,7 @@ export function* build_views({
           config.integrations.length <= 0
             ? code
             : yield* call(
-                runHtmlPostTransform(config, { code, filename: file })
+                run_html_post_transform(config, { code, filename: file })
               );
 
         return [file, { file, code: transformed } as Output] as const;

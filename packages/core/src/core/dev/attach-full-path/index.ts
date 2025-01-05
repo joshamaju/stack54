@@ -37,7 +37,7 @@ const rules_by_tag = rules.reduce((acc, rule) => {
 
 const require = module.createRequire(import.meta.url);
 
-export function attachFullPath({
+export function attach_full_path({
   assetPrefix = "/",
 }: {
   assetPrefix?: string;

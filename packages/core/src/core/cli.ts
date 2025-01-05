@@ -4,17 +4,17 @@ import sade from "sade";
 import { run } from "effection";
 
 import { InvalidConfig } from "./config/index.js";
-import { useLogger } from "./logger.js";
-import { formatConfigError } from "./message.js";
+import { use_logger } from "./logger.js";
+import { format_config_error } from "./message.js";
 import { VERSION } from "../../version.js";
 
 const program = sade("stack54-cli").version(VERSION);
 
-const logger = useLogger();
+const logger = use_logger();
 
 function handle_error(error: unknown) {
   if (error instanceof InvalidConfig) {
-    logger.error(formatConfigError(error.cause));
+    logger.error(format_config_error(error.cause));
   } else if ((error as any).name == "ParseError") {
     const { frame, start, filename } = error as any;
     logger.error(`[ParseError] ${filename}:${start.line}:${start.column}`);

@@ -5,18 +5,21 @@ import { call, suspend } from "effection";
 
 import * as Config from "../config/index.js";
 import { define, defineServerEnv, load } from "../env.js";
-import { runConfigResolved, runConfigSetup } from "../integrations/hooks.js";
+import {
+  run_config_resolved,
+  run_config_setup,
+} from "../integrations/hooks.js";
 import { array } from "../utils/index.js";
 import { make_vite_config } from "../utils/vite.js";
-import { attachFullPath } from "./attach-full-path/index.js";
+import { attach_full_path } from "./attach-full-path/index.js";
 import { live_reload_plugin } from "./live-reload-plugin/index.js";
-import { resolveInlineImportsPlugin } from "./resolve-inline-imports-plugin/index.js";
-import { useLogger } from "../logger.js";
+import { resolve_inline_imports_plugin } from "./resolve-inline-imports-plugin/index.js";
+import { use_logger } from "../logger.js";
 
 const cwd = process.cwd();
 
 export function* dev() {
-  const logger = useLogger();
+  const logger = use_logger();
 
   const start = performance.now();
 
@@ -30,7 +33,7 @@ export function* dev() {
   ];
 
   let merged_config = yield* call(
-    runConfigSetup(user_config, { command: "serve" })
+    run_config_setup(user_config, { command: "serve" })
   );
 
   let { assetPrefix } = user_config.build;
@@ -46,12 +49,12 @@ export function* dev() {
 
   merged_config.svelte.preprocess = [
     ...array(merged_config.svelte.preprocess ?? []),
-    attachFullPath({ assetPrefix }),
+    attach_full_path({ assetPrefix }),
   ];
 
   merged_config.vite.plugins = [
     ...(merged_config.vite.plugins ?? []),
-    resolveInlineImportsPlugin(),
+    resolve_inline_imports_plugin(),
   ];
 
   const resolved_config = yield* call(
@@ -107,7 +110,7 @@ export function* dev() {
     vite: vite.mergeConfig(shared_vite_config, internal_vite_config),
   };
 
-  yield* call(runConfigResolved(config));
+  yield* call(run_config_resolved(config));
 
   defineServerEnv(env);
 

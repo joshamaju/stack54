@@ -2,7 +2,7 @@ import * as url from "node:url";
 import type { Plugin } from "vite";
 import { RESOLVER_PREFIX } from "../attach-full-path/index.js";
 
-export function resolveInlineImportsPlugin(): Plugin {
+export function resolve_inline_imports_plugin(): Plugin {
   return {
     name: "stack54:resolve-inline-imports",
     async resolveId(source) {

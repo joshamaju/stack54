@@ -3,7 +3,7 @@ import { merge } from "../config/merge.js";
 
 export type ConfigEnv = { command: "build" | "serve" };
 
-export async function runConfigSetup(
+export async function run_config_setup(
   config: ResolvedConfig,
   env: ConfigEnv
 ): Promise<ResolvedConfig> {
@@ -19,25 +19,25 @@ export async function runConfigSetup(
   return merged;
 }
 
-export async function runConfigResolved(config: ResolvedConfig) {
+export async function run_config_resolved(config: ResolvedConfig) {
   for (const integration of config.integrations) {
     await integration.configResolved?.call(integration, config);
   }
 }
 
-export async function runBuildStart(config: ResolvedConfig) {
+export async function run_build_start(config: ResolvedConfig) {
   for (const integration of config.integrations) {
     await integration.buildStart?.call(integration);
   }
 }
 
-export async function runBuildEnd(config: ResolvedConfig) {
+export async function run_build_end(config: ResolvedConfig) {
   for (const integration of config.integrations) {
     await integration.buildEnd?.call(integration);
   }
 }
 
-export async function runHtmlPreTransform(
+export async function run_html_pre_transform(
   config: ResolvedConfig,
   { code, filename }: { code: string; filename: string }
 ) {
@@ -57,7 +57,7 @@ export async function runHtmlPreTransform(
   return _code;
 }
 
-export async function runHtmlPostTransform(
+export async function run_html_post_transform(
   config: ResolvedConfig,
   { code, filename }: { code: string; filename: string }
 ) {

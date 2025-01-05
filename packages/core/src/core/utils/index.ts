@@ -2,7 +2,7 @@ export function array<T>(target: T | T[]): T[] {
   return Array.isArray(target) ? target : [target];
 }
 
-export function displayTime(time: number): string {
+export function display_time(time: number): string {
   // display: {X}ms
   if (time < 1000) {
     return `${time}ms`;

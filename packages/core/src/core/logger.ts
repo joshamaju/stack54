@@ -63,7 +63,7 @@ export const logger: Logger = ({ date, label, message, logLevel }) => {
   );
 };
 
-export function useLogger(
+export function use_logger(
   label?: string
 ): Pick<Console, "error" | "warn" | "info"> {
   const log = (logLevel: Level, message: string | string[]) => {
@@ -83,7 +83,7 @@ export function useLogger(
   };
 }
 
-export function makeViteLogger(scope: "client" | "server") {
+export function make_vite_logger(scope: "client" | "server") {
   const run = (logLevel: Level, message: string | string[]) => {
     logger({ date: new Date(), message, logLevel, label: scope });
   };
