@@ -13,7 +13,7 @@ const is_lazy = <T>(value: any): value is Lazy<T> => {
   return typeof value == "function";
 };
 
-export function resolve_component<T>(
+function resolve_component<T>(
   path: string | string[],
   components: T
 ): T extends Record<string, infer R>
@@ -43,41 +43,11 @@ export function resolve_component<T>(
 
 export interface Views {}
 
-// /**
-//  * @deprecated use {@link createRenderer} instead
-//  */
-// export function makeFactory<T extends Template | Promise<Template>>(
-//   f: (name: string) => T
-// ) {
-//   return <V extends Views, K extends keyof V, O extends Options>(
-//     name: K,
-//     props?: V[K],
-//     opts?: O
-//   ): T extends Promise<Template>
-//     ? Promise<O["stream"] extends true ? ReadableStream : string>
-//     : O["stream"] extends true
-//     ? ReadableStream
-//     : string => {
-//     // @ts-expect-error
-//     const output = f(name);
-
-//     const fn =
-//       opts?.stream && opts.stream == true
-//         ? renderToStream
-//         : unsafe_render_to_string;
-
-//     // @ts-expect-error
-//     return output instanceof Promise
-//       ? output.then((_) => fn(_, props as Props, opts))
-//       : fn(output, props as Props, opts);
-//   };
-// }
-
 type StreamMaybe<O extends Options> = O["stream"] extends true
   ? ReadableStream
   : string;
 
-export function create_renderer<T extends Template | Promise<Template>>({
+function create_renderer<T extends Template | Promise<Template>>({
   render,
   resolve,
 }: {
@@ -124,3 +94,8 @@ export function is_template(value: unknown): value is Template {
     typeof value.render == "function"
   );
 }
+
+export {
+  create_renderer as createRenderer,
+  resolve_component as resolveComponent,
+};

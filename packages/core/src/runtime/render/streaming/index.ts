@@ -27,7 +27,7 @@ const await_ = (args: Args) => {
   return awaiter?.(args);
 };
 
-export function renderToStream(
+function render_to_stream(
   template: Template,
   ...args: Parameters<Template["render"]>
 ) {
@@ -93,3 +93,5 @@ export function renderToStream(
 }
 
 export { await_ as await };
+
+export { render_to_stream as renderToStream };
