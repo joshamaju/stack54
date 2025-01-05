@@ -13,6 +13,7 @@ export function live_reload_plugin(): Integration {
   let vite_config: ViteResolvedConfig;
 
   const vite_plugin: Plugin = {
+    apply: "serve",
     name: "stack54:live-reload",
     configResolved(conf) {
       vite_config = conf;
