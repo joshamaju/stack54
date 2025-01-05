@@ -2,7 +2,7 @@ import color from "kleur";
 
 import type { Rollup, Logger as ViteLogger } from "vite";
 
-export const dateTimeFormat = new Intl.DateTimeFormat([], {
+export const datetime_formatter = new Intl.DateTimeFormat([], {
   hour12: false,
   hour: "2-digit",
   minute: "2-digit",
@@ -50,7 +50,7 @@ const colors = {
 };
 
 export const logger: Logger = ({ date, label, message, logLevel }) => {
-  const timestamp = `${dateTimeFormat.format(date)}`;
+  const timestamp = `${datetime_formatter.format(date)}`;
   const prefix = [color.dim(timestamp), colors[logLevel.label]];
 
   if (label && label.trim() !== "") {
