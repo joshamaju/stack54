@@ -56,7 +56,6 @@ export const userConfigSchema = z.object({
       preprocess: z.custom<Arrayable<PreprocessorGroup>>().optional(),
       compilerOptions: z
         .custom<Omit<CompileOptions, "filename" | "format" | "generate">>()
-        .optional()
         .default({ hydratable: true }),
     })
     .default({}),
