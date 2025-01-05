@@ -2,6 +2,13 @@ import * as url from "node:url";
 import type { Plugin } from "vite";
 import { RESOLVER_PREFIX } from "../attach-full-path/index.js";
 
+/**
+ * Resovles imports in inline script tags i.e
+ *
+ * <script type="module">
+ *    import module from "./src/module.ts";
+ * </script>
+ */
 export function resolve_inline_imports_plugin(): Plugin {
   return {
     name: "stack54:resolve-inline-imports",
