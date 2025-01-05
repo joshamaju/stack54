@@ -12,12 +12,6 @@ export const rules = [
   },
 
   {
-    tag: "input",
-    attribute: "src",
-    // type: "src",
-  },
-
-  {
     tag: "audio",
     attribute: "src",
     // type: "src",
@@ -68,12 +62,6 @@ export const rules = [
   {
     tag: "object",
     attribute: "data",
-    // type: "src",
-  },
-
-  {
-    tag: "embed",
-    attribute: "src",
     // type: "src",
   },
 ] as const;
