@@ -1,5 +1,12 @@
 # mpa
 
+## 0.9.2
+
+### Patch Changes
+
+- ee62590: Uses consistent naming convention for exported APIs
+- 9a73fa2: Adds types for the user and resolved config parameters passed to integration hooks
+
 ## 0.9.1
 
 ### Patch Changes
