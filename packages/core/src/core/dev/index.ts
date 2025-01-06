@@ -9,12 +9,13 @@ import {
   run_config_resolved,
   run_config_setup,
 } from "../integrations/hooks.js";
+import { use_logger } from "../logger.js";
+import { clearScreen } from "../utils/console.js";
 import { array } from "../utils/index.js";
 import { make_vite_config } from "../utils/vite.js";
 import { attach_full_path } from "./attach-full-path/index.js";
 import { live_reload_plugin } from "./live-reload-plugin/index.js";
 import { resolve_inline_imports_plugin } from "./resolve-inline-imports-plugin/index.js";
-import { use_logger } from "../logger.js";
 
 const cwd = process.cwd();
 
@@ -131,6 +132,7 @@ export function* dev() {
   try {
     yield* suspend();
   } finally {
+    clearScreen();
     logger.info("stopping server...");
     yield* call(server.close());
     logger.info("stopped server");
