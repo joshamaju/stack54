@@ -1,5 +1,11 @@
 # mpa
 
+## 0.10.0
+
+### Minor Changes
+
+- 4139610: Handoff env handling to vite
+
 ## 0.9.2
 
 ### Patch Changes
