@@ -7,7 +7,7 @@ import * as compiler from "svelte/compiler";
 import type { Plugin } from "vite";
 import * as vite from "vite";
 
-import { all, call, ensure } from "effection";
+import { all, call, ensure, Operation } from "effection";
 
 import type { ResolvedConfig } from "../config/index.js";
 import { define, Env } from "../env.js";
@@ -76,7 +76,7 @@ export function* build_views({
   cwd: string;
   outDir: string;
   config: ResolvedConfig;
-}) {
+}): Operation<Map<string, Output>> {
   const root = ".facades";
   const build = path.join(root, "build");
   const generated = path.join(root, "generated");
@@ -89,11 +89,15 @@ export function* build_views({
 
   const logger = use_logger();
 
-  yield* call(fs.rm(root_dir, { recursive: true, force: true }));
+  if (config.views.length > 0) {
+    yield* call(fs.rm(root_dir, { recursive: true, force: true }));
 
-  yield* call(fs.mkdir(root_dir));
+    yield* call(fs.mkdir(root_dir));
 
-  try {
+    yield* ensure(function* () {
+      yield* call(fs.rm(root_dir, { recursive: true, force: true }));
+    });
+
     const facade_keypairs = yield* all(
       config.views.map((filename) => {
         return call(function* () {
@@ -186,46 +190,50 @@ export function* build_views({
       };
 
       yield* call(vite.build(vite.mergeConfig(config.vite, inline_config)));
-    } else {
-      logger.warn("No views to build");
+
+      const modules = yield* all(
+        [...facades.entries()].map(([facade, prepared]) => {
+          return call(function* () {
+            const view = path.join(build_dir, facade.replace(cwd, ""));
+
+            const html = yield* call(fs.readFile(view, "utf-8"));
+
+            const code = Facade.reconstruct({ ...prepared, code: html });
+            const original = view.replace(path.join(cwd, build, generated), "");
+
+            const { dir, name } = path.parse(original);
+            const file = path.join(dir, `${name}${prepared.extension}`);
+
+            const transformed =
+              config.integrations.length <= 0
+                ? code
+                : yield* call(
+                    run_html_post_transform(config, {
+                      code,
+                      filename: file,
+                    })
+                  );
+
+            return [file, { file, code: transformed } as Output] as const;
+          });
+        })
+      );
+
+      const assets = path.join(build_dir, config.build.assetsDir);
+
+      const has_assets = existsSync(assets);
+
+      if (has_assets) {
+        yield* call(copyDir(assets, path.join(outDir, config.build.assetsDir)));
+      }
+
+      return new Map(modules);
     }
 
-    const modules = yield* all(
-      [...facades.entries()].map(([facade, prepared]) => {
-        return call(function* () {
-          const view = path.join(build_dir, facade.replace(cwd, ""));
-
-          const html = yield* call(fs.readFile(view, "utf-8"));
-
-          const code = Facade.reconstruct({ ...prepared, code: html });
-          const original = view.replace(path.join(cwd, build, generated), "");
-
-          const { dir, name } = path.parse(original);
-          const file = path.join(dir, `${name}${prepared.extension}`);
-
-          const transformed =
-            config.integrations.length <= 0
-              ? code
-              : yield* call(
-                  run_html_post_transform(config, { code, filename: file })
-                );
-
-          return [file, { file, code: transformed } as Output] as const;
-        });
-      })
-    );
-
-    const assets = path.join(build_dir, config.build.assetsDir);
-
-    const has_assets = existsSync(assets);
-
-    if (has_assets) {
-      yield* call(copyDir(assets, path.join(outDir, config.build.assetsDir)));
-    }
-
-    return new Map(modules);
-  } finally {
-    // cleanup generated files and folder irrespective of failure of success
-    yield* call(fs.rm(root_dir, { recursive: true, force: true }));
+    logger.warn("No views to build");
+  } else {
+    logger.warn("No views to build, check your configuration");
   }
+
+  return new Map();
 }
