@@ -30,7 +30,3 @@ export function define(env: Env) {
     })
   );
 }
-
-export function defineServerEnv(env: Env) {
-  for (const key in env) process.env[key] = env[key];
-}

@@ -4,7 +4,7 @@ import * as path from "node:path";
 import { call, spawn } from "effection";
 
 import * as Config from "../config/index.js";
-import { defineServerEnv, load, partition } from "../env.js";
+import { load, partition } from "../env.js";
 import {
   run_build_end,
   run_build_start,
@@ -64,15 +64,13 @@ export function* build() {
   const mode = process.env.NODE_ENV ?? "production";
 
   const env = load(config.env.dir ?? cwd, mode);
-  const { public: public_ } = partition(env, config.env.publicPrefix);
+  const { private: private_ } = partition(env, config.env.publicPrefix);
 
-  const opts = { cwd, outDir, config, env: public_ };
+  const opts = { cwd, outDir, config };
 
   const views = yield* build_views(opts);
 
-  defineServerEnv(env);
-
-  yield* call(build_server(views, { env, outDir, config }));
+  yield* call(build_server(views, { ...opts, env: private_ }));
 
   if (config.integrations.length > 0) {
     yield* call(run_build_end(config));

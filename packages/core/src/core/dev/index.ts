@@ -4,7 +4,7 @@ import * as vite from "vite";
 import { call, suspend } from "effection";
 
 import * as Config from "../config/index.js";
-import { define, defineServerEnv, load } from "../env.js";
+import { define, load } from "../env.js";
 import {
   run_config_resolved,
   run_config_setup,
@@ -112,8 +112,6 @@ export function* dev() {
   };
 
   yield* call(run_config_resolved(config));
-
-  defineServerEnv(env);
 
   const server = yield* call(vite.createServer(config.vite));
 

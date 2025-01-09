@@ -10,14 +10,13 @@ import * as vite from "vite";
 import { all, call, ensure, Operation } from "effection";
 
 import type { ResolvedConfig } from "../config/index.js";
-import { define, Env } from "../env.js";
 import {
   run_html_post_transform,
   run_html_pre_transform,
 } from "../integrations/hooks.js";
+import { make_vite_logger, use_logger } from "../logger.js";
 import * as Facade from "./facade.js";
 import type { Output } from "./types.js";
-import { make_vite_logger, use_logger } from "../logger.js";
 
 const VITE_HTML_PLACEHOLDER = "<div data-obfuscation-placeholder></div>";
 
@@ -67,12 +66,10 @@ async function copyDir(srcDir: string, destDir: string) {
 }
 
 export function* build_views({
-  env,
   cwd,
   outDir,
   config,
 }: {
-  env: Env;
   cwd: string;
   outDir: string;
   config: ResolvedConfig;
@@ -172,13 +169,10 @@ export function* build_views({
         },
       };
 
-      const env_define = define(env);
-
       const vite_logger = make_vite_logger("client");
 
       const inline_config: vite.InlineConfig = {
         logLevel: "silent",
-        define: env_define,
         mode: "production",
         customLogger: vite_logger,
         plugins: [resolve, obfuscate, deobfuscate],
