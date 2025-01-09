@@ -39,8 +39,11 @@ export function* build() {
     Config.preprocess(merged_config, { cwd })
   );
 
+  const mode = process.env.NODE_ENV ?? "production";
+
   const shared_vite_config = make_vite_config(resolved_config, {
-    mode: "build",
+    mode,
+    command: "build",
   });
 
   const config = { ...resolved_config, vite: shared_vite_config };
@@ -60,8 +63,6 @@ export function* build() {
   }
 
   yield* clean;
-
-  const mode = process.env.NODE_ENV ?? "production";
 
   const env = load(config.env.dir ?? cwd, mode);
   const { private: private_ } = partition(env, config.env.publicPrefix);

@@ -6,10 +6,9 @@ import { array } from "./index.js";
 import { integrations_container_plugin } from "../vite-plugins/integrations/index.js";
 
 type CreateViteOptions = {
-  mode: "dev" | "build" | string;
-  // will be undefined when using `getViteConfig`
-  command?: "dev" | "build";
+  mode: string;
   logger?: vite.Logger;
+  command?: "dev" | "build";
 };
 
 const default_preprocessors = [vitePreprocess()];
@@ -28,9 +27,10 @@ export function get_svelte_config(config: ResolvedConfig) {
 
 export function make_vite_config(
   config: ResolvedConfig,
-  { mode, logger }: CreateViteOptions
+  { mode, command, logger }: CreateViteOptions
 ) {
   const inline_config: vite.InlineConfig = {
+    mode,
     appType: "custom",
     configFile: false,
     clearScreen: false,
@@ -51,7 +51,7 @@ export function make_vite_config(
     server: {
       watch: {
         // Prevent watching during the build to speed it up
-        ignored: mode === "build" ? ["**"] : undefined,
+        ignored: command === "build" ? ["**"] : undefined,
       },
     },
   };

@@ -96,9 +96,13 @@ export function* dev() {
    */
   resolved_config.svelte.emitCss = false;
 
-  const shared_vite_config = make_vite_config(resolved_config, { mode: "dev" });
-
   const mode = process.env.NODE_ENV ?? "development";
+
+  const shared_vite_config = make_vite_config(resolved_config, {
+    mode,
+    command: "dev",
+  });
+
   const env = load(resolved_config.env.dir ?? cwd, mode);
 
   const internal_vite_config: vite.InlineConfig = {
