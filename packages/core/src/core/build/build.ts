@@ -20,12 +20,12 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
 
   const scope = yield* useScope();
 
-  yield* call(fs.rm(dir, { recursive: true, force: true }));
+  yield* call(() => fs.rm(dir, { recursive: true, force: true }));
 
-  yield* call(fs.mkdir(dir));
+  yield* call(() => fs.mkdir(dir));
 
   yield* ensure(function* () {
-    yield* call(fs.rm(dir, { recursive: true, force: true }));
+    yield* call(() => fs.rm(dir, { recursive: true, force: true }));
   });
 
   const { public: public_ } = partition(env, config.env.publicPrefix);
