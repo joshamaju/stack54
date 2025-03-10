@@ -4,7 +4,7 @@ import * as path from "node:path";
 import { call, spawn } from "effection";
 
 import * as Config from "../config/index.js";
-import { load, partition } from "../env.js";
+import { load } from "../env.js";
 import {
   run_build_end,
   run_build_start,
@@ -14,8 +14,7 @@ import {
 import { use_logger } from "../logger.js";
 import { display_time } from "../utils/index.js";
 import { make_vite_config } from "../utils/vite.js";
-import { build_server } from "./server.js";
-import { build_views } from "./view.js";
+import { builder } from "./build.js";
 
 export function* build() {
   const start = process.hrtime.bigint();
@@ -26,14 +25,14 @@ export function* build() {
 
   logger.info("loading configuration");
 
-  const inline_config = yield* call(Config.load(cwd));
+  const inline_config = yield* call(() => Config.load(cwd));
 
   const user_config = Config.parse(inline_config);
 
   let merged_config =
     user_config.integrations.length <= 0
       ? user_config
-      : yield* call(run_config_setup(user_config, { command: "build" }));
+      : yield* call(() => run_config_setup(user_config, { command: "build" }));
 
   const resolved_config = yield* call(
     Config.preprocess(merged_config, { cwd })
@@ -48,15 +47,17 @@ export function* build() {
 
   const config = { ...resolved_config, vite: shared_vite_config };
 
-  if (config.integrations.length > 0) {
-    yield* call(run_config_resolved(config));
-  }
-
   const outDir = path.join(cwd, config.build.outDir);
 
   const clean = yield* spawn(function* () {
-    yield* call(fs.rm(outDir, { recursive: true, force: true }));
+    yield* call(() => fs.rm(outDir, { recursive: true, force: true }));
   });
+
+  if (config.integrations.length > 0) {
+    yield* call(() => run_config_resolved(config));
+  }
+
+  const env = load(config.env.dir ?? cwd, mode);
 
   if (config.integrations.length > 0) {
     yield* call(run_build_start(config));
@@ -64,17 +65,10 @@ export function* build() {
 
   yield* clean;
 
-  const env = load(config.env.dir ?? cwd, mode);
-  const { private: private_ } = partition(env, config.env.publicPrefix);
-
-  const opts = { cwd, outDir, config };
-
-  const views = yield* build_views(opts);
-
-  yield* call(build_server(views, { ...opts, env: private_ }));
+  yield* builder({ cwd, outDir, config, env });
 
   if (config.integrations.length > 0) {
-    yield* call(run_build_end(config));
+    yield* call(() => run_build_end(config));
   }
 
   const end = process.hrtime.bigint();
