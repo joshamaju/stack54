@@ -79,10 +79,11 @@ function create_renderer<T extends Template | Promise<Template>>({
 
     const opts = { ..._, props, stream };
 
-    // @ts-expect-error
     return is_template(template)
-      ? render(template, opts)
-      : template.then((t) => render(t, opts));
+      ? // @ts-expect-error
+        render(template, opts)
+      : // @ts-expect-error
+        template.then((t) => render(t, opts));
   };
 }
 
