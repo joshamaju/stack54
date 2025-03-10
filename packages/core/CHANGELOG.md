@@ -1,5 +1,11 @@
 # mpa
 
+## 0.10.1
+
+### Patch Changes
+
+- d465c67: Preserve asset order as defined in source code
+
 ## 0.10.0
 
 ### Minor Changes
