@@ -101,18 +101,14 @@ export function* compile({
 
   const logger = use_logger();
 
-  //   yield* ensure(function* () {
-  //     yield* call(fs.rm(root, { recursive: true, force: true }));
-  //   });
-
-  const processed: Processed = yield* call(
+  const processed: Processed = yield* call(() =>
     compiler.preprocess(code, preprocessors, { filename })
   );
 
   code =
     config.integrations.length <= 0
       ? processed.code
-      : yield* call(
+      : yield* call(() =>
           run_html_pre_transform(config, { code: processed.code, filename })
         );
 
@@ -123,7 +119,7 @@ export function* compile({
     return null;
   }
 
-  yield* call(fs.mkdir(root, { recursive: true }));
+  yield* call(() => fs.mkdir(root, { recursive: true }));
 
   const s = new MagicString(code);
 
@@ -132,7 +128,7 @@ export function* compile({
       return call(function* () {
         const code = s.slice(asset.start, asset.end);
         const filename = path.join(root, `${i}.html`);
-        yield* call(fs.writeFile(filename, code));
+        yield* call(() => fs.writeFile(filename, code));
         return [filename, asset] as const;
       });
     })
@@ -177,9 +173,9 @@ export function* compile({
     },
   };
 
-  yield* call(vite.build(vite.mergeConfig(config.vite, inline_config)));
+  yield* call(() => vite.build(vite.mergeConfig(config.vite, inline_config)));
 
-  const manifest = yield* call(
+  const manifest = yield* call(() =>
     fs.readFile(path.join(build, manifest_file), "utf-8")
   );
 
@@ -187,43 +183,33 @@ export function* compile({
 
   const values = Object.values(contents);
 
-  //   yield* all(
-  //     fragments.map(([filename, node]) => {
-  //       return call(function* () {
-  //         const entry = values.find((_) => _.src && filename.endsWith(_.src));
+  yield* all(
+    fragments.map(([filename, node]) => {
+      return call(function* () {
+        const entry = values.find((_) => _.src && filename.endsWith(_.src));
 
-  //         if (entry) {
-  //           const file = path.join(build, entry.src!);
-  //           const code = yield* call(() => fs.readFile(file, "utf-8"));
-  //           s.update(node.start, node.end, code);
-  //         }
-  //       });
-  //     })
-  //   );
-
-  for (const [filename, node] of fragments) {
-    const entry = values.find((_) => _.src && filename.endsWith(_.src));
-
-    if (entry) {
-      const file = path.join(build, entry.src!);
-      const code = yield* call(fs.readFile(file, "utf-8"));
-      s.update(node.start, node.end, code);
-    }
-  }
+        if (entry) {
+          const file = path.join(build, entry.src!);
+          const code = yield* call(() => fs.readFile(file, "utf-8"));
+          s.update(node.start, node.end, code);
+        }
+      });
+    })
+  );
 
   code = s.toString();
 
   code =
     config.integrations.length <= 0
       ? code
-      : yield* call(run_html_post_transform(config, { code, filename }));
+      : yield* call(() => run_html_post_transform(config, { code, filename }));
 
   const assets_dir = path.join(build, config.build.assetsDir);
 
   const has_assets = existsSync(assets_dir);
 
   if (has_assets) {
-    yield* call(
+    yield* call(() =>
       copy_dir(assets_dir, path.join(outDir, config.build.assetsDir))
     );
   }
