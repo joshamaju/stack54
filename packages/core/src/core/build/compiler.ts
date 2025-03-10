@@ -147,7 +147,7 @@ export function* compile({
 
         const file = path.resolve(path.dirname(filename), source);
 
-        if (existsSync(file)) return file;
+        return file;
       }
     },
   };
