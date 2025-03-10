@@ -92,14 +92,10 @@ export async function preprocess(
   config: ResolvedConfig,
   { cwd }: { cwd: string }
 ) {
-  const [views, entry] = await Promise.all([
-    expand([...new Set(config.views)], { cwd, absolute: true }),
-    expand(config.entry, { cwd }),
-  ]);
+  const entry = await expand(config.entry, { cwd });
 
   return {
     ...config,
-    views,
     entry: entry[0],
     svelte: get_svelte_config(config),
   };
