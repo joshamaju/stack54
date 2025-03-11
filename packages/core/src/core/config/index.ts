@@ -3,11 +3,11 @@ import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 
 import type { Arrayable } from "@sveltejs/vite-plugin-svelte";
+import { glob } from "glob";
 import type { CompileOptions, PreprocessorGroup } from "svelte/compiler";
 import type { ViteDevServer, UserConfig as ViteUserConfig } from "vite";
 import z, { ZodError } from "zod";
 
-import { expand } from "../utils/filesystem.js";
 import { get_svelte_config } from "../utils/vite.js";
 
 type Maybe<T> = T | Promise<T>;
@@ -92,7 +92,7 @@ export async function preprocess(
   config: ResolvedConfig,
   { cwd }: { cwd: string }
 ) {
-  const entry = await expand(config.entry, { cwd });
+  const entry = await glob(config.entry, { cwd });
 
   return {
     ...config,

@@ -1,1 +1,1 @@
-export { to_fs, expand } from "../core/utils/filesystem.js";
+export { to_fs } from "../core/utils/filesystem.js";

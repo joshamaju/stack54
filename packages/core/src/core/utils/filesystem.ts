@@ -1,5 +1,3 @@
-import { glob, GlobOptionsWithFileTypesUnset } from "glob";
-
 export function posixify(str: string) {
   return str.replace(/\\/g, "/");
 }
@@ -11,8 +9,3 @@ export function to_fs(str: string) {
     str.startsWith("/") ? "" : "/"
   }${str}`;
 }
-
-export const expand = (
-  pattern: string | string[],
-  options?: GlobOptionsWithFileTypesUnset
-) => glob(pattern, options);
