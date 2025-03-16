@@ -3,4 +3,4 @@ packages:
   - playground/*
   - integrations/*
   - packages/core/test/apps/*
-  - integrations/*/test/apps/*
+  - integrations/island/test/apps/*
