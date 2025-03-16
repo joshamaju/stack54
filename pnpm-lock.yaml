@@ -171,6 +171,9 @@ importers:
       '@stack54/express':
         specifier: workspace:*
         version: link:../../../../../integrations/express
+      '@stack54/island':
+        specifier: workspace:*
+        version: link:../../../../../integrations/island
       express:
         specifier: ^4.19.2
         version: 4.21.1
