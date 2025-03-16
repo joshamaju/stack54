@@ -2,7 +2,7 @@ import view from "@stack54/express/render";
 import express from "express";
 import { render } from "./utils/view.js";
 
-const app = express();
+const app: express.Express = express();
 
 app.use(view(render));
 
