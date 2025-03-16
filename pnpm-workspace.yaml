@@ -1,6 +1,6 @@
 packages:
+  - tests/*
   - packages/*
   - playground/*
   - integrations/*
   - packages/core/test/apps/*
-  - integrations/island/test/*

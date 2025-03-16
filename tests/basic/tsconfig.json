@@ -1,4 +1,4 @@
 {
-  "extends": "stack54/tsconfigs/base",
+  "extends": "../../tsconfig.base.json",
   "include": ["src", "stack.config.js"]
 }
