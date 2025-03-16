@@ -4,7 +4,7 @@ import express from "express";
 
 import router from "./dist/server/index.js";
 
-const port = 3000;
+const port = 3001;
 
 const app = express();
 
