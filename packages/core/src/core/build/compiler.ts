@@ -1,4 +1,3 @@
-import { existsSync } from "node:fs";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
@@ -9,7 +8,7 @@ import type { BaseNode, Element } from "svelte/types/compiler/interfaces";
 import type { Plugin } from "vite";
 import * as vite from "vite";
 
-import { all, call, Operation } from "effection";
+import { all, call, Operation, spawn } from "effection";
 import MagicString from "magic-string";
 
 import type { ResolvedConfig } from "../config/index.js";
@@ -17,9 +16,8 @@ import {
   run_html_post_transform,
   run_html_pre_transform,
 } from "../integrations/hooks.js";
-import { use_logger } from "../logger.js";
 
-async function copy_dir(srcDir: string, destDir: string) {
+async function copy(srcDir: string, destDir: string) {
   await fs.mkdir(destDir, { recursive: true });
 
   const files = await fs.readdir(srcDir);
@@ -35,7 +33,7 @@ async function copy_dir(srcDir: string, destDir: string) {
     const stat = await fs.stat(srcFile);
 
     if (stat.isDirectory()) {
-      await copy_dir(srcFile, destFile);
+      await copy(srcFile, destFile);
     } else {
       await fs.copyFile(srcFile, destFile);
     }
@@ -77,6 +75,62 @@ function collect_assets(code: string, filename: string): Array<Element> {
   return assets;
 }
 
+/**
+ * # How this works
+ *
+ * We take a [filename].svelte, Grabs all the assets i.e
+ * <link rel="stylesheet" href="..." />, <script src="..." type="module"></script>
+ *
+ * For example:
+ *
+ * ```html
+ * <html>
+ *    <head>
+ *        <link rel="stylesheet" href="./style.css" />
+ *    </head>
+ *    <body>
+ *        <script src="./script.ts" type="module"></script>
+ *
+ *        <script type="module">
+ *            import module from "node_modules"
+ *        </script>
+ *    </body>
+ * </html>
+ * ```
+ *
+ * We end up with an array of:
+ *
+ * - `<link rel="stylesheet" href="./style.css" />`
+ * - `<script src="./script.ts" type="module"></script>`
+ * - `<script type="module">
+ *      import module from "node_modules"
+ *   </script>`
+ *
+ * process them into:
+ *
+ * - `<link rel="stylesheet" href="./style-[hash].css" />`
+ * - `<script src="./script-[hash].js" type="module"></script>`
+ * - `<script type="module">
+ *      // bundled JS
+ *   </script>`
+ *
+ * Which we then back-port into the original file. Which makes the final output:
+ *
+ * ```html
+ * <html>
+ *    <head>
+ *        <link rel="stylesheet" href="./style-[hash].css" />
+ *    </head>
+ *    <body>
+ *        <script src="./script-[hash].js" type="module"></script>
+ *
+ *        <script type="module">
+ *            // bundled JS
+ *        </script>
+ *    </body>
+ * </html>
+ * ```
+ */
 export function* compile({
   dir,
   code,
@@ -98,8 +152,6 @@ export function* compile({
   const build = path.join(root, "build");
 
   const preprocessors = config.svelte.preprocess ?? [];
-
-  const logger = use_logger();
 
   const processed: Processed = yield* call(() =>
     compiler.preprocess(code, preprocessors, { filename })
@@ -157,12 +209,8 @@ export function* compile({
   const inline_config: vite.InlineConfig = {
     logLevel: "silent",
     mode: "production",
+    plugins: [resolve],
     envPrefix: config.env.publicPrefix,
-    // customLogger: vite_logger,
-    plugins: [
-      resolve,
-      // obfuscate, deobfuscate
-    ],
     build: {
       ssr: false,
       outDir: build,
@@ -182,6 +230,16 @@ export function* compile({
   const contents = JSON.parse(manifest) as vite.Manifest;
 
   const values = Object.values(contents);
+
+  const move_assets = yield* spawn(function* () {
+    const dir = path.join(build, config.build.assetsDir);
+
+    try {
+      yield* call(() => copy(dir, path.join(outDir, config.build.assetsDir)));
+    } catch (error) {
+      // no assets
+    }
+  });
 
   yield* all(
     fragments.map(([filename, node]) => {
@@ -204,15 +262,7 @@ export function* compile({
       ? code
       : yield* call(() => run_html_post_transform(config, { code, filename }));
 
-  const assets_dir = path.join(build, config.build.assetsDir);
-
-  const has_assets = existsSync(assets_dir);
-
-  if (has_assets) {
-    yield* call(() =>
-      copy_dir(assets_dir, path.join(outDir, config.build.assetsDir))
-    );
-  }
+  yield* move_assets;
 
   return code;
 }
