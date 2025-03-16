@@ -14,7 +14,7 @@
   "dependencies": {
     "@stack54/express": "workspace:*",
     "@stack54/island": "workspace:*",
-    "express": "^4.19.2",
+    "express": "^4.21.1",
     "stack54": "workspace:*",
     "svelte": "^4.2.8"
   },

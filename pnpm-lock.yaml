@@ -105,7 +105,7 @@ importers:
         specifier: workspace:*
         version: link:../../..
       express:
-        specifier: ^4.19.2
+        specifier: ^4.21.1
         version: 4.21.1
       stack54:
         specifier: workspace:*
