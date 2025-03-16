@@ -1,6 +1,6 @@
 <script>
   import Document from "../components/document.svelte";
-  import WithSlot from "./with-slot.svelte";
+  import WithSlot from "./with-slot.island.svelte";
 </script>
 
 <Document>

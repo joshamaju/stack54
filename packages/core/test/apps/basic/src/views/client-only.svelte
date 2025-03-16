@@ -1,6 +1,6 @@
 <script island="idle">
   import { ClientOnly } from "stack54/components";
-  import WithSlot from "./island/with-slot.svelte";
+  import WithSlot from "./island/with-slot.island.svelte";
 </script>
 
 <ClientOnly>
