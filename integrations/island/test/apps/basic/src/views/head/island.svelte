@@ -1,5 +1,5 @@
 <script island="load">
-  import Counter from "../island/counter.svelte";
+  import Counter from "../counter.svelte";
 </script>
 
 <svelte:head>
