@@ -50,6 +50,8 @@ test.describe("ENV", () => {
   }) => {
     await page.goto("/env/view-private-and-public");
 
+    console.log(await page.content());
+
     const public_env = page.getByTestId("public_env");
     const private_env = page.getByTestId("private_env");
 
