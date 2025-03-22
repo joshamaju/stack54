@@ -53,14 +53,14 @@ test.describe("ENV", () => {
     const public_env = page.getByTestId("public_env");
     const private_env = page.getByTestId("private_env");
 
-    expect(await private_env.textContent()).toBe("env");
-    expect(await public_env.textContent()).toBe("public_env");
+    await expect(private_env).toHaveText("env");
+    await expect(public_env).toHaveText("public_env");
 
     const hydrate = page.getByTestId("hydrate");
 
     await hydrate.click();
 
-    expect(await private_env.textContent()).toBe("");
-    expect(await public_env.textContent()).toBe("public_env");
+    await expect(private_env).toHaveText("");
+    await expect(public_env).toHaveText("public_env");
   });
 });
