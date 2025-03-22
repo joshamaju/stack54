@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   timeout: 45000,
-  reporter: 'line',
+  reporter: 'github',
   webServer: {
     port: 3000,
     stdout: 'pipe',

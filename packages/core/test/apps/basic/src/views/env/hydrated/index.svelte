@@ -15,17 +15,6 @@
       <Component />
     </div>
 
-    <script type="module">
-      import Component from "./component.svelte";
-
-      const btn = document.querySelector('[data-testid="hydrate"]');
-
-      btn.addEventListener("click", () => {
-        new Component({
-          hydrate: true,
-          target: document.getElementById("app"),
-        });
-      });
-    </script>
+    <script type="module" src="./script.ts"></script>
   </body>
 </html>
