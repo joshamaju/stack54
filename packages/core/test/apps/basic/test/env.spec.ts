@@ -44,4 +44,23 @@ test.describe("ENV", () => {
     const text = page.getByTestId("env");
     expect(await text.textContent()).toBe("public_env");
   });
+
+  test("should have access to public and private environment variables in view on server but not on client", async ({
+    page,
+  }) => {
+    await page.goto("/env/view-private-and-public");
+
+    const public_env = page.getByTestId("public_env");
+    const private_env = page.getByTestId("private_env");
+
+    expect(await private_env.textContent()).toBe("env");
+    expect(await public_env.textContent()).toBe("public_env");
+
+    const hydrate = page.getByTestId("hydrate");
+
+    await hydrate.click();
+
+    expect(await private_env.textContent()).toBe("");
+    expect(await public_env.textContent()).toBe("public_env");
+  });
 });
