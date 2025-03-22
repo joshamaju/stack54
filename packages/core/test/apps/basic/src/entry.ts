@@ -39,7 +39,7 @@ app.get("/env/server", (_, res) => {
   return res.render("env/server", { env: import.meta.env.ENV });
 });
 app.get("/env/view-private-and-public", (_, res) => {
-  return res.render("env/hydrate/index");
+  return res.render("env/hydrated/index");
 });
 
 app.get("/island/no-slot", (_, res) => res.render("island/no-slot.page"));
