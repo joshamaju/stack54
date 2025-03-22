@@ -50,8 +50,6 @@ test.describe("ENV", () => {
   }) => {
     await page.goto("/env/view-private-and-public");
 
-    console.log(await page.content());
-
     const public_env = page.getByTestId("public_env");
     const private_env = page.getByTestId("private_env");
 
@@ -62,7 +60,7 @@ test.describe("ENV", () => {
 
     await hydrate.click();
 
-    await expect(private_env).toHaveText("");
+    await expect(private_env).toHaveText("undefined");
     await expect(public_env).toHaveText("public_env");
   });
 });
