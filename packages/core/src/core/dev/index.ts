@@ -9,7 +9,7 @@ import {
   run_config_resolved,
   run_config_setup,
 } from "../integrations/hooks.js";
-import { make_vite_logger, use_logger } from "../logger.js";
+import { use_logger } from "../logger.js";
 import { clearScreen } from "../utils/console.js";
 import { array } from "../utils/index.js";
 import { make_vite_config } from "../utils/vite.js";
