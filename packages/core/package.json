@@ -1,6 +1,6 @@
 {
   "name": "stack54",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "description": "The fun Javascript stack",
   "type": "module",
   "publishConfig": {
