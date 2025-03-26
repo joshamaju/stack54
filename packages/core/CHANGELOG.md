@@ -1,5 +1,11 @@
 # mpa
 
+## 0.10.3
+
+### Patch Changes
+
+- 2ba2ea2: Add style tags to bundled assets and fix issue with missing asset in final output if multiple tags reference the same file
+
 ## 0.10.2
 
 ### Patch Changes
