@@ -1,5 +1,12 @@
 # @stack54/island
 
+## 0.3.7
+
+### Patch Changes
+
+- Updated dependencies [89f0397]
+  - stack54@0.10.2
+
 ## 0.3.6
 
 ### Patch Changes

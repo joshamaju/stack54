@@ -1,5 +1,11 @@
 # mpa
 
+## 0.10.2
+
+### Patch Changes
+
+- 89f0397: Add generated version file to distro bundle
+
 ## 0.10.1
 
 ### Patch Changes
