@@ -36,7 +36,8 @@
     "dist",
     "cli.js",
     "tsconfigs",
-    "components"
+    "components",
+    "version.js"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
