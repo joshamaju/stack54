@@ -1,3 +1,4 @@
+import * as crypto from "node:crypto";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 
@@ -8,6 +9,7 @@ import type { BaseNode, Element } from "svelte/types/compiler/interfaces";
 import type { Plugin } from "vite";
 import * as vite from "vite";
 
+import * as cheerio from "cheerio";
 import { all, call, Operation, spawn } from "effection";
 import MagicString from "magic-string";
 
@@ -64,7 +66,7 @@ function collect_assets(code: string, filename: string): Array<Element> {
           const node_: Element = node as any;
           const name = node_.name;
 
-          if (name == "link" || name == "script") {
+          if (name == "link" || name == "style" || name == "script") {
             assets.push(node_);
           }
         }
@@ -74,6 +76,12 @@ function collect_assets(code: string, filename: string): Array<Element> {
 
   return assets;
 }
+
+function parseHTML(html: string) {
+  return cheerio.load(html, undefined, false);
+}
+
+const ID_ATTR = "data-stack54";
 
 /**
  * # How this works
@@ -176,15 +184,25 @@ export function* compile({
   const s = new MagicString(code);
 
   const fragments = yield* all(
-    assets.map((asset, i) => {
+    assets.map((node, i) => {
       return call(function* () {
-        const code = s.slice(asset.start, asset.end);
+        const id = crypto.randomUUID();
+        const code = s.slice(node.start, node.end);
         const filename = path.join(root, `${i}.html`);
         yield* call(() => fs.writeFile(filename, code));
-        return [filename, asset] as const;
+        return [filename, { id, code, node }] as const;
       });
     })
   );
+
+  let output_bundle: vite.Rollup.OutputBundle | null = null;
+
+  const collect_bundle: Plugin = {
+    name: "stack54:collect-bundle",
+    writeBundle(_, bundle) {
+      output_bundle = bundle;
+    },
+  };
 
   /**
    * resolves imports (including import aliases) from original file
@@ -204,17 +222,32 @@ export function* compile({
     },
   };
 
-  const manifest_file = "vite-manifest.json";
+  const keyvalue = new Map(fragments);
+
+  const stamp: Plugin = {
+    name: "stack54:stamp",
+    transformIndexHtml: {
+      handler(html, ctx) {
+        const frag = keyvalue.get(ctx.filename);
+
+        if (frag) {
+          const $ = parseHTML(html);
+          $(frag.node.name).attr(ID_ATTR, frag.id);
+          return $.html();
+        }
+      },
+    },
+  };
 
   const inline_config: vite.InlineConfig = {
     logLevel: "silent",
     mode: "production",
-    plugins: [resolve],
     envPrefix: config.env.publicPrefix,
+    plugins: [resolve, stamp, collect_bundle],
     build: {
       ssr: false,
       outDir: build,
-      manifest: manifest_file,
+      modulePreload: false,
       rollupOptions: {
         input: fragments.map(([k]) => k),
       },
@@ -222,14 +255,6 @@ export function* compile({
   };
 
   yield* call(() => vite.build(vite.mergeConfig(config.vite, inline_config)));
-
-  const manifest = yield* call(() =>
-    fs.readFile(path.join(build, manifest_file), "utf-8")
-  );
-
-  const contents = JSON.parse(manifest) as vite.Manifest;
-
-  const values = Object.values(contents);
 
   const move_assets = yield* spawn(function* () {
     const dir = path.join(build, config.build.assetsDir);
@@ -241,15 +266,34 @@ export function* compile({
     }
   });
 
-  yield* all(
-    fragments.map(([filename, node]) => {
-      return call(function* () {
-        const entry = values.find((_) => _.src && filename.endsWith(_.src));
+  const output_files = [...Object.keys(output_bundle ?? {})];
 
-        if (entry) {
-          const file = path.join(build, entry.src!);
-          const code = yield* call(() => fs.readFile(file, "utf-8"));
-          s.update(node.start, node.end, code);
+  yield* all(
+    fragments.map(([filename, { id, node }]) => {
+      return call(function* () {
+        const file = output_files.find((k) =>
+          k.endsWith(filename.replace(dir, ""))
+        );
+
+        if (file) {
+          const bundle = output_bundle?.[file];
+
+          if (bundle?.type == "asset") {
+            const $output = parseHTML(bundle.source.toString());
+            const $original = parseHTML(s.slice(node.start, node.end));
+
+            const original = $original(node.name);
+            const output = $output(`${node.name}[${ID_ATTR}="${id}"]`);
+
+            const original_attrs = original.attr();
+
+            for (const name in original_attrs) {
+              const value = output.attr(name);
+              if (!value) output.attr(name, original_attrs[name]);
+            }
+
+            s.update(node.start, node.end, $output.html());
+          }
         }
       });
     })
