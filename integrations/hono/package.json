@@ -1,6 +1,6 @@
 {
   "name": "@stack54/hono",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "",
   "type": "module",
   "homepage": "https://github.com/joshamaju/stack54/blob/main/integrations/hono/README.md",
