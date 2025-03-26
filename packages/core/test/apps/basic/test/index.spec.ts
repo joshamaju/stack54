@@ -24,6 +24,15 @@ test("should load client assets", async ({ page }) => {
   expect(await text.textContent()).toBe("0");
 });
 
+test("should be able to load client assets generated in loop", async ({
+  page,
+}) => {
+  await page.goto("/client-assets");
+  await expect(page.getByTestId("each-script-1")).toBeAttached();
+  await expect(page.getByTestId("each-script-2")).toBeAttached();
+  await expect(page.getByTestId("each-script-3")).toBeAttached();
+});
+
 test("should support inline script tags", async ({ page }) => {
   await page.goto("/script/inline");
   const inc = page.getByTestId("inc");
