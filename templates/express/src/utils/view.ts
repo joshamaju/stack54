@@ -1,4 +1,4 @@
-import { resolve_component } from "stack54/render";
+import { resolveComponent } from "stack54/render";
 import { type TemplateModule } from "stack54/types";
 
 const components = import.meta.glob<TemplateModule>(
@@ -6,7 +6,7 @@ const components = import.meta.glob<TemplateModule>(
 );
 
 export const resolver = (name: string) => {
-  return resolve_component(
+  return resolveComponent(
     [`../views/${name}`, `../views/${name}.page.svelte`],
     components
   );

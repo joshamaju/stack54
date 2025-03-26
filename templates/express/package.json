@@ -14,14 +14,14 @@
   },
   "keywords": [],
   "dependencies": {
-    "@stack54/express": "^1.0.1",
+    "@stack54/express": "^1.0.8",
     "body-parser": "^1.20.2",
     "compression": "^1.7.4",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
-    "stack54": "^0.8.0",
+    "stack54": "^0.10.2",
     "svelte": "^4.2.8"
   },
   "devDependencies": {
