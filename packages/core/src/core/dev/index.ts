@@ -19,12 +19,12 @@ import { resolve_inline_imports_plugin } from "./resolve-inline-imports-plugin/i
 
 const cwd = process.cwd();
 
-export function* dev() {
+export function* dev(config_file?: string) {
   const logger = use_logger();
 
   const start = performance.now();
 
-  const inline_config = yield* call(Config.load(cwd));
+  const inline_config = yield* call(Config.load(cwd, config_file));
 
   const user_config = Config.parse(inline_config);
 

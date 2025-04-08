@@ -8,6 +8,8 @@ import { use_logger } from "./logger.js";
 import { format_config_error } from "./message.js";
 import { VERSION } from "../../version.js";
 
+const config_option = "Config path, default path if not specified";
+
 const program = sade("stack54-cli").version(VERSION);
 
 const logger = use_logger();
@@ -28,52 +30,58 @@ function handle_error(error: unknown) {
   process.exit(1);
 }
 
-program.command("dev").action(async () => {
-  const { dev } = await import("./dev/index.js");
+program
+  .command("dev")
+  .option("config", config_option)
+  .action(async (args) => {
+    const { dev } = await import("./dev/index.js");
 
-  const task = run(function* () {
-    try {
-      yield* dev();
-    } catch (error) {
-      handle_error(error);
-    }
+    const task = run(function* () {
+      try {
+        yield* dev(args.config);
+      } catch (error) {
+        handle_error(error);
+      }
+    });
+
+    const close = () => task.halt();
+
+    const shutdown = async () => {
+      await close();
+      process.exit(0);
+    };
+
+    process.on("unhandledRejection", async (error) => {
+      logger.error(error);
+      await close();
+      process.exit(1);
+    });
+
+    process.on("SIGINT", shutdown);
+    process.on("SIGTERM", shutdown);
   });
 
-  const close = () => task.halt();
+program
+  .command("build")
+  .option("config", config_option)
+  .action(async (args) => {
+    const { build } = await import("./build/index.js");
 
-  const shutdown = async () => {
-    await close();
-    process.exit(0);
-  };
+    const task = run(function* () {
+      try {
+        yield* build(args.config);
+      } catch (error) {
+        handle_error(error);
+      }
+    });
 
-  process.on("unhandledRejection", async (error) => {
-    logger.error(error);
-    await close();
-    process.exit(1);
+    const shutdown = async () => {
+      await task.halt();
+      process.exit(0);
+    };
+
+    process.on("SIGINT", shutdown);
+    process.on("SIGTERM", shutdown);
   });
-
-  process.on("SIGINT", shutdown);
-  process.on("SIGTERM", shutdown);
-});
-
-program.command("build").action(async () => {
-  const { build } = await import("./build/index.js");
-
-  const task = run(function* () {
-    try {
-      yield* build();
-    } catch (error) {
-      handle_error(error);
-    }
-  });
-
-  const shutdown = async () => {
-    await task.halt();
-    process.exit(0);
-  };
-
-  process.on("SIGINT", shutdown);
-  process.on("SIGTERM", shutdown);
-});
 
 program.parse(process.argv);

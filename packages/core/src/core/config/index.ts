@@ -64,10 +64,16 @@ export const userConfigSchema = z.object({
 export type UserConfig = z.input<typeof userConfigSchema>;
 export type ResolvedConfig = z.infer<typeof userConfigSchema>;
 
-export async function load(cwd = process.cwd()): Promise<UserConfig | null> {
-  const config_file = path.join(cwd, "stack.config.js");
+const DEFAULT_FILE = "stack.config.js";
+
+export async function load(
+  cwd = process.cwd(),
+  file?: string
+): Promise<UserConfig | null> {
+  const config_file = path.join(cwd, file ?? DEFAULT_FILE);
 
   if (!existsSync(config_file)) {
+    if (file) throw `Config file ${file} not found`;
     return null;
   }
 

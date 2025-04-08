@@ -16,7 +16,7 @@ import { display_time } from "../utils/index.js";
 import { make_vite_config } from "../utils/vite.js";
 import { builder } from "./build.js";
 
-export function* build() {
+export function* build(config_file?: string) {
   const start = process.hrtime.bigint();
 
   const cwd = process.cwd();
@@ -25,7 +25,7 @@ export function* build() {
 
   logger.info("loading configuration");
 
-  const inline_config = yield* call(() => Config.load(cwd));
+  const inline_config = yield* call(() => Config.load(cwd, config_file));
 
   const user_config = Config.parse(inline_config);
 
