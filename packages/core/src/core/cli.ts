@@ -10,7 +10,7 @@ import { VERSION } from "../../version.js";
 
 const config_option = "Config path, default path if not specified";
 
-const program = sade("stack54-cli").version(VERSION);
+const program = sade("stack54").version(VERSION);
 
 const logger = use_logger();
 
