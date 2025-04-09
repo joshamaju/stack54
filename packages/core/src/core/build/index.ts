@@ -17,13 +17,13 @@ import { make_vite_config } from "../utils/vite.js";
 import { builder } from "./build.js";
 
 export function* build(config_file?: string) {
-  const start = process.hrtime.bigint();
-
   const cwd = process.cwd();
 
   const logger = use_logger();
 
   logger.info("loading configuration");
+
+  const start = process.hrtime.bigint();
 
   const inline_config = yield* call(() => Config.load(cwd, config_file));
 
