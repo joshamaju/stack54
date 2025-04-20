@@ -3,7 +3,7 @@ import * as vite from "vite";
 
 import { call, suspend } from "effection";
 
-import * as Config from "../config/index.js";
+import { Config } from "../config/index.js";
 import { define, load } from "../env.js";
 import {
   run_config_resolved,
@@ -19,14 +19,14 @@ import { resolve_inline_imports_plugin } from "./resolve-inline-imports-plugin/i
 
 const cwd = process.cwd();
 
-export function* dev() {
+export function* dev(config_file?: string) {
   const logger = use_logger();
 
   const start = performance.now();
 
-  const inline_config = yield* call(Config.load(cwd));
+  const conf = new Config(cwd, config_file);
 
-  const user_config = Config.parse(inline_config);
+  const user_config = yield* call(() => conf.load());
 
   user_config.integrations = [
     ...(user_config.integrations ?? []),
@@ -58,9 +58,7 @@ export function* dev() {
     resolve_inline_imports_plugin(),
   ];
 
-  const resolved_config = yield* call(
-    Config.preprocess(merged_config, { cwd })
-  );
+  const resolved_config = yield* call(() => conf.resolve(merged_config));
 
   /**
    * We turn this off because our internal preprocessors i.e attach-actual-path get svelte style tag content
