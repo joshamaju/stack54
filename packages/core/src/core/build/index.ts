@@ -15,10 +15,9 @@ import { use_logger } from "../logger.js";
 import { display_time } from "../utils/index.js";
 import { make_vite_config } from "../utils/vite.js";
 import { builder } from "./build.js";
+import { EntryOption } from "../types.js";
 
-export function* build(config_file?: string) {
-  const cwd = process.cwd();
-
+export function* build({ cwd, config_file }: EntryOption) {
   const logger = use_logger();
 
   logger.info("loading configuration");

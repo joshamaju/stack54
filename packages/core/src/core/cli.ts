@@ -12,6 +12,7 @@ const config_option = "Config path, default path if not specified";
 
 const program = sade("stack54").version(VERSION);
 
+const cwd = process.cwd();
 const logger = use_logger();
 
 function handle_error(error: unknown) {
@@ -38,7 +39,7 @@ program
 
     const task = run(function* () {
       try {
-        yield* dev(args.config);
+        yield* dev({ cwd, config_file: args.config });
       } catch (error) {
         handle_error(error);
       }
@@ -69,7 +70,7 @@ program
 
     const task = run(function* () {
       try {
-        yield* build(args.config);
+        yield* build({ cwd, config_file: args.config });
       } catch (error) {
         handle_error(error);
       }

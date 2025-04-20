@@ -16,11 +16,11 @@ import { make_vite_config } from "../utils/vite.js";
 import { attach_full_path } from "./attach-full-path/index.js";
 import { live_reload_plugin } from "./live-reload-plugin/index.js";
 import { resolve_inline_imports_plugin } from "./resolve-inline-imports-plugin/index.js";
+import { EntryOption } from "../types.js";
 
 const command = "serve";
-const cwd = process.cwd();
 
-export function* dev(config_file?: string) {
+export function* dev({ cwd, config_file }: EntryOption) {
   const logger = use_logger();
 
   const start = performance.now();
