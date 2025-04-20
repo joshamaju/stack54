@@ -3,7 +3,7 @@ import * as path from "node:path";
 
 import { call, spawn } from "effection";
 
-import * as Config from "../config/index.js";
+import { Config } from "../config/index.js";
 import { load } from "../env.js";
 import {
   run_build_end,
@@ -25,24 +25,23 @@ export function* build(config_file?: string) {
 
   const start = process.hrtime.bigint();
 
-  const inline_config = yield* call(() => Config.load(cwd, config_file));
+  const conf = new Config(cwd, config_file);
 
-  const user_config = Config.parse(inline_config);
+  const command = "build";
+  const user_config = yield* call(() => conf.load());
 
   let merged_config =
     user_config.integrations.length <= 0
       ? user_config
-      : yield* call(() => run_config_setup(user_config, { command: "build" }));
+      : yield* call(() => run_config_setup(user_config, { command }));
 
-  const resolved_config = yield* call(
-    Config.preprocess(merged_config, { cwd })
-  );
+  const resolved_config = yield* call(() => conf.resolve(merged_config));
 
   const mode = process.env.NODE_ENV ?? "production";
 
   const shared_vite_config = make_vite_config(resolved_config, {
     mode,
-    command: "build",
+    command,
   });
 
   const config = { ...resolved_config, vite: shared_vite_config };

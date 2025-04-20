@@ -66,43 +66,46 @@ export type ResolvedConfig = z.infer<typeof userConfigSchema>;
 
 const DEFAULT_FILE = "stack.config.js";
 
-export async function load(
-  cwd = process.cwd(),
-  file?: string
-): Promise<UserConfig | null> {
-  const config_file = path.join(cwd, file ?? DEFAULT_FILE);
-
-  if (!existsSync(config_file)) {
-    if (file) throw `Config file ${file} not found`;
-    return null;
-  }
-
-  const config = await import(
-    `${pathToFileURL(config_file).href}?ts=${Date.now()}`
-  );
-
-  return config.default;
-}
-
 export class InvalidConfig {
   constructor(public cause: ZodError<UserConfig>) {}
 }
 
-export function parse(config: UserConfig | null = {}) {
-  const result = userConfigSchema.safeParse(config);
-  if (result.success) return result.data;
-  throw new InvalidConfig(result.error);
-}
+export class Config {
+  #file: string;
 
-export async function preprocess(
-  config: ResolvedConfig,
-  { cwd }: { cwd: string }
-) {
-  const entry = await glob(config.entry, { cwd });
+  constructor(private cwd = process.cwd(), private file?: string) {
+    this.#file = path.join(cwd, file ?? DEFAULT_FILE);
+  }
 
-  return {
-    ...config,
-    entry: entry[0],
-    svelte: get_svelte_config(config),
-  };
+  async load(): Promise<ResolvedConfig> {
+    const file = this.#file;
+
+    let config = {};
+
+    if (existsSync(file)) {
+      const url = pathToFileURL(file);
+      const module = await import(`${url.href}?ts=${Date.now()}`);
+      config = module.default;
+    } else {
+      if (this.file) throw `Config file ${this.file} not found`;
+    }
+
+    const result = userConfigSchema.safeParse(config);
+
+    if (!result.success) throw new InvalidConfig(result.error);
+
+    return result.data;
+  }
+
+  async resolve(config: ResolvedConfig) {
+    const cwd = this.cwd;
+
+    const entry = await glob(config.entry, { cwd });
+
+    return {
+      ...config,
+      entry: entry[0],
+      svelte: get_svelte_config(config),
+    };
+  }
 }
