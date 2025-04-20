@@ -4,11 +4,12 @@ import * as vite from "vite";
 import { ResolvedConfig } from "../config/index.js";
 import { array } from "./index.js";
 import { integrations_container_plugin } from "../vite-plugins/integrations/index.js";
+import { Command } from "../types.js";
 
 type CreateViteOptions = {
   mode: string;
+  command?: Command;
   logger?: vite.Logger;
-  command?: "dev" | "build";
 };
 
 const default_preprocessors = [vitePreprocess()];

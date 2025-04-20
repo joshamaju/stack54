@@ -17,6 +17,7 @@ import { attach_full_path } from "./attach-full-path/index.js";
 import { live_reload_plugin } from "./live-reload-plugin/index.js";
 import { resolve_inline_imports_plugin } from "./resolve-inline-imports-plugin/index.js";
 
+const command = "serve";
 const cwd = process.cwd();
 
 export function* dev(config_file?: string) {
@@ -33,9 +34,7 @@ export function* dev(config_file?: string) {
     live_reload_plugin(),
   ];
 
-  let merged_config = yield* call(
-    run_config_setup(user_config, { command: "serve" })
-  );
+  let merged_config = yield* call(run_config_setup(user_config, { command }));
 
   let { assetPrefix } = user_config.build;
 
@@ -98,7 +97,7 @@ export function* dev(config_file?: string) {
 
   const shared_vite_config = make_vite_config(resolved_config, {
     mode,
-    command: "dev",
+    command,
   });
 
   const env = load(resolved_config.env.dir ?? cwd, mode);

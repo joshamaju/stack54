@@ -1,11 +1,9 @@
-import type { ResolvedConfig } from "../config/index.js";
+import type { Env, ResolvedConfig } from "../config/index.js";
 import { merge } from "../config/merge.js";
-
-export type ConfigEnv = { command: "build" | "serve" };
 
 export async function run_config_setup(
   config: ResolvedConfig,
-  env: ConfigEnv
+  env: Env
 ): Promise<ResolvedConfig> {
   const { integrations } = config;
 

@@ -9,18 +9,19 @@ import type { ViteDevServer, UserConfig as ViteUserConfig } from "vite";
 import z, { ZodError } from "zod";
 
 import { get_svelte_config } from "../utils/vite.js";
+import { Command } from "../types.js";
 
 type Maybe<T> = T | Promise<T>;
 
 type Transformer = (code: string, filename: string) => Maybe<void | string>;
 
-type Command = { command: "build" | "serve" };
+export type Env = { command: Command };
 
 interface Hooks {
   buildEnd: () => Maybe<void>;
   buildStart: () => Maybe<void>;
   configResolved: (config: ResolvedConfig) => Maybe<void>;
-  config: (config: UserConfig, env: Command) => Maybe<object | void>;
+  config: (config: UserConfig, env: Env) => Maybe<object | void>;
   transform: Transformer | { handle: Transformer; order: "pre" | "post" };
   configureServer: (server: ViteDevServer) => Maybe<void> | (() => Maybe<void>);
 }
