@@ -1,3 +1,7 @@
+<script>
+  const { children } = $props();
+</script>
+
 {#if typeof window != "undefined"}
-  <slot />
+  {@render children()}
 {/if}
