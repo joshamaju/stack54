@@ -1,4 +1,4 @@
-import { SvelteComponent_1 } from "svelte";
+import { SvelteComponent } from "svelte";
 
 import type {
   Options,
@@ -57,10 +57,7 @@ function create_renderer<T extends Template | Promise<Template>>({
     options: { props?: Props } & Options
   ): ReadableStream | string;
 }) {
-  return <
-    P extends string | Template | { new (...args: any[]): SvelteComponent_1 },
-    O extends Options
-  >(
+  return <P extends string | Template | SvelteComponent, O extends Options>(
     path_or_template: P,
     props?: Props,
     options?: O
@@ -91,7 +88,7 @@ function create_renderer<T extends Template | Promise<Template>>({
 export function is_template(value: unknown): value is Template {
   return (
     value !== null &&
-    typeof value == "object" &&
+    typeof value == "function" &&
     "render" in value &&
     typeof value.render == "function"
   );

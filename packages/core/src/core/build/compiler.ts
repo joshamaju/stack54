@@ -4,7 +4,8 @@ import * as path from "node:path";
 
 import type { Processed } from "svelte/compiler";
 import * as compiler from "svelte/compiler";
-import type { BaseNode, Element } from "svelte/types/compiler/interfaces";
+import type { AST } from "svelte/compiler";
+import { walk } from "estree-walker";
 
 import type { Plugin } from "vite";
 import * as vite from "vite";
@@ -18,6 +19,7 @@ import {
   run_html_post_transform,
   run_html_pre_transform,
 } from "../integrations/hooks.js";
+import { visit } from "../utils/walk.js";
 
 async function copy(srcDir: string, destDir: string) {
   await fs.mkdir(destDir, { recursive: true });
@@ -42,34 +44,27 @@ async function copy(srcDir: string, destDir: string) {
   }
 }
 
-function collect_assets(code: string, filename: string): Array<Element> {
-  type Visitor = (node: BaseNode) => BaseNode;
-
-  const walk = (node: BaseNode, visitor: Visitor): BaseNode => {
-    if (node.children) {
-      node.children = node.children.map((_) => walk(_, visitor));
-    }
-
-    return visitor(node);
-  };
-
-  const assets: Array<Element> = [];
+function collect_assets(
+  code: string,
+  filename: string
+): Array<AST.ElementLike> {
+  const assets: Array<AST.ElementLike> = [];
 
   const ast = compiler.parse(code, { filename });
 
-  // @ts-expect-error
-  compiler.walk(ast.html, {
+  walk(ast.html, {
     enter(node) {
-      // @ts-expect-error
-      walk(node, (node) => {
+      visit(node, (node) => {
         if (node.type == "Element") {
-          const node_: Element = node as any;
+          const node_: AST.ElementLike = node as any;
           const name = node_.name;
 
           if (name == "link" || name == "style" || name == "script") {
             assets.push(node_);
           }
         }
+
+        return node;
       });
     },
   });

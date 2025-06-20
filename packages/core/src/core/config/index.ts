@@ -2,14 +2,14 @@ import { existsSync } from "node:fs";
 import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 
-import type { Arrayable } from "@sveltejs/vite-plugin-svelte";
+import type { Options } from "@sveltejs/vite-plugin-svelte";
 import { glob } from "glob";
-import type { CompileOptions, PreprocessorGroup } from "svelte/compiler";
+import type { CompileOptions } from "svelte/compiler";
 import type { ViteDevServer, UserConfig as ViteUserConfig } from "vite";
 import z, { ZodError } from "zod";
 
-import { get_svelte_config } from "../utils/vite.js";
 import { Command } from "../types.js";
+import { get_svelte_config } from "../utils/vite.js";
 
 type Maybe<T> = T | Promise<T>;
 
@@ -54,10 +54,10 @@ export const userConfigSchema = z.object({
     .object({
       emitCss: z.boolean().default(false),
       extensions: z.array(z.string()).default([".svelte"]),
-      preprocess: z.custom<Arrayable<PreprocessorGroup>>().optional(),
+      preprocess: z.custom<Options["preprocess"]>().optional(),
       compilerOptions: z
         .custom<Omit<CompileOptions, "filename" | "format" | "generate">>()
-        .default({ hydratable: true }),
+        .default({}),
     })
     .default({}),
 });
