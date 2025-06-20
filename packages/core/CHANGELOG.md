@@ -1,5 +1,11 @@
 # mpa
 
+## 0.11.0
+
+### Minor Changes
+
+- f3e4231: Add support for custom config file in CLI options
+
 ## 0.10.3
 
 ### Patch Changes
