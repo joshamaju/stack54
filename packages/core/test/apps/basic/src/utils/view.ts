@@ -15,5 +15,7 @@ const resolver = (name: string) => {
 
 export const render = createRenderer({
   resolve: resolver,
-  render: (template, { props, ..._ }) => renderToString(template, props, _),
+  render: (template, { props = {}, context }) => {
+    return renderToString(template, { props, context });
+  },
 });

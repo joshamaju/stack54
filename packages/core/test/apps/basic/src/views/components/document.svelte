@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Head } from "stack54/components";
+  const {head, children} = $props()
 </script>
 
 <!DOCTYPE html>
@@ -8,9 +9,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <Head />
-    <slot name="head" />
+    {@render head?.()}
   </head>
   <body>
-    <slot />
+    {@render children?.()}
   </body>
 </html>

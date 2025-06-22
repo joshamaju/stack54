@@ -3,5 +3,7 @@
 </script>
 
 <Document>
-  <title slot="head">Slotted title</title>
+  {#snippet head()}
+    <title>Slotted title</title>
+  {/snippet}
 </Document>

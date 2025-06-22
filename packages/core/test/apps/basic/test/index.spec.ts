@@ -9,7 +9,7 @@ test("should have access to locals", async ({ page }) => {
 test("should not have access to locals", async ({ page }) => {
   await page.goto("/without-locals");
   const text = page.getByTestId("locals");
-  expect(await text.textContent()).toBe("undefined");
+  expect(await text.textContent()).toBe("");
 });
 
 test("should load client assets", async ({ page }) => {
