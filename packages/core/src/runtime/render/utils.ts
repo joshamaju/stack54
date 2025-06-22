@@ -13,6 +13,10 @@ const is_lazy = <T>(value: any): value is Lazy<T> => {
   return typeof value == "function";
 };
 
+function is_promise(value: unknown): value is Promise<any> {
+  return !!value && typeof (value as any).then === "function";
+}
+
 function resolve_component<T>(
   path: string | string[],
   components: T
@@ -76,15 +80,17 @@ function create_renderer<T extends Template | Promise<Template>>({
 
     const opts = { ..._, props, stream };
 
-    // @ts-ignore
-    return is_template(template)
-      ? // @ts-ignore
-        render(template, opts)
-      : // @ts-ignore
-        template.then((t) => render(t, opts));
+    return is_promise(template)
+      ? // @ts-expect-error
+        template.then((t) => render(t, opts))
+      : // @ts-expect-error
+        render(template, opts);
   };
 }
 
+/**
+ * @deprecated since version 1.0
+ */
 export function is_template(value: unknown): value is Template {
   return (
     value !== null &&

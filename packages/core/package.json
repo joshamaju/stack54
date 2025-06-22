@@ -57,7 +57,7 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
-    "@tsconfig/svelte": "^5.0.2",
+    "@tsconfig/svelte": "^5.0.4",
     "cheerio": "^1.0.0",
     "devalue": "^4.3.2",
     "effection": "^3.0.3",
