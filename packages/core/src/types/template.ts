@@ -1,3 +1,5 @@
+import { Component } from "svelte";
+
 export type Props = Record<string, any>;
 
 export type Options = {
@@ -6,14 +8,11 @@ export type Options = {
 };
 
 export interface Output {
-  html: string;
+  body: string;
   head: string;
-  css: { map: any; code: string };
 }
 
-export interface Template {
-  render(props?: Props, options?: Options): Output;
-}
+export type Template = Component;
 
 export interface TemplateModule {
   default: Template;

@@ -4,13 +4,15 @@ import * as url from "node:url";
 
 import type { PreprocessorGroup } from "svelte/compiler";
 import * as compiler from "svelte/compiler";
-import type { BaseNode, Element, Text } from "svelte/types/compiler/interfaces";
+import type { AST } from "svelte/compiler";
+import { walk } from "estree-walker";
 
 import * as lexer from "es-module-lexer";
 import MagicString from "magic-string";
 
 import { to_fs } from "../../utils/filesystem.js";
 import { Rule, Tags, rules } from "./rules.js";
+import { visit } from "../../utils/walk.js";
 
 function isLocalPath(path: string) {
   return (
@@ -19,11 +21,6 @@ function isLocalPath(path: string) {
     !path.startsWith("//") &&
     (path.startsWith(".") || path.startsWith(".."))
   );
-}
-
-function walk(node: BaseNode, visitor: (node: BaseNode) => BaseNode): BaseNode {
-  if (node.children) node.children = node.children.map((_) => walk(_, visitor));
-  return visitor(node);
 }
 
 const DYNAMIC_IMPORT = 2;
@@ -54,13 +51,11 @@ export function attach_full_path({
 
       await lexer.init;
 
-      // @ts-expect-error
-      compiler.walk(ast.html, {
+      walk(ast.html, {
         enter(node) {
-          // @ts-expect-error
-          walk(node, (node) => {
+          visit(node, (node) => {
             if (node.type == "Element") {
-              const node_: Element = node as any;
+              const node_: AST.RegularElement = node as any;
 
               const name = node_.name as Tags;
               const rules = rules_by_tag[name];
@@ -73,15 +68,22 @@ export function attach_full_path({
                         attr.type == "Attribute" &&
                         attr.name == rule.attribute
                       ) {
-                        const value = attr.value;
+                        const value = Array.isArray(attr.value)
+                          ? attr.value
+                          : [attr.value];
 
                         for (let val of value) {
-                          const src = val.raw;
+                          if (
+                            typeof val !== "boolean" &&
+                            val.type !== "ExpressionTag"
+                          ) {
+                            const src = val.raw;
 
-                          if (val && val.type == "Text" && isLocalPath(src)) {
-                            const resolved = path.resolve(parsed.dir, src);
-                            const file = path.join(assetPrefix, resolved);
-                            s.update(val.start, val.end, file);
+                            if (val && val.type == "Text" && isLocalPath(src)) {
+                              const resolved = path.resolve(parsed.dir, src);
+                              const file = path.join(assetPrefix, resolved);
+                              s.update(val.start, val.end, file);
+                            }
                           }
                         }
                       }
@@ -90,11 +92,13 @@ export function attach_full_path({
                 }
               }
 
-              if (name == "script") {
-                const content = node_.children?.find((_) => _.type == "Text");
+              if (name == "script" && "children" in node_) {
+                const content = (node_.children as Array<AST.Text>).find(
+                  (_) => _.type == "Text"
+                );
 
                 if (content && args.filename) {
-                  const code = (content as Text).data;
+                  const code = content.data;
 
                   if (code.trim() !== "") {
                     const filename = args.filename;

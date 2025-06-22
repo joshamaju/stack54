@@ -35,7 +35,7 @@ export async function engine(
   try {
     const view = typeof template == "string" ? template : await template;
     const render = stream ? renderToStream : renderToString;
-    const html = render(view as Template, _props, { context });
+    const html = render(view as Template, { context, props: _props });
     fn(null, html);
   } catch (error) {
     fn(error);

@@ -29,10 +29,6 @@ export const swap_script = `
   </script>
   `;
 
-export const renderFallback = ({ id, content }: Chunk) => {
-  return `<div style="display: contents;" data-await-fallback="${id}">${content}</div>`;
-};
-
 export const renderChunk = ({ id, content }: Chunk) => {
   return `
   <template data-await="${id}">${content}</template>

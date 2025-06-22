@@ -1,12 +1,12 @@
 import MagicString from "magic-string";
 import { dedent } from "ts-dedent";
 
-import type { PreprocessorGroup } from "svelte/compiler";
-import { parse, preprocess, walk } from "svelte/compiler";
-import { BaseNode, Element } from "svelte/types/compiler/interfaces";
+import { walk, type Node } from "estree-walker";
+import type { AST, PreprocessorGroup } from "svelte/compiler";
+import { parse, preprocess } from "svelte/compiler";
 
-import { to_fs } from "stack54/internals";
 import { ResolvedConfig } from "stack54/config";
+import { to_fs } from "stack54/internals";
 
 type Attributes = Record<string, string | boolean>;
 
@@ -17,14 +17,14 @@ type Slot = Loc & { name?: string };
 type Head = Loc & { content: Loc };
 
 function visit(
-  node: BaseNode,
-  visitor: (node: BaseNode) => BaseNode
-): BaseNode {
-  if (node.children) {
-    node.children = node.children.map((_) => visit(_, visitor));
+  node: Node,
+  visitor: (node: AST.BaseNode) => AST.BaseNode
+): AST.BaseNode {
+  if ("children" in node) {
+    node.children = (node.children as Node[]).map((_) => visit(_, visitor));
   }
 
-  return visitor(node);
+  return visitor(node as AST.BaseNode);
 }
 
 const KEY = "island";
@@ -68,51 +68,72 @@ export async function make(
 
   const s = new MagicString(processed.code);
 
-  let props: Array<{ name: string; kind: string }> = [];
-
-  for (const node of ast.instance.content.body) {
-    if (
-      node.type == "ExportNamedDeclaration" &&
-      node.declaration?.type == "VariableDeclaration"
-    ) {
-      const { kind } = node.declaration;
-
-      const [declaration] = node.declaration.declarations;
-
-      if (declaration.id.type == "ObjectPattern") {
-        for (const property of declaration.id.properties) {
-          if (
-            property.type == "Property" &&
-            property.key.type == "Identifier"
-          ) {
-            props.push({ kind, name: property.key.name });
-          }
-        }
-      }
-
-      if (declaration.id.type == "ArrayPattern") {
-        for (const element of declaration.id.elements) {
-          if (element?.type == "Identifier") {
-            props.push({ kind, name: element.name });
-          }
-        }
-      }
-
-      if (declaration.id.type == "Identifier") {
-        props.push({ kind, name: declaration.id.name });
-      }
-    }
-  }
-
-  const slots: Array<Slot> = [];
+  let snippets: Array<Slot> = [];
   let svelte_head: Head | undefined;
 
-  // @ts-expect-error
-  walk(ast.html, {
+  let props = "{}";
+
+  // Look for props `$props()`
+  for (const node of ast.instance.content.body) {
+    let should_continue = true;
+
+    if (node.type === "VariableDeclaration" && node.declarations.length > 0) {
+      for (const decl of node.declarations) {
+        if (
+          decl.init &&
+          decl.init.type === "CallExpression" &&
+          decl.init.callee.type == "Identifier" &&
+          decl.init.callee.name === "$props"
+        ) {
+          // Simple `const props = $props()`
+          if (decl.id.type == "Identifier") {
+            props = decl.id.name;
+          }
+
+          // `const {prop1, prop2: prop_rename, prop2: prop_rename_with_value = 'value', ...rest} = $props()`
+          if (decl.id.type === "ObjectPattern") {
+            let members = [];
+
+            for (const prop of decl.id.properties) {
+              if (prop.type === "Property") {
+                if (prop.key.type == "Identifier") {
+                  const { value: val } = prop;
+                  const value =
+                    val.type == "Identifier"
+                      ? val
+                      : val.type == "AssignmentPattern"
+                      ? val.left
+                      : null;
+
+                  if (value?.type == "Identifier") {
+                    // Just in-case the prop get renamed during destructuring
+                    members.push(`${prop.key.name}: ${value.name}`);
+                  }
+                }
+              } else {
+                // `const { /*...*/, ...rest} = $props()`
+                if (prop.argument.type == "Identifier") {
+                  members.push("..." + prop.argument.name);
+                }
+              }
+            }
+
+            props = `{${members.join(", ")}}`;
+          }
+
+          should_continue = false;
+          break;
+        }
+      }
+    }
+
+    if (!should_continue) break;
+  }
+
+  walk(ast.html as Node, {
     enter(node) {
-      // @ts-expect-error
       visit(node, (node) => {
-        const node_: Element = node as any;
+        const node_: any = node as any;
 
         if (node_.type == "Head") {
           const first = node_.children?.[0];
@@ -127,14 +148,28 @@ export async function make(
           }
         }
 
-        if (node.type == "Slot") {
-          const name_attr = node_.attributes.find(
-            (attr) => attr.type == "Attribute" && attr.name == "name"
-          );
+        if (node.type == "RenderTag") {
+          const tag = node as AST.RenderTag;
 
-          const name = name_attr?.value.find((val: any) => val.type == "Text");
+          // Snippet `@render name()`
+          if (
+            tag.expression.type == "CallExpression" &&
+            tag.expression.callee.type == "MemberExpression" &&
+            tag.expression.callee.property.type == "Identifier"
+          ) {
+            const { name } = tag.expression.callee.property;
+            snippets.push({ ...tag, name });
+          }
 
-          slots.push({ ...node, name: name?.data });
+          // Snippet with  optional chaining `@render name?.()`
+          if (
+            tag.expression.type == "ChainExpression" &&
+            tag.expression.expression.type == "CallExpression" &&
+            tag.expression.expression.callee.type == "Identifier"
+          ) {
+            const { name } = tag.expression.expression.callee;
+            snippets.push({ ...tag, name });
+          }
         }
 
         return node;
@@ -170,7 +205,11 @@ export async function make(
     s.overwrite(start, end, "");
   }
 
-  slots.forEach(({ end, start, name }) => {
+  snippets = Object.values(
+    Object.fromEntries(snippets.map((_) => [_.name, _]))
+  );
+
+  snippets.forEach(({ end, start, name }) => {
     const slot = s.slice(start, end);
     const attr = name ? `name="${name}"` : "";
     const content = `<stack54-slot style="display:contents;" ${attr}>${slot}</stack54-slot>`;
@@ -179,13 +218,19 @@ export async function make(
 
   const markup = s.toString().replace(SFC_script_style, "");
 
+  // Remove snippets from collected props to avoid JSON serialization error
   const code_ = dedent/*html*/ `
   ${module}
   
   <script ${attributes.join(" ")}>
     import {stringify} from "stack54/data";
     ${script.content}
-    const __props__ = {${props.map((prop) => prop.name).join(",")}};
+
+    const __props__ = ${`Object.fromEntries(
+      Object.entries(${props})
+      .map(([k, v]) => [k, typeof v == 'function' ? null : v])
+      .filter(([, v]) => v !== null)
+      )`}
   </script>
   
   <svelte:head>

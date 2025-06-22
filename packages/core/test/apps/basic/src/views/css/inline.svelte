@@ -3,7 +3,9 @@
 </script>
 
 <Document>
-  <title slot="head">CSS - Inline</title>
+  {#snippet head()}
+  <title>CSS - Inline</title>
+  {/snippet}
   <p>Text</p>
 </Document>
 

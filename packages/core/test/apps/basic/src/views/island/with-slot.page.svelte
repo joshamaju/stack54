@@ -1,16 +1,23 @@
 <script>
   import Document from "../components/document.svelte";
   import WithSlot from "./with-slot.island.svelte";
+  const {named: named_} = $props()
 </script>
 
 <Document>
   <WithSlot>
-    <div>
-      <p>default</p>
-    </div>
+    {#snippet children()}
+      <div>
+        <p>default</p>
+      </div>
+    {/snippet}
 
-    <div slot="named">
-      <p>named</p>
-    </div>
+    {#snippet named()}
+      {#if named_}
+        {@render named_()}
+      {:else}
+        <p>named</p>
+      {/if}
+    {/snippet}
   </WithSlot>
 </Document>

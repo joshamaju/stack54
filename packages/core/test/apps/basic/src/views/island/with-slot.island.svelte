@@ -1,13 +1,14 @@
 <script island="load">
   import Counter from "./counter.svelte";
+  const {named, children} = $props()
 </script>
 
 <Counter />
 
 <div data-testid="default-slot">
-  <slot />
+  {@render children?.()}
 </div>
 
 <div data-testid="named-slot">
-  <slot name="named" />
+  {@render named?.()}
 </div>

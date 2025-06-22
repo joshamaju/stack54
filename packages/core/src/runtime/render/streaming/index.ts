@@ -1,26 +1,23 @@
 import { AsyncLocalStorage } from "node:async_hooks";
-
-import type { Chunk } from "./types.js";
-import type { Template } from "../../../types/template.js";
+import { Component, Snippet } from "svelte";
+import { render } from "svelte/server";
+import type { Options, Props, Template } from "../../../types/template.js";
 import { HEAD_INSERTION_MARKER } from "../../constants.js";
-import {
-  isPromise,
-  renderChunk,
-  renderFallback,
-  swap_script,
-} from "./utils.js";
+import type { Chunk } from "./types.js";
+import { isPromise, renderChunk, swap_script } from "./utils.js";
 
-type Slot<T = any> = (props: T) => string;
+type Args = {
+  context: Map<any, any>;
+  component: Component<any>;
+  props: {
+    fallback: Snippet<[any]>;
+    resolve: PromiseLike<unknown>;
+    error: Snippet<[{ error: Error }]>;
+    children: Snippet<[{ value: unknown }]>;
+  };
+};
 
-interface Slots {
-  fallback: Slot;
-  error: Slot<{ error: Error }>;
-  default: Slot<{ value: unknown }>;
-}
-
-type Args = { slots: Slots; resolve: PromiseLike<unknown> };
-
-const Storage = new AsyncLocalStorage<(arg: Args) => void>();
+const Storage = new AsyncLocalStorage<(arg: Args) => object>();
 
 const await_ = (args: Args) => {
   const awaiter = Storage.getStore();
@@ -29,7 +26,7 @@ const await_ = (args: Args) => {
 
 function render_to_stream(
   template: Template,
-  ...args: Parameters<Template["render"]>
+  args: { props: Props; context: Options["context"] }
 ) {
   let current_id = 0;
   const pending = new Set<Chunk["id"]>();
@@ -42,8 +39,15 @@ function render_to_stream(
     },
   });
 
-  const suspend = ({ slots, resolve }: Args) => {
+  const suspend = ({ props, context, component }: Args) => {
     const id = current_id++;
+    const { resolve } = props;
+
+    const html = (component: Component, _props: any) => {
+      const props_ = { ...props, internal: _props };
+      const out = render(component, { context, props: props_ });
+      return out.body.replace(HEAD_INSERTION_MARKER, out.head);
+    };
 
     pending.add(id);
 
@@ -51,18 +55,15 @@ function render_to_stream(
 
     promise
       .then((value) => {
-        controller.enqueue({ id, content: slots.default?.({ value }) ?? "" });
+        const body = html(component, { value });
+        controller.enqueue({ id, content: body });
       })
       .catch((error) => {
-        controller.enqueue({
-          id,
-          content: slots.error?.({ error }) ?? String(error),
-        });
+        const body = html(component, { error, state: "error" });
+        controller.enqueue({ id, content: body });
       });
 
-    const fallback = slots.fallback?.({}) ?? "";
-
-    return renderFallback({ id, content: fallback });
+    return { internal: { id, state: "pending" } };
   };
 
   const encoder = new TextEncoder();
@@ -72,9 +73,9 @@ function render_to_stream(
       const cleanup = () => controller.close();
 
       const html = Storage.run(suspend, () => {
-        const out = template.render(...args);
-        const head = out.head + `<style>${out.css.code}</style>` + swap_script;
-        return out.html.replace(HEAD_INSERTION_MARKER, head);
+        const out = render(template, args);
+        const head = out.head + swap_script;
+        return out.body.replace(HEAD_INSERTION_MARKER, head);
       });
 
       controller.enqueue(encoder.encode(html));

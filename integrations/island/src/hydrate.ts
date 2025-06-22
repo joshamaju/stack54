@@ -1,37 +1,10 @@
-import { SvelteComponent } from "svelte";
+import { createRawSnippet, hydrate, unmount } from "svelte";
 import type { Callback } from "./directives/types.js";
-
-// @ts-expect-error no export type definition
-import { detach, insert, noop } from "svelte/internal";
-
-// https://github.com/lukeed/freshie/blob/5930c2eb8008aac93dcdad1da730e620db327072/packages/%40freshie/ui.svelte/index.js#L20
-function slotty(elem: Element | Comment) {
-  return function (...args: any[]) {
-    let frag: any = {};
-
-    frag.c = frag.c || noop;
-    frag.l = frag.l || noop;
-
-    frag.m =
-      frag.m ||
-      function (target: any, anchor: any) {
-        insert(target, elem, anchor);
-      };
-
-    frag.d =
-      frag.d ||
-      function (detaching: any) {
-        if (detaching) detach(elem);
-      };
-
-    return frag;
-  };
-}
 
 class Island extends HTMLElement {
   hydrated = false;
 
-  private instance?: SvelteComponent<any, any, any>;
+  private instance?: Record<string, any>;
 
   // connectedCallback() {
   //   if (
@@ -76,7 +49,7 @@ class Island extends HTMLElement {
     this.hydrate();
   }
 
-  hydrate = () => {
+  private hydrate = () => {
     const file = this.getAttribute("file");
     const directive = this.getAttribute("directive");
 
@@ -89,13 +62,15 @@ class Island extends HTMLElement {
       return;
     }
 
-    const parent = this.parentElement?.closest("stack54-island");
+    let parent = this.closest("stack54-island");
+
+    if (this.isSameNode(parent)) {
+      parent = parent?.parentElement?.closest("stack54-island") || null;
+    }
 
     // @ts-expect-error
     if (parent && !parent.hydrated) {
-      parent.addEventListener("stack54:hydrate", this.hydrate, {
-        once: true,
-      });
+      parent.addEventListener("stack54:hydrate", this.hydrate, { once: true });
       return;
     }
 
@@ -111,20 +86,36 @@ class Island extends HTMLElement {
         for (let slot of slots) {
           const closest = slot.closest(this.tagName);
           if (!closest?.isSameNode(this)) continue;
-          const name = slot.getAttribute("name") || "default";
+          const name = slot.getAttribute("name") || "children";
           slotted.push([name, slot]);
         }
 
         const _props = {
           ...props,
-          $$scope: {},
-          $$slots: Object.fromEntries(
-            slotted.map(([k, _]) => [k, [slotty(_ as any)]])
+          ...Object.fromEntries(
+            slotted.map(([k, slot]) => [
+              k,
+              createRawSnippet(() => {
+                return {
+                  render() {
+                    // Remove comments to avoid [issue](https://svelte.dev/docs/svelte/runtime-warnings#Client-warnings-hydration_mismatch)
+                    return slot.innerHTML.replace(/<!--[\s\S]*?-->/g, "");
+                  },
+                  setup(element) {
+                    return () => console.log("destroy");
+                  },
+                };
+              }),
+              // (anchor: Comment) => {
+              //   anchor.replaceWith(slot);
+              //   return () => slot.remove();
+              // },
+            ])
           ),
         };
 
-        const opts = { target, props: _props, hydrate: true, $$inline: true };
-        this.instance = new Component(opts);
+        const opts = { target, props: _props, $$inline: true };
+        this.instance = hydrate(Component, opts);
 
         this.hydrated = true;
         this.dispatchEvent(new CustomEvent("stack54:hydrate"));
@@ -133,7 +124,9 @@ class Island extends HTMLElement {
   };
 
   disconnectedCallback() {
-    this.instance?.$destroy();
+    if (this.instance) {
+      unmount(this.instance);
+    }
   }
 }
 
