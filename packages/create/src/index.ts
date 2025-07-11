@@ -8,6 +8,7 @@ import color from "kleur";
 import ora from "ora";
 import { confirm, input, select } from "@inquirer/prompts";
 
+import { parse } from "yaml";
 import { Octokit } from "@octokit/core";
 import { downloadTemplate } from "giget";
 
@@ -69,19 +70,32 @@ if (!template) {
         : [];
 
       const configs = await Promise.all(
-        templates.map((template) => {
-          return octokit.request(
-            "GET /repos/{owner}/{repo}/contents/{path}/config.yaml",
-            { owner, repo, path: template }
-          );
+        templates.map(async (template) => {
+          const path = `${templates_dir}/${template}/config.yaml`;
+
+          try {
+            const { data } = await octokit.request(
+              "GET /repos/{owner}/{repo}/contents/{path}",
+              { repo, path, owner }
+            );
+
+            if ("type" in data && data.type == "file") {
+              const content = Buffer.from(data.content, "base64");
+              const { features } = parse(content.toString("utf-8"));
+              return [template, features as string[]] as const;
+            }
+          } catch (error) {}
+
+          return template;
         })
       );
 
-      console.log(configs);
-
       template = await select({
         message: "Select a template",
-        choices: templates.map((name) => ({ name, value: name })),
+        choices: configs.map((_) => {
+          const [name, features] = Array.isArray(_) ? _ : [_];
+          return { name: features ? features.join(" + ") : name, value: name };
+        }),
       });
     } catch (error) {
       process.exit(0);
@@ -131,6 +145,8 @@ fs.writeFileSync(
   metadata_path,
   JSON.stringify({ ...metadata, name }, undefined, 2)
 );
+
+fs.rmSync(path.join(dir, "config.yaml"));
 
 spinner.stop();
 
