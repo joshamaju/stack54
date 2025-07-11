@@ -68,6 +68,17 @@ if (!template) {
         ? response.data.filter((_) => _.type == "dir").map((_) => _.name)
         : [];
 
+      const configs = await Promise.all(
+        templates.map((template) => {
+          return octokit.request(
+            "GET /repos/{owner}/{repo}/contents/{path}/config.yaml",
+            { owner, repo, path: template }
+          );
+        })
+      );
+
+      console.log(configs);
+
       template = await select({
         message: "Select a template",
         choices: templates.map((name) => ({ name, value: name })),
