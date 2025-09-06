@@ -80,6 +80,8 @@
     "./tsconfigs/*": "./tsconfigs/*.json",
     "./locals": "./dist/runtime/locals.js",
     "./config": "./dist/exports/config.js",
+    "./components/Head": "./components/Head.ts",
+    "./components/LiveReload": "./components/LiveReload.ts",
     "./components": "./components/index.ts",
     "./components/*": "./components/*.svelte",
     "./internals": "./dist/exports/internals.js",
