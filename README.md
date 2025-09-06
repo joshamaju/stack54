@@ -4,7 +4,7 @@
 
 ## Features
 
-- 🔌 BYOF (Bring Your Own Framework)
+- 🔌 BYOS (Bring Your Own Server)
 - 📡 Streaming
 - 🏝 Islands
 - 🔗 Integrations
@@ -17,6 +17,12 @@
 - [react](/examples/with-react)
 - [svelte](/examples/with-svelte)
 - [todo](/examples/todo)
+
+## Starters
+
+- [standalone](/templates/standalone): can be used with any language i.e Java
+- [express](/templates/express)
+- [tailwindcss](/templates/tailwindcss)
 
 ## Activity
 ![Alt](https://repobeats.axiom.co/api/embed/99a03cfcb8e87022b4773ffadba818affd9ee58d.svg "Repobeats analytics image")
