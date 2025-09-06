@@ -13,3 +13,5 @@ playground
 examples/**/pnpm-lock.yaml
 templates/**/pnpm-lock.yaml
 examples/**/package-lock.json
+
+templates/*/build
