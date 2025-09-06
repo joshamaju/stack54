@@ -1,5 +1,11 @@
 # mpa
 
+## 0.11.1
+
+### Patch Changes
+
+- 59b03ab: Provide components as standalone exports to avoid runtime/rendering issues due to platform specific APIs used by some components
+
 ## 0.11.0
 
 ### Minor Changes
