@@ -34,6 +34,12 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
 
   const plugin: Plugin = {
     name: "stack54:compiler",
+    buildEnd(error) {
+      if (error) {
+        console.log();
+        console.log(error);
+      }
+    },
     transform: {
       order: "pre",
       async handler(code, id) {
