@@ -10,6 +10,7 @@ export default function plugin(): Integration {
       config = conf;
     },
     configureServer(server) {
+      // @ts-expect-error
       return () => devServer(server, config);
     },
   };

@@ -1,4 +1,5 @@
 import type {
+  Env,
   Integration,
   UserConfig,
   ResolvedConfig,
@@ -8,4 +9,4 @@ export const defineConfig = (config: UserConfig): UserConfig => config;
 
 export const defineIntegration = (config: Integration): Integration => config;
 
-export type { Integration, UserConfig, ResolvedConfig };
+export type { Env, Integration, UserConfig, ResolvedConfig };

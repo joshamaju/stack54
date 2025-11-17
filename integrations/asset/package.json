@@ -1,0 +1,58 @@
+{
+  "name": "@stack54/asset",
+  "version": "1.0.10",
+  "description": "",
+  "type": "module",
+  "homepage": "https://github.com/joshamaju/stack54/blob/main/integrations/asset/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshamaju/stack54.git",
+    "directory": "integrations/asset"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --w",
+    "changeset": "changeset",
+    "prepublish": "pnpm build",
+    "version": "changeset version",
+    "release": "changeset publish"
+  },
+  "keywords": [],
+  "author": "Joshua Amaju",
+  "license": "ISC",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@parcel/watcher": "^2.5.1",
+    "change-case": "^5.4.4",
+    "effection": "^3.0.3",
+    "fs-extra": "^11.3.2",
+    "magic-string": "^0.30.5",
+    "micromatch": "^4.0.8",
+    "object-path": "^0.11.8",
+    "stack54": "workspace:^",
+    "stringcase": "^4.3.1",
+    "ts-dedent": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/fs-extra": "^11.0.4",
+    "@types/micromatch": "^4.0.9",
+    "@types/node": "^20.10.6",
+    "@types/object-path": "^0.11.4",
+    "express": "^4.19.2",
+    "typescript": "^5.3.3",
+    "vite": "^5.3.5"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./vite": "./dist/vite.js"
+  },
+  "peerDependencies": {
+    "express": "^4.19.2"
+  }
+}
