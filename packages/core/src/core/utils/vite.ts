@@ -30,6 +30,8 @@ export function make_vite_config(
   config: ResolvedConfig,
   { mode, command, logger }: CreateViteOptions
 ) {
+  const { plugins, ...vite_config } = config.vite;
+
   const inline_config: vite.InlineConfig = {
     mode,
     appType: "custom",
@@ -43,6 +45,7 @@ export function make_vite_config(
     plugins: [
       svelte(config.svelte) as vite.PluginOption,
       integrations_container_plugin(config),
+      ...(plugins ?? []),
     ],
     build: {
       copyPublicDir: false,
@@ -57,5 +60,5 @@ export function make_vite_config(
     },
   };
 
-  return vite.mergeConfig(config.vite, inline_config);
+  return vite.mergeConfig(vite_config, inline_config);
 }
