@@ -3,5 +3,5 @@ import { defineConfig } from "stack54/config";
 
 export default defineConfig({
   integrations: [express()],
-  views: ['src/views/*.{entry,page}.svelte']
+  views: ["src/views/**/*.{entry,page}.svelte"],
 });
