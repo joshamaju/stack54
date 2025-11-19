@@ -1,4 +1,4 @@
 {
   "extends": "stack54/tsconfigs/base",
-  "include": ["../with-remote-function/src"]
+  "include": ["src"]
 }
