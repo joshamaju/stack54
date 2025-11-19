@@ -1,4 +1,4 @@
-import { decode } from "stack54";
+import { decode } from "stack54/data";
 import Todo from "./islands/todo.svelte";
 import type { Task } from "./types/task";
 

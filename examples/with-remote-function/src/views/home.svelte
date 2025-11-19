@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { encode } from "stack54";
+  import { encode } from "stack54/data";
   import Document from "./components/document.svelte";
   import Todo from "./islands/todo.svelte";
   import type { Task } from "./types/task";
@@ -45,7 +45,10 @@
         </svg>
       </a>
       <h1 class="text-3xl p-2 text-white">ToDo List</h1>
-      <Todo {tasks} />
+
+      <div id="tasks-container" class="w-full">
+        <Todo {tasks} />
+      </div>
     </main>
   </div>
 </Document>

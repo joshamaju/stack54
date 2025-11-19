@@ -1,5 +1,5 @@
 import type { MiddlewareHandler } from "hono";
-import { renderToString } from "stack54";
+import { renderToString } from "stack54/render/static";
 import { key, makeLocals } from "stack54/locals";
 import { resolver } from "./view";
 
