@@ -1,5 +1,11 @@
 # mpa
 
+## 0.11.2
+
+### Patch Changes
+
+- e1eb5ea: Fix issue where integrations get unprocessed svelte files due to user defined vite plugins getting processed before internal plugins
+
 ## 0.11.1
 
 ### Patch Changes
