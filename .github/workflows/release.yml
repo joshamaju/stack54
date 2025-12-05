@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     if: github.repository_owner == 'joshamaju'
@@ -34,6 +38,9 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
+
+      - name: Update npm
+        run: npm install -g npm@latest
 
       - run: pnpm install
       - run: pnpm build
