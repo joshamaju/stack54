@@ -162,14 +162,14 @@ export function* compile({
   const preprocessors = config.svelte.preprocess ?? [];
 
   const processed: Processed = yield* call(() =>
-    compiler.preprocess(code, preprocessors, { filename })
+    compiler.preprocess(code, preprocessors, { filename }),
   );
 
   code =
     config.integrations.length <= 0
       ? processed.code
       : yield* call(() =>
-          run_html_pre_transform(config, { code: processed.code, filename })
+          run_html_pre_transform(config, { code: processed.code, filename }),
         );
 
   const assets = collect_assets(code, filename);
@@ -192,7 +192,7 @@ export function* compile({
         yield* call(() => fs.writeFile(filename, code));
         return [filename, { id, code, node }] as const;
       });
-    })
+    }),
   );
 
   let output_bundle: vite.Rollup.OutputBundle | null = null;
@@ -248,6 +248,7 @@ export function* compile({
       ssr: false,
       outDir: build,
       modulePreload: false,
+      assetsDir: config.build.assetsDir,
       rollupOptions: {
         input: fragments.map(([k]) => k),
       },
@@ -272,7 +273,7 @@ export function* compile({
     fragments.map(([filename, { id, node }]) => {
       return call(function* () {
         const file = output_files.find((k) =>
-          k.endsWith(filename.replace(dir, ""))
+          k.endsWith(filename.replace(dir, "")),
         );
 
         if (file) {
@@ -296,7 +297,7 @@ export function* compile({
           }
         }
       });
-    })
+    }),
   );
 
   code = s.toString();

@@ -41,7 +41,7 @@ export const userConfigSchema = z.object({
       minify: z.boolean().default(true),
       outDir: z.string().default("dist"),
       assetPrefix: z.string().default("/"),
-      assetsDir: z.string().default("assets"),
+      assetsDir: z.string().default("client"),
     })
     .default({}),
   env: z
@@ -74,7 +74,10 @@ export class InvalidConfig {
 export class Config {
   #file: string;
 
-  constructor(private cwd = process.cwd(), private file?: string) {
+  constructor(
+    private cwd = process.cwd(),
+    private file?: string,
+  ) {
     this.#file = path.join(cwd, file ?? DEFAULT_FILE);
   }
 

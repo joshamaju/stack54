@@ -60,21 +60,16 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
   const vite_logger = make_vite_logger("server");
 
   const inline_config: InlineConfig = {
-    define: env_define,
     plugins: [plugin],
+    define: env_define,
     mode: "production",
     customLogger: vite_logger,
     build: {
       ssr: true,
-      // target: "esnext",
       ssrEmitAssets: true,
       minify: config.build.minify,
       outDir: path.join(outDir, "server"),
-      rollupOptions: {
-        // output: { format: "esm" },
-        input: { index: config.entry },
-        // preserveEntrySignatures: "exports-only",
-      },
+      rollupOptions: { input: config.entry },
     },
   };
 
