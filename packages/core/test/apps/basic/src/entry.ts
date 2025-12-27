@@ -63,6 +63,8 @@ app.get("/direct-import", (_, res) => {
   res.send(render(Locals, {}, { context }));
 });
 
-app.get("/components/client-only", (_, res) => res.render("client-only.page"));
+app.get("/components/client-only", (_, res) => {
+  res.render("client-only/client-only.page")
+});
 
 export default app;

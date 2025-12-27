@@ -23,33 +23,24 @@ test.describe("Head", () => {
 test.describe("ClientOnly", () => {
   test("should only render on the client", async ({ page }) => {
     await page.addInitScript(() => {
-      let resolve = (...args: any[]) => {};
-
+      let resolve = (...args: any[]) => { };
       // @ts-expect-error
       window.HYDRATED = new Promise((r) => (resolve = r));
-
-      const node = document.querySelector('[data-testid="client-only"]');
-
-      window.addEventListener("stack54:idle", () => resolve(node == null));
+      window.addEventListener("client-only:hydrated", () => resolve());
     });
 
     await page.goto("/components/client-only");
 
+    const clientOnly = page.getByTestId("client-only");
+
+    await expect(clientOnly).not.toBeAttached();
+
     // @ts-expect-error
-    const result = await page.waitForFunction(() => window.HYDRATED);
+    page.evaluate(() => window.HYDRATE());
 
-    const notAttached = JSON.parse(await result.jsonValue());
+    // @ts-expect-error
+    await page.waitForFunction(() => window.HYDRATED);
 
-    expect(notAttached).toBeTruthy();
-
-    const inc = page.getByTestId("inc");
-    const dec = page.getByTestId("dec");
-    const text = page.getByTestId("text");
-
-    await inc.click();
-    expect(await text.textContent()).toBe("1");
-
-    await dec.click();
-    expect(await text.textContent()).toBe("0");
+    await expect(clientOnly).toBeAttached();
   });
 });
