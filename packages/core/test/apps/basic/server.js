@@ -2,7 +2,7 @@
 
 import express from "express";
 
-import router from "./dist/server/index.js";
+import router from "./dist/server/entry.js";
 
 const port = 3000;
 
