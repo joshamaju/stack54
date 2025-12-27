@@ -34,7 +34,7 @@ export function* dev({ cwd, config_file }: EntryOption) {
     live_reload_plugin(),
   ];
 
-  let merged_config = yield* call(run_config_setup(user_config, { command }));
+  let merged_config = yield* call(() => run_config_setup(user_config, { command }));
 
   let { assetPrefix } = user_config.build;
 
@@ -112,11 +112,11 @@ export function* dev({ cwd, config_file }: EntryOption) {
     vite: vite.mergeConfig(shared_vite_config, internal_vite_config),
   };
 
-  yield* call(run_config_resolved(config));
+  yield* call(() => run_config_resolved(config));
 
-  const server = yield* call(vite.createServer(config.vite));
+  const server = yield* call(() => vite.createServer(config.vite));
 
-  yield* call(server.listen());
+  yield* call(() => server.listen());
 
   server.printUrls();
   server.bindCLIShortcuts({ print: true });
@@ -134,7 +134,7 @@ export function* dev({ cwd, config_file }: EntryOption) {
   } finally {
     clearScreen();
     logger.info("stopping server...");
-    yield* call(server.close());
+    yield* call(() => server.close());
     logger.info("stopped server");
   }
 }

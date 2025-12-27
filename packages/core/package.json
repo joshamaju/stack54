@@ -60,7 +60,7 @@
     "@tsconfig/svelte": "^5.0.2",
     "cheerio": "^1.0.0",
     "devalue": "^4.3.2",
-    "effection": "^3.0.3",
+    "effection": "^4.0.0",
     "es-module-lexer": "^1.5.4",
     "glob": "^10.3.10",
     "kleur": "^4.1.5",

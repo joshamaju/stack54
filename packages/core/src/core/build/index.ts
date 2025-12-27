@@ -58,7 +58,7 @@ export function* build({ cwd, config_file }: EntryOption) {
   const env = load(config.env.dir ?? cwd, mode);
 
   if (config.integrations.length > 0) {
-    yield* call(run_build_start(config));
+    yield* call(() => run_build_start(config));
   }
 
   yield* clean;

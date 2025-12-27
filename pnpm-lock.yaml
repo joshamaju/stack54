@@ -108,8 +108,8 @@ importers:
         specifier: ^4.3.2
         version: 4.3.2
       effection:
-        specifier: ^3.0.3
-        version: 3.0.3
+        specifier: ^4.0.0
+        version: 4.0.0
       es-module-lexer:
         specifier: ^1.5.4
         version: 1.5.4
@@ -242,6 +242,157 @@ importers:
       typescript:
         specifier: ^5.3.3
         version: 5.6.3
+
+  playground/assets:
+    dependencies:
+      '@hono/node-server':
+        specifier: ^1.4.0
+        version: 1.13.7(hono@3.12.3)
+      '@stack54/express':
+        specifier: workspace:*
+        version: link:../../integrations/express
+      '@types/body-parser':
+        specifier: ^1.19.5
+        version: 1.19.5
+      '@types/express-flash':
+        specifier: ^0.0.5
+        version: 0.0.5
+      '@types/express-session':
+        specifier: ^1.18.0
+        version: 1.18.0
+      '@unocss/extractor-svelte':
+        specifier: ^0.58.5
+        version: 0.58.5
+      '@vitejs/plugin-legacy':
+        specifier: ^5.3.2
+        version: 5.4.3(terser@5.36.0)(vite@6.3.5(@types/node@22.9.0)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)(tsx@4.19.2)(yaml@2.8.0))
+      '@vituum/vite-plugin-tailwindcss':
+        specifier: ^1.1.0
+        version: 1.2.0(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)
+      axios:
+        specifier: ^1.7.9
+        version: 1.7.9
+      body-parser:
+        specifier: ^1.20.2
+        version: 1.20.3
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.0
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      consolidate:
+        specifier: ^1.0.4
+        version: 1.0.4(@babel/core@7.26.0)(ejs@3.1.10)(lodash@4.17.21)(react@18.3.1)(swig@1.4.2)
+      effection:
+        specifier: ^3.0.3
+        version: 3.0.3
+      express:
+        specifier: ^4.19.2
+        version: 4.21.1
+      express-flash:
+        specifier: ^0.0.2
+        version: 0.0.2
+      express-session:
+        specifier: ^1.18.0
+        version: 1.18.1
+      hono:
+        specifier: ^3.12.0
+        version: 3.12.3
+      lightningcss:
+        specifier: ^1.30.1
+        version: 1.30.1
+      lucide-svelte:
+        specifier: ^0.375.0
+        version: 0.375.0(svelte@5.35.6)
+      magic-string:
+        specifier: ^0.30.5
+        version: 0.30.17
+      mdsvex:
+        specifier: ^0.11.0
+        version: 0.11.2(svelte@5.35.6)
+      object-path:
+        specifier: ^0.11.8
+        version: 0.11.8
+      socket.io:
+        specifier: ^4.7.5
+        version: 4.8.1
+      socket.io-client:
+        specifier: ^4.7.5
+        version: 4.8.1
+      stack54:
+        specifier: workspace:*
+        version: link:../../packages/core
+      svelte:
+        specifier: ^5.34.5
+        version: 5.35.6
+      svelte-preprocess:
+        specifier: ^5.1.3
+        version: 5.1.3(@babel/core@7.26.0)(postcss-load-config@4.0.2(postcss@8.5.6))(postcss@8.5.6)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(svelte@5.35.6)(typescript@5.6.3)
+      swig:
+        specifier: ^1.4.2
+        version: 1.4.2
+      tailwind-merge:
+        specifier: ^2.5.2
+        version: 2.5.4
+      tailwindcss-animate:
+        specifier: ^1.0.7
+        version: 1.0.7(tailwindcss@3.4.15)
+      telefunc:
+        specifier: ^0.1.71
+        version: 0.1.81(@babel/core@7.26.0)(@babel/parser@7.26.2)(@babel/types@7.26.0)(react@18.3.1)
+      unocss:
+        specifier: ^0.58.5
+        version: 0.58.5(postcss@8.5.6)(rollup@4.44.2)(vite@6.3.5(@types/node@22.9.0)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)(tsx@4.19.2)(yaml@2.8.0))
+    devDependencies:
+      '@stack54/island':
+        specifier: workspace:^
+        version: link:../../integrations/island
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^5.1.0
+        version: 5.1.1(svelte@5.35.6)(vite@6.3.5(@types/node@22.9.0)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)(tsx@4.19.2)(yaml@2.8.0))
+      '@tsconfig/svelte':
+        specifier: ^5.0.2
+        version: 5.0.4
+      '@types/consolidate':
+        specifier: ^0.14.4
+        version: 0.14.4
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      autoprefixer:
+        specifier: ^10.4.16
+        version: 10.4.20(postcss@8.5.6)
+      es-module-lexer:
+        specifier: ^1.5.4
+        version: 1.5.4
+      postcss:
+        specifier: ^8.4.33
+        version: 8.5.6
+      tailwindcss:
+        specifier: ^3.4.0
+        version: 3.4.15
+      tsx:
+        specifier: ^4.15.7
+        version: 4.19.2
+      typescript:
+        specifier: ^5.3.3
+        version: 5.6.3
+      vite:
+        specifier: ^6.3.5
+        version: 6.3.5(@types/node@22.9.0)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)(tsx@4.19.2)(yaml@2.8.0)
+      vite-plugin-browser-sync:
+        specifier: ^2.0.1
+        version: 2.0.1(vite@6.3.5(@types/node@22.9.0)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)(tsx@4.19.2)(yaml@2.8.0))
+      vite-plugin-progress:
+        specifier: ^0.0.7
+        version: 0.0.7(vite@6.3.5(@types/node@22.9.0)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)(tsx@4.19.2)(yaml@2.8.0))
+      vite-plugin-simple-scope:
+        specifier: ^1.0.4
+        version: 1.0.4
+      vite-tsconfig-paths:
+        specifier: ^4.2.3
+        version: 4.2.3(typescript@5.6.3)(vite@6.3.5(@types/node@22.9.0)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)(tsx@4.19.2)(yaml@2.8.0))
 
   playground/deno:
     dependencies:
@@ -2625,11 +2776,6 @@ packages:
     peerDependencies:
       browserslist: '*'
 
-  browserslist@4.23.3:
-    resolution: {integrity: sha512-btwCFJVjI4YWDNfau8RhZ+B1Q/VLoUITrm3RlP6y1tYGWIOa+InuYiRGXUBXo8nA1qKmHMyLB/iVQg5TT4eFoA==}
-    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
-    hasBin: true
-
   browserslist@4.24.2:
     resolution: {integrity: sha512-ZIc+Q62revdMcqC6aChtW4jz3My3klmCO1fEmINZY/8J3EpBg5/A/D0AKmBveUh6pgoeycoMkVMko84tuYS+Gg==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
@@ -2664,9 +2810,6 @@ packages:
   camelcase@1.2.1:
     resolution: {integrity: sha512-wzLkDa4K/mzI1OSITC+DUyjgIl/ETNHE9QvYgy6J6Jvqyyz4C0Xfd+lQhb19sX2jMpZV4IssUn0VDVmglV+s4g==}
     engines: {node: '>=0.10.0'}
-
-  caniuse-lite@1.0.30001651:
-    resolution: {integrity: sha512-9Cf+Xv1jJNe1xPZLGuUXLNkE1BoDkqRqYyFJ9TDYSqhduqA4hu4oR9HluGoWYQC/aj8WHjsGVV+bwkh0+tegRg==}
 
   caniuse-lite@1.0.30001680:
     resolution: {integrity: sha512-rPQy70G6AGUMnbwS1z6Xg+RkHYPAi18ihs47GH0jcxIG7wArmPgY3XbS2sRdBbxJljp3thdT8BIqv9ccCypiPA==}
@@ -3134,10 +3277,6 @@ packages:
     engines: {node: '>=0.10'}
     hasBin: true
 
-  detect-libc@2.0.3:
-    resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
-    engines: {node: '>=8'}
-
   detect-libc@2.0.4:
     resolution: {integrity: sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==}
     engines: {node: '>=8'}
@@ -3198,6 +3337,10 @@ packages:
     resolution: {integrity: sha512-9ASCaJ44flDoEKUUJtn9drfIomn2z30sZUw7//crbq+eltMu09AyILcouXwpMkcHR8TsD5hDvTTsOLHswWRxXQ==}
     engines: {node: '>= 16'}
 
+  effection@4.0.0:
+    resolution: {integrity: sha512-eW2yqhyBdey4k8lkp7hpiev2FSHvJvQqvaIebI3EGikHZvfUWvNy7SmkwOnJa6WcsUtSh7VHUwdjHTbV++8M9w==}
+    engines: {node: '>= 16'}
+
   ejs@3.1.10:
     resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
     engines: {node: '>=0.10.0'}
@@ -3205,9 +3348,6 @@ packages:
 
   electron-to-chromium@1.5.63:
     resolution: {integrity: sha512-ddeXKuY9BHo/mw145axlyWjlJ1UBt4WK3AlvkT7W2AbqfRQoacVoRUCF6wL3uIx/8wT9oLKXzI+rFqHHscByaA==}
-
-  electron-to-chromium@1.5.8:
-    resolution: {integrity: sha512-4Nx0gP2tPNBLTrFxBMHpkQbtn2hidPVr/+/FTtcCiBYTucqc70zRyVZiOLj17Ui3wTO7SQ1/N+hkHYzJjBzt6A==}
 
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
@@ -4112,6 +4252,10 @@ packages:
     resolution: {integrity: sha512-kDCGIbxkDSXE3euJZZXzc6to7fCrKHNI/hSRQnRuQ+BWjFNzZwiFF8fj/6o2t2G9/jTj8PSIYTfCLelLZEeRpA==}
     engines: {node: '>= 0.4'}
 
+  object-path@0.11.8:
+    resolution: {integrity: sha512-YJjNZrlXJFM42wTBn6zgOJVar9KFJvzx6sTWDte8sWZF//cnjl0BxHNpfZx+ZffXX63A9q0b1zsFiBX4g4X5KA==}
+    engines: {node: '>= 10.12.0'}
+
   ofetch@1.4.1:
     resolution: {integrity: sha512-QZj2DfGplQAr2oj9KzceK9Hwz6Whxazmn85yYeVuS3u9XTMOGMRx0kO95MQ+vLsj/S/NwBDMMLU5hpxvI6Tklw==}
 
@@ -4253,9 +4397,6 @@ packages:
 
   periscopic@3.1.0:
     resolution: {integrity: sha512-vKiQ8RRtkl9P+r/+oefh25C3fhybptkHKCZSPlcXiJux2tJF55GnEj3BVn4A5gKfq9NWWXXrxkHBwVPUfH0opw==}
-
-  picocolors@1.0.1:
-    resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -5059,12 +5200,6 @@ packages:
   unpipe@1.0.0:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
-
-  update-browserslist-db@1.1.0:
-    resolution: {integrity: sha512-EdRAaAyk2cUE1wOf2DkEhzxqOQvFOoRJFNS6NeyJ01Gp2beMRpBAINjM2iDXE3KCuKhwnvHIQCJm6ThL2Z+HzQ==}
-    hasBin: true
-    peerDependencies:
-      browserslist: '>= 4.21.0'
 
   update-browserslist-db@1.1.1:
     resolution: {integrity: sha512-R8UzCaa9Az+38REPiJ1tXlImTJXlVfgHZsglwBD/k6nj76ctsH1E3q4doGrukiLQd3sGQYu56r5+lo5r94l29A==}
@@ -6850,7 +6985,7 @@ snapshots:
 
   '@rollup/pluginutils@5.1.3(rollup@4.44.2)':
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.8
       estree-walker: 2.0.2
       picomatch: 4.0.2
     optionalDependencies:
@@ -7605,11 +7740,11 @@ snapshots:
 
   autoprefixer@10.4.20(postcss@8.5.6):
     dependencies:
-      browserslist: 4.23.3
-      caniuse-lite: 1.0.30001651
+      browserslist: 4.24.2
+      caniuse-lite: 1.0.30001680
       fraction.js: 4.3.7
       normalize-range: 0.1.2
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
@@ -7769,13 +7904,6 @@ snapshots:
       browserslist: 4.24.2
       meow: 13.2.0
 
-  browserslist@4.23.3:
-    dependencies:
-      caniuse-lite: 1.0.30001651
-      electron-to-chromium: 1.5.8
-      node-releases: 2.0.18
-      update-browserslist-db: 1.1.0(browserslist@4.23.3)
-
   browserslist@4.24.2:
     dependencies:
       caniuse-lite: 1.0.30001680
@@ -7804,8 +7932,6 @@ snapshots:
   camelcase-css@2.0.1: {}
 
   camelcase@1.2.1: {}
-
-  caniuse-lite@1.0.30001651: {}
 
   caniuse-lite@1.0.30001680: {}
 
@@ -8110,8 +8236,6 @@ snapshots:
   detect-libc@1.0.3:
     optional: true
 
-  detect-libc@2.0.3: {}
-
   detect-libc@2.0.4: {}
 
   dev-ip@1.0.1: {}
@@ -8162,14 +8286,14 @@ snapshots:
 
   effection@3.0.3: {}
 
+  effection@4.0.0: {}
+
   ejs@3.1.10:
     dependencies:
       jake: 10.9.2
     optional: true
 
   electron-to-chromium@1.5.63: {}
-
-  electron-to-chromium@1.5.8: {}
 
   emoji-regex@10.4.0: {}
 
@@ -8839,7 +8963,7 @@ snapshots:
 
   lightningcss@1.30.1:
     dependencies:
-      detect-libc: 2.0.3
+      detect-libc: 2.0.4
     optionalDependencies:
       lightningcss-darwin-arm64: 1.30.1
       lightningcss-darwin-x64: 1.30.1
@@ -9131,6 +9255,8 @@ snapshots:
 
   object-inspect@1.13.3: {}
 
+  object-path@0.11.8: {}
+
   ofetch@1.4.1:
     dependencies:
       destr: 2.0.3
@@ -9261,8 +9387,6 @@ snapshots:
       '@types/estree': 1.0.6
       estree-walker: 3.0.3
       is-reference: 3.0.3
-
-  picocolors@1.0.1: {}
 
   picocolors@1.1.1: {}
 
@@ -9897,7 +10021,7 @@ snapshots:
       '@ampproject/remapping': 2.3.0
       '@jridgewell/sourcemap-codec': 1.5.0
       '@sveltejs/acorn-typescript': 1.0.5(acorn@8.14.0)
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.8
       acorn: 8.14.0
       aria-query: 5.3.2
       axobject-query: 4.1.0
@@ -10149,12 +10273,6 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  update-browserslist-db@1.1.0(browserslist@4.23.3):
-    dependencies:
-      browserslist: 4.23.3
-      escalade: 3.1.2
-      picocolors: 1.1.1
-
   update-browserslist-db@1.1.1(browserslist@4.24.2):
     dependencies:
       browserslist: 4.24.2
@@ -10230,7 +10348,7 @@ snapshots:
 
   vite-plugin-progress@0.0.7(vite@6.3.5(@types/node@22.9.0)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)(tsx@4.19.2)(yaml@2.8.0)):
     dependencies:
-      picocolors: 1.0.1
+      picocolors: 1.1.1
       progress: 2.0.3
       rd: 2.0.1
       vite: 6.3.5(@types/node@22.9.0)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)(tsx@4.19.2)(yaml@2.8.0)
@@ -10241,7 +10359,7 @@ snapshots:
 
   vite-tsconfig-paths@4.2.3(typescript@5.6.3)(vite@6.3.5(@types/node@22.9.0)(jiti@2.4.2)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)(tsx@4.19.2)(yaml@2.8.0)):
     dependencies:
-      debug: 4.3.7
+      debug: 4.4.1(supports-color@5.5.0)
       globrex: 0.1.2
       tsconfck: 2.1.2(typescript@5.6.3)
     optionalDependencies:
