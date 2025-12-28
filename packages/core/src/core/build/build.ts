@@ -16,7 +16,7 @@ import { compile } from "./compiler.js";
 type Opts = { config: ResolvedConfig; outDir: string; env: Env; cwd: string };
 
 export function* builder({ cwd, env, config, outDir }: Opts) {
-  const dir = path.join(cwd, ".facades");
+  const dir = path.join(cwd, ".stack54");
 
   const scope = yield* useScope();
 
