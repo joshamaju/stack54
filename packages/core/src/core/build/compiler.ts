@@ -18,6 +18,7 @@ import {
   run_html_post_transform,
   run_html_pre_transform,
 } from "../integrations/hooks.js";
+import { ManifestEntry } from "../types.js";
 
 async function copy(srcDir: string, destDir: string) {
   await fs.mkdir(destDir, { recursive: true });
@@ -151,7 +152,7 @@ export function* compile({
   outDir: string;
   filename: string;
   config: ResolvedConfig;
-}): Operation<string | null> {
+}): Operation<{ code: string; manifest: ManifestEntry[] } | null> {
   const p = path.parse(filename);
 
   const name = path.join(p.dir, p.name).replaceAll(path.sep, "_");
@@ -162,14 +163,14 @@ export function* compile({
   const preprocessors = config.svelte.preprocess ?? [];
 
   const processed: Processed = yield* call(() =>
-    compiler.preprocess(code, preprocessors, { filename }),
+    compiler.preprocess(code, preprocessors, { filename })
   );
 
   code =
     config.integrations.length <= 0
       ? processed.code
       : yield* call(() =>
-          run_html_pre_transform(config, { code: processed.code, filename }),
+          run_html_pre_transform(config, { code: processed.code, filename })
         );
 
   const assets = collect_assets(code, filename);
@@ -192,7 +193,7 @@ export function* compile({
         yield* call(() => fs.writeFile(filename, code));
         return [filename, { id, code, node }] as const;
       });
-    }),
+    })
   );
 
   let output_bundle: vite.Rollup.OutputBundle | null = null;
@@ -247,6 +248,7 @@ export function* compile({
     build: {
       ssr: false,
       outDir: build,
+      manifest: true,
       modulePreload: false,
       assetsDir: config.build.assetsDir,
       rollupOptions: {
@@ -256,6 +258,17 @@ export function* compile({
   };
 
   yield* call(() => vite.build(vite.mergeConfig(config.vite, inline_config)));
+
+  const manifest_file = path.join(build, ".vite/manifest.json");
+
+  const vite_manifest: vite.Manifest = yield* call(async () => {
+    const content = await fs.readFile(manifest_file, "utf-8");
+    return JSON.parse(content);
+  });
+
+  const vite_manifest_entries = Object.values(vite_manifest).map(
+    (_) => `/${_.file}`
+  );
 
   const move_assets = yield* spawn(function* () {
     const dir = path.join(build, config.build.assetsDir);
@@ -269,11 +282,13 @@ export function* compile({
 
   const output_files = [...Object.keys(output_bundle ?? {})];
 
+  const manifest: ManifestEntry[] = [];
+
   yield* all(
     fragments.map(([filename, { id, node }]) => {
       return call(function* () {
         const file = output_files.find((k) =>
-          k.endsWith(filename.replace(dir, "")),
+          k.endsWith(filename.replace(dir, ""))
         );
 
         if (file) {
@@ -281,23 +296,30 @@ export function* compile({
 
           if (bundle?.type == "asset") {
             const $output = parseHTML(bundle.source.toString());
-            const $original = parseHTML(s.slice(node.start, node.end));
+            const $source = parseHTML(s.slice(node.start, node.end));
 
-            const original = $original(node.name);
+            const source = $source(node.name);
             const output = $output(`${node.name}[${ID_ATTR}="${id}"]`);
 
-            const original_attrs = original.attr();
+            const source_attrs = source.attr();
 
-            for (const name in original_attrs) {
+            for (const name in source_attrs) {
               const value = output.attr(name);
-              if (!value) output.attr(name, original_attrs[name]);
+
+              if (value && vite_manifest_entries.includes(value)) {
+                manifest.push({ file: value, src: source_attrs[name] });
+              }
+
+              // keep whatever value exists in the source file if the output
+              // doesn't have it or wasn't generated
+              if (!value) output.attr(name, source_attrs[name]);
             }
 
             s.update(node.start, node.end, $output.html());
           }
         }
       });
-    }),
+    })
   );
 
   code = s.toString();
@@ -309,5 +331,5 @@ export function* compile({
 
   yield* move_assets;
 
-  return code;
+  return { code, manifest };
 }

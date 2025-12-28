@@ -10,6 +10,7 @@ import picomatch from "picomatch";
 import { ResolvedConfig } from "../config/index.js";
 import { define, Env, partition } from "../env.js";
 import { make_vite_logger } from "../logger.js";
+import { Manifest } from "../types.js";
 import { parse_id } from "../utils/view.js";
 import { compile } from "./compiler.js";
 
@@ -32,6 +33,8 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
 
   const matcher = picomatch(config.views, { cwd, contains: true });
 
+  const manifests: Manifest = {};
+
   const plugin: Plugin = {
     name: "stack54:compiler",
     buildEnd(error) {
@@ -48,7 +51,9 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
         if (filename.endsWith(".svelte") && matcher(filename)) {
           return scope.run(function* () {
             const args = { dir, code, config, outDir, filename, env: public_ };
-            return yield* compile(args);
+            const result = yield* compile(args);
+            manifests[filename] = result?.manifest ?? [];
+            return result?.code;
           });
         }
       },
@@ -74,4 +79,6 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
   };
 
   yield* call(() => vite.build(vite.mergeConfig(config.vite, inline_config)));
+
+  return manifests;
 }

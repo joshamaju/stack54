@@ -1,5 +1,6 @@
 import type { Env, ResolvedConfig } from "../config/index.js";
 import { merge } from "../config/merge.js";
+import { Manifest } from "../types.js";
 
 export async function run_config_setup(
   config: ResolvedConfig,
@@ -29,9 +30,12 @@ export async function run_build_start(config: ResolvedConfig) {
   }
 }
 
-export async function run_build_end(config: ResolvedConfig) {
+export async function run_build_end(
+  config: ResolvedConfig,
+  manifest: Manifest
+) {
   for (const integration of config.integrations) {
-    await integration.buildEnd?.call(integration);
+    await integration.buildEnd?.call(integration, manifest);
   }
 }
 

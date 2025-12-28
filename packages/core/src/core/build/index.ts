@@ -63,10 +63,10 @@ export function* build({ cwd, config_file }: EntryOption) {
 
   yield* clean;
 
-  yield* builder({ cwd, outDir, config, env });
+  const manifest = yield* builder({ cwd, outDir, config, env });
 
   if (config.integrations.length > 0) {
-    yield* call(() => run_build_end(config));
+    yield* call(() => run_build_end(config, manifest));
   }
 
   const end = process.hrtime.bigint();
