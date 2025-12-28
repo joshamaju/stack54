@@ -1,0 +1,48 @@
+{
+  "name": "@stack54/service-worker",
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "homepage": "https://github.com/joshamaju/stack54/blob/main/integrations/service-worker/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshamaju/stack54.git",
+    "directory": "integrations/service-worker"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --w",
+    "changeset": "changeset",
+    "prepublish": "pnpm build",
+    "version": "changeset version",
+    "release": "changeset publish"
+  },
+  "keywords": [],
+  "author": "Joshua Amaju",
+  "license": "ISC",
+  "dependencies": {
+    "glob": "^10.4.5",
+    "kleur": "^4.1.5",
+    "stack54": "workspace:^",
+    "ts-dedent": "^2.2.0",
+    "vite": "^5.4.0",
+    "zod": "^3.23.8"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./env": {
+      "types": "./env.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "env.d.ts"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "typescript": "^5.3.3"
+  }
+}

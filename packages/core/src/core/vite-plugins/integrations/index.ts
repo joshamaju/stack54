@@ -6,7 +6,9 @@ export function integrations_container_plugin(config: ResolvedConfig): Plugin {
     name: "stack54:integrations",
     async configureServer(server) {
       const callbacks = await Promise.all(
-        config.integrations.map((plugin) => {
+        config.integrations.map(async (integration) => {
+          const plugin =
+            integration instanceof Promise ? await integration : integration;
           return plugin.configureServer?.call(plugin, server);
         })
       );
