@@ -196,7 +196,7 @@ export function* compile({
     })
   );
 
-  let output_bundle: vite.Rollup.OutputBundle | null = null;
+  let output_bundle: vite.Rollup.OutputBundle | undefined;
 
   const collect_bundle: Plugin = {
     name: "stack54:collect-bundle",
@@ -284,43 +284,39 @@ export function* compile({
 
   const manifest: ManifestEntry[] = [];
 
-  yield* all(
-    fragments.map(([filename, { id, node }]) => {
-      return call(function* () {
-        const file = output_files.find((k) =>
-          k.endsWith(filename.replace(dir, ""))
-        );
+  for (const [filename, { id, node }] of fragments) {
+    const file = output_files.find((k) =>
+      k.endsWith(filename.replace(dir, ""))
+    );
 
-        if (file) {
-          const bundle = output_bundle?.[file];
+    if (file) {
+      const bundle = output_bundle?.[file];
 
-          if (bundle?.type == "asset") {
-            const $output = parseHTML(bundle.source.toString());
-            const $source = parseHTML(s.slice(node.start, node.end));
+      if (bundle?.type == "asset") {
+        const $output = parseHTML(bundle.source.toString());
+        const $source = parseHTML(s.slice(node.start, node.end));
 
-            const source = $source(node.name);
-            const output = $output(`${node.name}[${ID_ATTR}="${id}"]`);
+        const source = $source(node.name);
+        const output = $output(`${node.name}[${ID_ATTR}="${id}"]`);
 
-            const source_attrs = source.attr();
+        const source_attrs = source.attr();
 
-            for (const name in source_attrs) {
-              const value = output.attr(name);
+        for (const name in source_attrs) {
+          const value = output.attr(name);
 
-              if (value && vite_manifest_entries.includes(value)) {
-                manifest.push({ file: value, src: source_attrs[name] });
-              }
-
-              // keep whatever value exists in the source file if the output
-              // doesn't have it or wasn't generated
-              if (!value) output.attr(name, source_attrs[name]);
-            }
-
-            s.update(node.start, node.end, $output.html());
+          if (value && vite_manifest_entries.includes(value)) {
+            manifest.push({ file: value, src: source_attrs[name] });
           }
+
+          // keep whatever value exists in the source file if the output
+          // doesn't have it or wasn't generated
+          if (!value) output.attr(name, source_attrs[name]);
         }
-      });
-    })
-  );
+
+        s.update(node.start, node.end, $output.html());
+      }
+    }
+  }
 
   code = s.toString();
 
