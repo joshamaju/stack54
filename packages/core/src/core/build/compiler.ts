@@ -120,7 +120,7 @@ const ID_ATTR = "data-stack54";
  * - `<link rel="stylesheet" href="./style-[hash].css" />`
  * - `<script src="./script-[hash].js" type="module"></script>`
  * - `<script type="module">
- *      // bundled JS
+ *      // bundled inline JS
  *   </script>`
  *
  * Which we then back-port into the original file. Which makes the final output:
@@ -128,13 +128,13 @@ const ID_ATTR = "data-stack54";
  * ```html
  * <html>
  *    <head>
- *        <link rel="stylesheet" href="./style-[hash].css" />
+ *        <link rel="stylesheet" href="/assets/style-[hash].css" />
  *    </head>
  *    <body>
- *        <script src="./script-[hash].js" type="module"></script>
+ *        <script src="/assets/script-[hash].js" type="module"></script>
  *
  *        <script type="module">
- *            // bundled JS
+ *            // bundled inline JS
  *        </script>
  *    </body>
  * </html>
@@ -284,6 +284,10 @@ export function* compile({
 
   const manifest: ManifestEntry[] = [];
 
+  /**
+   * finds the output file for each asset (i.e link, script) fragment
+   * and updates the attributes of the asset to match the output file
+   */
   for (const [filename, { id, node }] of fragments) {
     const file = output_files.find((k) =>
       k.endsWith(filename.replace(dir, ""))
