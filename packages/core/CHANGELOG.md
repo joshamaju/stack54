@@ -1,5 +1,11 @@
 # mpa
 
+## 0.11.3
+
+### Patch Changes
+
+- c5dfb91: Use entry filename in config as is as output filename
+
 ## 0.11.2
 
 ### Patch Changes
