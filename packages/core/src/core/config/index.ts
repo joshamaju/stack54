@@ -34,7 +34,11 @@ export const userConfigSchema = z.object({
   staticDir: z.string().default("static"),
   vite: z.custom<ViteUserConfig>().default({}),
   entry: z.string().default("src/entry.{js,ts,mjs,mts}"),
-  integrations: z.array(z.custom<Integration>()).default([]),
+  integrations: z
+    .array(
+      z.union([z.custom<Integration>(), z.promise(z.custom<Integration>())])
+    )
+    .default([]),
   views: z.array(z.string()).default(["src/views/**/*.svelte"]),
   build: z
     .object({

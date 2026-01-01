@@ -1,6 +1,7 @@
 import type { Env, ResolvedConfig } from "../config/index.js";
 import { merge } from "../config/merge.js";
 import { Manifest } from "../types.js";
+import { resolve } from "../utils/integration.js";
 
 export async function run_config_setup(
   config: ResolvedConfig,
@@ -11,7 +12,8 @@ export async function run_config_setup(
   let merged = config;
 
   for (const integration of integrations) {
-    const config = await integration.config?.call(integration, merged, env);
+    const plugin = await resolve(integration);
+    const config = await plugin.config?.call(plugin, merged, env);
     if (config) merged = merge(merged, config) as ResolvedConfig;
   }
 
@@ -20,13 +22,15 @@ export async function run_config_setup(
 
 export async function run_config_resolved(config: ResolvedConfig) {
   for (const integration of config.integrations) {
-    await integration.configResolved?.call(integration, config);
+    const plugin = await resolve(integration);
+    await plugin.configResolved?.call(plugin, config);
   }
 }
 
 export async function run_build_start(config: ResolvedConfig) {
   for (const integration of config.integrations) {
-    await integration.buildStart?.call(integration);
+    const plugin = await resolve(integration);
+    await plugin.buildStart?.call(plugin);
   }
 }
 
@@ -35,7 +39,8 @@ export async function run_build_end(
   manifest: Manifest
 ) {
   for (const integration of config.integrations) {
-    await integration.buildEnd?.call(integration, manifest);
+    const plugin = await resolve(integration);
+    await plugin.buildEnd?.call(plugin, manifest);
   }
 }
 
@@ -48,10 +53,11 @@ export async function run_html_pre_transform(
   let _code = code;
 
   for (const integration of integrations) {
-    const v = integration.transform;
+    const plugin = await resolve(integration);
+    const v = plugin.transform;
 
     if (v && typeof v !== "function" && v.order == "pre") {
-      const code = await v.handle.call(integration, _code, filename);
+      const code = await v.handle.call(plugin, _code, filename);
       if (code) _code = code;
     }
   }
@@ -70,7 +76,8 @@ export async function run_html_post_transform(
   for (const integration of integrations) {
     let fn;
 
-    const value = integration.transform;
+    const plugin = await resolve(integration);
+    const value = plugin.transform;
 
     if (value) {
       if (typeof value == "function") {
@@ -81,7 +88,7 @@ export async function run_html_post_transform(
     }
 
     if (fn) {
-      const code = await fn.call(integration, _code, filename);
+      const code = await fn.call(plugin, _code, filename);
       if (code) _code = code;
     }
   }
