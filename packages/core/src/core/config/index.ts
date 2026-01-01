@@ -33,9 +33,11 @@ export interface Integration extends Partial<Hooks> {
 export const userConfigSchema = z.object({
   staticDir: z.string().default("static"),
   vite: z.custom<ViteUserConfig>().default({}),
-  entry: z.string().default("src/entry.{js,ts,mjs,mts}"),
   integrations: z.array(z.custom<Integration>()).default([]),
   views: z.array(z.string()).default(["src/views/**/*.svelte"]),
+  entry: z
+    .union([z.string(), z.array(z.string()), z.record(z.string(), z.string())])
+    .default("src/entry.{js,ts,mjs,mts}"),
   build: z
     .object({
       minify: z.boolean().default(true),
@@ -99,13 +101,13 @@ export class Config {
   }
 
   async resolve(config: ResolvedConfig) {
-    const cwd = this.cwd;
+    // const cwd = this.cwd;
 
-    const entry = await glob(config.entry, { cwd });
+    // const entry = await glob(config.entry, { cwd });
 
     return {
       ...config,
-      entry: entry[0],
+      // entry: entry[0],
       svelte: get_svelte_config(config),
     };
   }

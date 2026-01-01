@@ -1,7 +1,8 @@
 import { Integration, ResolvedConfig } from "stack54/config";
+import pkg from '../../package.json' with {type: 'json'}
 import { devServer } from "./server.js";
 
-export default function plugin(): Integration {
+export default function plugin(opts: { entry?: string } = {}): Integration {
   let config: ResolvedConfig;
 
   return {
@@ -10,7 +11,13 @@ export default function plugin(): Integration {
       config = conf;
     },
     configureServer(server) {
-      return () => devServer(server, config);
+      const entry = opts.entry ?? config.entry;
+
+      if (typeof entry !== "string") {
+        throw new Error(`${pkg.name}: config entry must be a string`);
+      }
+
+      return () => devServer(server, { entry });
     },
   };
 }
