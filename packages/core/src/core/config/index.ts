@@ -33,7 +33,11 @@ export interface Integration extends Partial<Hooks> {
 export const userConfigSchema = z.object({
   staticDir: z.string().default("static"),
   vite: z.custom<ViteUserConfig>().default({}),
-  integrations: z.array(z.custom<Integration>()).default([]),
+  integrations: z
+    .array(
+      z.union([z.custom<Integration>(), z.promise(z.custom<Integration>())])
+    )
+    .default([]),
   views: z.array(z.string()).default(["src/views/**/*.svelte"]),
   entry: z
     .union([z.string(), z.array(z.string()), z.record(z.string(), z.string())])
