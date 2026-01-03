@@ -21,7 +21,7 @@
   "author": "Joshua Amaju",
   "license": "ISC",
   "dependencies": {
-    "glob": "^10.4.5",
+    "glob": "^13.0.0",
     "kleur": "^4.1.5",
     "stack54": "workspace:^",
     "ts-dedent": "^2.2.0",
