@@ -14,7 +14,7 @@
     "@hono/node-server": "^1.19.6",
     "@hono/vite-dev-server": "^0.23.0",
     "hono": "^4.10.6",
-    "stack54": "^0.11.1",
+    "stack54": "^0.12.0",
     "svelte": "^4.2.8",
     "thaler": "^0.9.0",
     "unplugin-thaler": "^0.9.0"
