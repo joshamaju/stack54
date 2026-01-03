@@ -9,7 +9,14 @@ it("should not attach to vite dev server", async () => {
     cwd: process.cwd(),
   });
 
-  playwright.on("close", (code) => deffered.resolve(code ?? 0));
+  let output = "";
+  playwright.stderr.on("data", (data) => (output += data));
+  playwright.stdout.on("data", (data) => (output += data));
+
+  playwright.on("close", (code) => {
+    console.log(output);
+    deffered.resolve(code ?? 0);
+  });
 
   expect(await deffered.promise).toBe(1);
 });
