@@ -1,5 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-import port from "./get-port.js";
+import { port } from "@stack54/internal-test-utils";
 
 export default defineConfig({
   timeout: 45000,

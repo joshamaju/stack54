@@ -48,6 +48,9 @@ importers:
       '@stack54/express':
         specifier: workspace:*
         version: link:../..
+      '@stack54/internal-test-utils':
+        specifier: workspace:*
+        version: link:../../../test-utils
       express:
         specifier: ^5.2.1
         version: 5.2.1
@@ -79,6 +82,9 @@ importers:
       '@stack54/express':
         specifier: workspace:*
         version: link:../..
+      '@stack54/internal-test-utils':
+        specifier: workspace:*
+        version: link:../../../test-utils
       express:
         specifier: ^4.21.1
         version: 4.21.1
@@ -110,6 +116,9 @@ importers:
       '@stack54/express':
         specifier: workspace:*
         version: link:../..
+      '@stack54/internal-test-utils':
+        specifier: workspace:*
+        version: link:../../../test-utils
       express:
         specifier: ^5.2.1
         version: 5.2.1
@@ -175,6 +184,9 @@ importers:
       '@stack54/hono':
         specifier: workspace:*
         version: link:../..
+      '@stack54/internal-test-utils':
+        specifier: workspace:*
+        version: link:../../../test-utils
       get-port:
         specifier: ^7.1.0
         version: 7.1.0
@@ -209,6 +221,9 @@ importers:
       '@stack54/hono':
         specifier: workspace:*
         version: link:../..
+      '@stack54/internal-test-utils':
+        specifier: workspace:*
+        version: link:../../../test-utils
       get-port:
         specifier: ^7.1.0
         version: 7.1.0
@@ -243,6 +258,9 @@ importers:
       '@stack54/hono':
         specifier: workspace:*
         version: link:../..
+      '@stack54/internal-test-utils':
+        specifier: workspace:*
+        version: link:../../../test-utils
       get-port:
         specifier: ^7.1.0
         version: 7.1.0
@@ -330,6 +348,12 @@ importers:
       typescript:
         specifier: ^5.3.3
         version: 5.6.3
+
+  integrations/test-utils:
+    dependencies:
+      get-port:
+        specifier: ^7.1.0
+        version: 7.1.0
 
   packages/core:
     dependencies:

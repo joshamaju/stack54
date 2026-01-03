@@ -12,6 +12,7 @@
   "keywords": [],
   "dependencies": {
     "@stack54/express": "workspace:*",
+    "@stack54/internal-test-utils": "workspace:*",
     "express": "^5.2.1",
     "stack54": "workspace:*",
     "svelte": "^4.2.8"

@@ -1,7 +1,7 @@
 import getPort from "get-port";
 import { readFile, writeFile } from "node:fs/promises";
 
-export default async function port() {
+export async function port() {
   /**
    * @type {number | undefined}
    */
