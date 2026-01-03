@@ -105,14 +105,21 @@ export class Config {
   }
 
   async resolve(config: ResolvedConfig) {
-    // const cwd = this.cwd;
+    const cwd = this.cwd;
 
-    // const entry = await glob(config.entry, { cwd });
+    const { entry: file } = config;
 
-    return {
-      ...config,
-      // entry: entry[0],
-      svelte: get_svelte_config(config),
-    };
+    const entry =
+      typeof file !== "string" && !Array.isArray(file)
+        ? Object.fromEntries(
+            await Promise.all(
+              Object.entries(file).map(async ([k, v]) => {
+                return [k, (await glob(v, { cwd }))[0]] as const;
+              })
+            )
+          )
+        : await glob(file, { cwd });
+
+    return { ...config, entry, svelte: get_svelte_config(config) };
   }
 }
