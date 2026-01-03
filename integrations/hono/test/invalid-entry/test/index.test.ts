@@ -14,6 +14,7 @@ it("should not attach to vite dev server", async () => {
   playwright.stdout.on("data", (data) => (output += data));
 
   playwright.on("close", (code) => {
+    console.log("exit code", code);
     console.log(output);
     deffered.resolve(code ?? 0);
   });

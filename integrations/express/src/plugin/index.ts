@@ -21,7 +21,7 @@ export default function plugin(opts: { entry?: string } = {}): Integration {
 
       return async () => {
         const file = await glob(entry, { cwd: process.cwd() });
-        devServer(server, { entry: file[0] });
+        return devServer(server, { entry: file[0] });
       };
     },
   };
