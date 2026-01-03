@@ -171,7 +171,7 @@ importers:
         version: 2.4.10
       hono:
         specifier: ^4.6.10
-        version: 4.6.10
+        version: 4.10.3
       typescript:
         specifier: ^5.3.3
         version: 5.6.3
@@ -192,7 +192,7 @@ importers:
         version: 7.1.0
       hono:
         specifier: ^4.11.3
-        version: 4.11.3
+        version: 4.10.3
       stack54:
         specifier: workspace:*
         version: link:../../../../packages/core
@@ -229,7 +229,7 @@ importers:
         version: 7.1.0
       hono:
         specifier: ^4.11.3
-        version: 4.11.3
+        version: 4.10.3
       stack54:
         specifier: workspace:*
         version: link:../../../../packages/core
@@ -266,7 +266,7 @@ importers:
         version: 7.1.0
       hono:
         specifier: ^4.11.3
-        version: 4.11.3
+        version: 4.10.3
       stack54:
         specifier: workspace:*
         version: link:../../../../packages/core
@@ -2127,12 +2127,8 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  hono@4.11.3:
-    resolution: {integrity: sha512-PmQi306+M/ct/m5s66Hrg+adPnkD5jiO6IjA7WhWw0gSBSo1EcRegwuI1deZ+wd5pzCGynCcn2DprnE4/yEV4w==}
-    engines: {node: '>=16.9.0'}
-
-  hono@4.6.10:
-    resolution: {integrity: sha512-IXXNfRAZEahFnWBhUUlqKEGF9upeE6hZoRZszvNkyAz/CYp+iVbxm3viMvStlagRJohjlBRGOQ7f4jfcV0XMGg==}
+  hono@4.10.3:
+    resolution: {integrity: sha512-2LOYWUbnhdxdL8MNbNg9XZig6k+cZXm5IjHn2Aviv7honhBMOHb+jxrKIeJRZJRmn+htUCKhaicxwXuUDlchRA==}
     engines: {node: '>=16.9.0'}
 
   htmlparser2@9.1.0:
@@ -5036,9 +5032,7 @@ snapshots:
 
   he@1.2.0: {}
 
-  hono@4.11.3: {}
-
-  hono@4.6.10: {}
+  hono@4.10.3: {}
 
   htmlparser2@9.1.0:
     dependencies:
