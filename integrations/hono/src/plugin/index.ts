@@ -1,6 +1,7 @@
 import { Integration, ResolvedConfig } from "stack54/config";
 import pkg from '../../package.json' with {type: 'json'}
 import { devServer } from "./server.js";
+import { glob } from "glob";
 
 export default function plugin(opts: { entry?: string } = {}): Integration {
   let config: ResolvedConfig;
@@ -17,7 +18,10 @@ export default function plugin(opts: { entry?: string } = {}): Integration {
         throw new Error(`${pkg.name}: config entry must be a string`);
       }
 
-      return () => devServer(server, { entry });
+      return async () => {
+        const file = await glob(entry, { cwd: process.cwd() });
+        devServer(server, { entry: file[0] });
+      };
     },
   };
 }
