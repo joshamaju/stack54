@@ -1,7 +1,7 @@
 // @ts-check
 
-import express, {static as static_} from "express";
-import router from "../dist/server/index.js";
+import express, { static as static_ } from "express";
+import router from "../dist/server/entry.js";
 
 const app = express();
 

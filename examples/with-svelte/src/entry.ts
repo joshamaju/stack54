@@ -1,11 +1,13 @@
+import { engine, View } from "@stack54/express/view";
 import express from "express";
-import { register } from "@stack54/express/render";
 
-import { render } from "./utils/view";
+import { resolve } from "./utils/view";
 
 const app = express();
 
-register(app, render);
+app.engine("svelte", engine);
+app.set("view engine", "svelte");
+app.set("view", View({ resolve }));
 
 app.get("/", (_, res) => res.render("welcome", {}));
 
