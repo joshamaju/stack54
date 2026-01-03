@@ -3,6 +3,7 @@
   "include": ["src", "stack.config.js"],
   "compilerOptions": {
     "jsx": "react-jsx",
+    "esModuleInterop": true,
     "allowImportingTsExtensions": true,
   }
 }
