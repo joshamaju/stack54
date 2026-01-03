@@ -5,6 +5,7 @@ dist
 .facades
 **/.env*.
 node_modules
+**/port.txt
 *.tsbuildinfo
 test-results/
 packages/*/build

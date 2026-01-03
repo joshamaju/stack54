@@ -1,11 +1,12 @@
 import { defineConfig, devices } from "@playwright/test";
+import port from "./get-port.js";
 
 export default defineConfig({
   timeout: 45000,
   webServer: {
-    port: 5173,
     stdout: "pipe",
     stderr: "pipe",
+    port: await port(),
     command: "pnpm dev",
   },
   projects: [
