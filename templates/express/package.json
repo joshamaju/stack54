@@ -16,7 +16,7 @@
   "keywords": [],
   "dependencies": {
     "@stack54/express": "^1.0.9",
-    "body-parser": "^1.20.2",
+    "body-parser": "^2.0.0",
     "compression": "^1.7.4",
     "express": "^5.0.0",
     "express-session": "^1.18.0",
