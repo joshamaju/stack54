@@ -118,7 +118,10 @@ export class Config {
               })
             )
           )
-        : await glob(file, { cwd });
+        : await (async () => {
+            const files = await glob(file, { cwd });
+            return Array.isArray(file) ? files : files[0];
+          })();
 
     return { ...config, entry, svelte: get_svelte_config(config) };
   }
