@@ -15,7 +15,8 @@ export default function plugin(opts: { entry?: string } = {}): Integration {
       const entry = opts.entry ?? config.entry;
 
       if (typeof entry !== "string") {
-        throw new Error(`${pkg.name}: config entry must be a string`);
+        console.error(`${pkg.name}: config entry must be a string`);
+        process.exit(1);
       }
 
       return async () => {
