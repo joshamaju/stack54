@@ -66,7 +66,7 @@ importers:
         version: 1.49.0
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
+        version: 3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.4
@@ -100,7 +100,7 @@ importers:
         version: 1.49.0
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
+        version: 3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.4
@@ -134,7 +134,7 @@ importers:
         version: 1.49.0
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.1(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))
+        version: 3.1.2(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.4
@@ -192,7 +192,7 @@ importers:
         version: 7.1.0
       hono:
         specifier: ^4.11.3
-        version: 4.10.3
+        version: 4.11.3
       stack54:
         specifier: workspace:*
         version: link:../../../../packages/core
@@ -205,7 +205,7 @@ importers:
         version: 1.49.0
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
+        version: 3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.4
@@ -229,7 +229,7 @@ importers:
         version: 7.1.0
       hono:
         specifier: ^4.11.3
-        version: 4.10.3
+        version: 4.11.3
       stack54:
         specifier: workspace:*
         version: link:../../../../packages/core
@@ -242,7 +242,7 @@ importers:
         version: 1.49.0
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
+        version: 3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.4
@@ -266,7 +266,7 @@ importers:
         version: 7.1.0
       hono:
         specifier: ^4.11.3
-        version: 4.10.3
+        version: 4.11.3
       stack54:
         specifier: workspace:*
         version: link:../../../../packages/core
@@ -279,7 +279,7 @@ importers:
         version: 1.49.0
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.1(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))
+        version: 3.1.2(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.4
@@ -402,7 +402,7 @@ importers:
         version: 2.27.9
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
+        version: 3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
       '@types/cookie':
         specifier: ^0.6.0
         version: 0.6.0
@@ -451,7 +451,7 @@ importers:
         version: 1.49.0
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
+        version: 3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.4
@@ -1257,8 +1257,8 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       vite: ^5.0.0
 
-  '@sveltejs/vite-plugin-svelte@3.1.1':
-    resolution: {integrity: sha512-rimpFEAboBBHIlzISibg94iP09k/KYdHgVhJlcsTfn7KMBhc70jFX/GRWkRdFCc2fdnk+4+Bdfej23cMDnJS6A==}
+  '@sveltejs/vite-plugin-svelte@3.1.2':
+    resolution: {integrity: sha512-Txsm1tJvtiYeLUVRNqxZGKR/mI+CzuIQuc2gn+YCs9rMTowpNZ2Nqt53JdL8KF9bLhAf2ruR/dr9eZCwdTriRA==}
     engines: {node: ^18.0.0 || >=20}
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0-next.0
@@ -1665,15 +1665,6 @@ packages:
       supports-color:
         optional: true
 
-  debug@4.4.1:
-    resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
     engines: {node: '>=6.0'}
@@ -2029,6 +2020,10 @@ packages:
 
   hono@4.10.3:
     resolution: {integrity: sha512-2LOYWUbnhdxdL8MNbNg9XZig6k+cZXm5IjHn2Aviv7honhBMOHb+jxrKIeJRZJRmn+htUCKhaicxwXuUDlchRA==}
+    engines: {node: '>=16.9.0'}
+
+  hono@4.11.3:
+    resolution: {integrity: sha512-PmQi306+M/ct/m5s66Hrg+adPnkD5jiO6IjA7WhWw0gSBSo1EcRegwuI1deZ+wd5pzCGynCcn2DprnE4/yEV4w==}
     engines: {node: '>=16.9.0'}
 
   htmlparser2@9.1.0:
@@ -3892,40 +3887,40 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))':
+  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
-      debug: 4.4.1
+      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
+      debug: 4.4.3
       svelte: 4.2.19
       vite: 5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))':
+  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
-      debug: 4.4.1
+      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
+      debug: 4.4.3
       svelte: 4.2.19
       vite: 5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))':
+  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.1.1(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))
-      debug: 4.4.1
+      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))
+      debug: 4.4.3
       svelte: 4.2.19
       vite: 5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))':
+  '@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
-      debug: 4.4.1
+      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
+      debug: 4.4.3
       deepmerge: 4.3.1
       kleur: 4.1.5
-      magic-string: 0.30.17
+      magic-string: 0.30.21
       svelte: 4.2.19
       svelte-hmr: 0.16.0(svelte@4.2.19)
       vite: 5.4.21(@types/node@20.10.6)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)
@@ -3933,13 +3928,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))':
+  '@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
-      debug: 4.4.1
+      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0))
+      debug: 4.4.3
       deepmerge: 4.3.1
       kleur: 4.1.5
-      magic-string: 0.30.17
+      magic-string: 0.30.21
       svelte: 4.2.19
       svelte-hmr: 0.16.0(svelte@4.2.19)
       vite: 5.4.21(@types/node@22.9.0)(lightningcss@1.30.1)(sass@1.81.0)(sugarss@4.0.1(postcss@8.5.6))(terser@5.36.0)
@@ -3947,13 +3942,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))':
+  '@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))
-      debug: 4.4.1
+      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0))
+      debug: 4.4.3
       deepmerge: 4.3.1
       kleur: 4.1.5
-      magic-string: 0.30.17
+      magic-string: 0.30.21
       svelte: 4.2.19
       svelte-hmr: 0.16.0(svelte@4.2.19)
       vite: 5.4.21(lightningcss@1.30.1)(sass@1.81.0)(terser@5.36.0)
@@ -4406,10 +4401,6 @@ snapshots:
   debug@2.6.9:
     dependencies:
       ms: 2.0.0
-
-  debug@4.4.1:
-    dependencies:
-      ms: 2.1.3
 
   debug@4.4.3:
     dependencies:
@@ -4868,6 +4859,8 @@ snapshots:
   he@1.2.0: {}
 
   hono@4.10.3: {}
+
+  hono@4.11.3: {}
 
   htmlparser2@9.1.0:
     dependencies:
