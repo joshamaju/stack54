@@ -1,5 +1,12 @@
 # mpa
 
+## 0.12.0
+
+### Minor Changes
+
+- 71369bd: Add service worker module to enable generated assets caching
+- 4fad286: Produce build manifest, makes service worker caching possible
+
 ## 0.11.3
 
 ### Patch Changes

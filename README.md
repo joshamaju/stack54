@@ -143,7 +143,7 @@ Full-stack developers who want:
 
 ## Documentation
 
-📘 [Documentation](https://github.com/joshamaju/stack54/wiki)
+📘 [Documentation](https://github.com/joshamaju/stack54/wiki/001-%E2%80%90-Getting-Started)
 
 ---
 
