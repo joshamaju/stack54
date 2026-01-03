@@ -31,9 +31,9 @@
     "stack54": "workspace:^"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
+    "@types/express": "^5.0.0",
     "@types/node": "^20.10.6",
-    "express": "^4.19.2",
+    "express": "^5.0.0",
     "typescript": "^5.3.3",
     "vite": "^7.0.0"
   },
