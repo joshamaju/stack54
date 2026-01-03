@@ -33,7 +33,7 @@
     "stack54": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "^20.10.6",
+    "@types/node": "^24.0.0",
     "@types/set-cookie-parser": "^2.4.7",
     "hono": "^4.6.10",
     "typescript": "^5.3.3",
