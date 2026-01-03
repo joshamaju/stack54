@@ -1,11 +1,11 @@
-import express from "express";
 import bodyParser from "body-parser";
+import express from "express";
 import session from "express-session";
+import { engine, View } from "@stack54/express/view";
 
-import { register } from "@stack54/express/render";
-
-import { render } from "./utils/view";
 import type { Task } from "./views/types/task";
+
+import { resolver } from "./utils/view";
 
 declare module "express-session" {
   interface SessionData {
@@ -15,7 +15,9 @@ declare module "express-session" {
 
 const app = express();
 
-register(app, render);
+app.engine("svelte", engine);
+app.set("view engine", "svelte");
+app.set("view", View({ resolve: resolver }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
