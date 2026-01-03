@@ -4,6 +4,7 @@
   "description": "",
   "type": "module",
   "private": true,
+  "sideEffects": false,
   "scripts": {
     "dev": "stack54 dev",
     "build": "stack54 build",
