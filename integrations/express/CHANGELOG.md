@@ -1,5 +1,17 @@
 # @stack54/express
 
+## 1.1.0
+
+### Minor Changes
+
+- 76df603: Expand entry file type to match vite type and delegate resolving to real file to integrations that need to the entry file.
+
+### Patch Changes
+
+- Updated dependencies [f88f97e]
+- Updated dependencies [76df603]
+  - stack54@0.13.0
+
 ## 1.0.11
 
 ### Patch Changes

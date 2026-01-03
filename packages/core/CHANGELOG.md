@@ -1,5 +1,12 @@
 # mpa
 
+## 0.13.0
+
+### Minor Changes
+
+- f88f97e: Resolve object-based entry configurations by globbing each entry value
+- 76df603: Expand entry file type to match vite type and delegate resolving to real file to integrations that need to the entry file.
+
 ## 0.12.0
 
 ### Minor Changes
