@@ -1,14 +1,16 @@
 import express from "express";
-import { register } from "@stack54/express/render";
-
-import { render } from "./utils/view";
-
 import { ServerApp } from "svelte-pilot";
+import { engine, View } from "@stack54/express/view";
+
+import { resolver } from "./utils/view";
+
 import router from "./router";
 
 const app = express();
 
-register(app, render);
+app.engine("svelte", engine);
+app.set("view engine", "svelte");
+app.set("view", View({ resolve: resolver }));
 
 app.all("*", async (req, res) => {
   const route = await router.handleServer(req.url);

@@ -1,4 +1,7 @@
 {
   "extends": "stack54/tsconfigs/base",
-  "include": ["src"]
+  "include": ["src"],
+  "compilerOptions": {
+    "esModuleInterop": true
+  }
 }
