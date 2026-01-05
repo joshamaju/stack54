@@ -43,6 +43,6 @@
     "./plugin": "./dist/plugin/index.js"
   },
   "peerDependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2 || ^5.0.0"
   }
 }
