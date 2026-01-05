@@ -69,7 +69,7 @@
     "picomatch": "^4.0.2",
     "sade": "^1.8.1",
     "ts-dedent": "^2.2.0",
-    "zod": "^3.22.4"
+    "zod": "^4.0.0"
   },
   "exports": {
     ".": "./dist/index.js",
