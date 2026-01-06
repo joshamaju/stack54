@@ -24,7 +24,7 @@
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
     "stack54": "^0.13.0",
-    "svelte": "^4.2.8"
+    "svelte": "^5.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.46.1",

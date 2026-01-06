@@ -16,7 +16,7 @@
     "@hono/vite-dev-server": "^0.24.0",
     "hono": "^4.10.6",
     "stack54": "^0.13.0",
-    "svelte": "^4.2.8"
+    "svelte": "^5.0.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
