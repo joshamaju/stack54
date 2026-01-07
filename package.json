@@ -11,11 +11,11 @@
     "url": "https://github.com/joshamaju/stack54.git"
   },
   "scripts": {
-    "test": "pnpm test -r",
     "changeset": "changeset",
     "release": "changeset publish",
     "build": "tsc -b tsconfig.build.json",
-    "version": "changeset version && pnpm -r generate-version && git add --all"
+    "version": "changeset version && pnpm -r generate-version && git add --all",
+    "test": "pnpm --filter '!./templates/**' --filter '!./playground/**' -r test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
