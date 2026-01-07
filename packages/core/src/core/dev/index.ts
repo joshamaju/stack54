@@ -16,9 +16,9 @@ import { make_vite_config } from "../utils/vite.js";
 import { attach_full_path } from "./attach-full-path/index.js";
 import { live_reload_plugin } from "./live-reload-plugin/index.js";
 import { resolve_inline_imports_plugin } from "./resolve-inline-imports-plugin/index.js";
-import { EntryOption } from "../types.js";
+import { Command, EntryOption } from "../types.js";
 
-const command = "serve";
+const command: Command = "serve";
 
 export function* dev({ cwd, config_file }: EntryOption) {
   const logger = use_logger();
@@ -27,14 +27,16 @@ export function* dev({ cwd, config_file }: EntryOption) {
 
   const conf = new Config(cwd, config_file);
 
-  const user_config = yield* call(() => conf.load());
+  const user_config = yield* call(() => conf.load(command));
 
   user_config.integrations = [
     ...(user_config.integrations ?? []),
     live_reload_plugin(),
   ];
 
-  let merged_config = yield* call(() => run_config_setup(user_config, { command }));
+  let merged_config = yield* call(() =>
+    run_config_setup(user_config, { command })
+  );
 
   let { assetPrefix } = user_config.build;
 

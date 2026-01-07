@@ -84,10 +84,10 @@ export class Config {
     this.#file = path.join(cwd, file ?? DEFAULT_FILE);
   }
 
-  async load(): Promise<ResolvedConfig> {
+  async load(command: Command): Promise<ResolvedConfig> {
     const file = this.#file;
 
-    let config = {};
+    let config: UserConfig | ((command: Command) => UserConfig) = {};
 
     if (existsSync(file)) {
       const url = pathToFileURL(file);
@@ -97,7 +97,8 @@ export class Config {
       if (this.file) throw `Config file ${this.file} not found`;
     }
 
-    const result = userConfigSchema.safeParse(config);
+    const _config = typeof config == "function" ? config(command) : config;
+    const result = userConfigSchema.safeParse(_config);
 
     if (!result.success) throw new InvalidConfig(result.error);
 

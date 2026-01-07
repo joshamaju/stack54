@@ -15,7 +15,7 @@ import { use_logger } from "../logger.js";
 import { display_time } from "../utils/index.js";
 import { make_vite_config } from "../utils/vite.js";
 import { builder } from "./build.js";
-import { EntryOption } from "../types.js";
+import { Command, EntryOption } from "../types.js";
 
 export function* build({ cwd, config_file }: EntryOption) {
   const logger = use_logger();
@@ -26,8 +26,8 @@ export function* build({ cwd, config_file }: EntryOption) {
 
   const conf = new Config(cwd, config_file);
 
-  const command = "build";
-  const user_config = yield* call(() => conf.load());
+  const command: Command = "build";
+  const user_config = yield* call(() => conf.load(command));
 
   let merged_config =
     user_config.integrations.length <= 0
