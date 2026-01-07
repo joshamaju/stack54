@@ -11,7 +11,7 @@
     "url": "https://github.com/joshamaju/stack54.git"
   },
   "scripts": {
-    "test": "pnpm test -r",
+    "test": "pnpm --filter '!./templates/**' -r test",
     "changeset": "changeset",
     "release": "changeset publish",
     "build": "tsc -b tsconfig.build.json",
