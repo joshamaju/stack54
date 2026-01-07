@@ -15,6 +15,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --w",
+    "test": "vitest run",
     "changeset": "changeset",
     "prepublish": "pnpm build",
     "version": "changeset version",
@@ -49,7 +50,7 @@
     "svelte": "^4.2.8",
     "typescript": "^5.3.3",
     "vite": "^7.0.0",
-    "vitest": "^4.0.0"
+    "vitest": "^4.0.16"
   },
   "peerDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.0.1",
