@@ -13,6 +13,7 @@ import { make_vite_logger } from "../logger.js";
 import { Manifest } from "../types.js";
 import { parse_id } from "../utils/view.js";
 import { compile } from "./compiler.js";
+import { copy } from "../utils/filesystem.js";
 
 type Opts = { config: ResolvedConfig; outDir: string; env: Env; cwd: string };
 
@@ -79,6 +80,16 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
   };
 
   yield* call(() => vite.build(vite.mergeConfig(config.vite, inline_config)));
+
+  if (config.build.copyStaticDir) {
+    const dir = path.join(cwd, config.staticDir);
+
+    try {
+      yield* call(() => copy(dir, path.join(outDir, config.build.assetsDir)));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return manifests;
 }

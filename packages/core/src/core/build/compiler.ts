@@ -19,29 +19,7 @@ import {
   run_html_pre_transform,
 } from "../integrations/hooks.js";
 import { ManifestEntry } from "../types.js";
-
-async function copy(srcDir: string, destDir: string) {
-  await fs.mkdir(destDir, { recursive: true });
-
-  const files = await fs.readdir(srcDir);
-
-  for (const file of files) {
-    const srcFile = path.resolve(srcDir, file);
-
-    if (srcFile === destDir) {
-      continue;
-    }
-
-    const destFile = path.resolve(destDir, file);
-    const stat = await fs.stat(srcFile);
-
-    if (stat.isDirectory()) {
-      await copy(srcFile, destFile);
-    } else {
-      await fs.copyFile(srcFile, destFile);
-    }
-  }
-}
+import { copy } from "../utils/filesystem.js";
 
 function collect_assets(code: string, filename: string): Array<Element> {
   type Visitor = (node: BaseNode) => BaseNode;
