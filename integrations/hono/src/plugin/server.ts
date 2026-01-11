@@ -27,17 +27,24 @@ export function devServer(server: ViteDevServer, opts: { entry: string }) {
   );
 
   server.middlewares.use(async (req, res) => {
+    const serverEntry = await server.ssrLoadModule(opts.entry, {
+      fixStacktrace: true,
+    });
+
+    const app: Hono = serverEntry.default;
+
     const base = `${server.config.server.https ? "https" : "http"}://${
       req.headers[":authority"] || req.headers.host
     }`;
 
     const request = getRequest({ base, request: req });
-    const serverEntry = await server.ssrLoadModule(opts.entry);
-
-    const app: Hono = serverEntry.default;
 
     app.onError(function (e, ctx) {
       console.error(String(e));
+
+      if (e instanceof Error) {
+        server.ssrFixStacktrace(e);
+      }
 
       server.ws.send({
         type: "error",
