@@ -20,7 +20,11 @@ import { Command, EntryOption } from "../types.js";
 
 const command: Command = "serve";
 
-export function* dev({ cwd, config_file }: EntryOption) {
+export function* dev({
+  cwd,
+  config_file,
+  port = 8080,
+}: EntryOption & { port?: number }) {
   const logger = use_logger();
 
   const start = performance.now();
@@ -95,6 +99,11 @@ export function* dev({ cwd, config_file }: EntryOption) {
    */
   resolved_config.svelte.emitCss = false;
 
+  resolved_config.vite.server ??= {};
+
+  resolved_config.vite.server.cors ??= false;
+  resolved_config.vite.server.port = port ?? resolved_config.vite.server.port;
+
   const mode = process.env.NODE_ENV ?? "development";
 
   const shared_vite_config = make_vite_config(resolved_config, {
@@ -105,8 +114,8 @@ export function* dev({ cwd, config_file }: EntryOption) {
   const env = load(resolved_config.env.dir ?? cwd, mode);
 
   const internal_vite_config: vite.InlineConfig = {
-    define: define(env),
     build: { rollupOptions: { input: resolved_config.entry } },
+    define: define(env),
   };
 
   const config: typeof merged_config = {

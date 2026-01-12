@@ -32,9 +32,7 @@ export interface Integration extends Partial<Hooks> {
 
 export const userConfigSchema = z.object({
   staticDir: z.string().default("static"),
-  vite: z
-    .custom<ViteUserConfig>()
-    .default({ server: { port: 8080, cors: false } }),
+  vite: z.custom<ViteUserConfig>().default({}),
   integrations: z
     .array(
       z.union([z.custom<Integration>(), z.promise(z.custom<Integration>())])

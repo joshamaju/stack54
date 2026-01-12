@@ -28,7 +28,7 @@ export function get_svelte_config(config: ResolvedConfig) {
 
 export function make_vite_config(
   config: ResolvedConfig,
-  { mode, command, logger }: CreateViteOptions,
+  { mode, command, logger }: CreateViteOptions
 ) {
   const { plugins, ...vite_config } = config.vite;
 
@@ -47,6 +47,7 @@ export function make_vite_config(
       integrations_container_plugin(config),
       ...(plugins ?? []),
     ],
+    resolve: { conditions: ["browser", "default"] },
     build: {
       copyPublicDir: false,
       minify: config.build.minify ?? config.vite.build?.minify,

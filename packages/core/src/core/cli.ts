@@ -34,12 +34,13 @@ function handle_error(error: unknown) {
 program
   .command("dev")
   .option("config", config_option)
+  .option("-p, --port", "Port to run the server on")
   .action(async (args) => {
     const { dev } = await import("./dev/index.js");
 
     const task = run(function* () {
       try {
-        yield* dev({ cwd, config_file: args.config });
+        yield* dev({ cwd, config_file: args.config, port: args.port });
       } catch (error) {
         handle_error(error);
       }
