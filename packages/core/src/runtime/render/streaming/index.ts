@@ -51,7 +51,9 @@ function render_to_stream(
 
     promise
       .then((value) => {
-        controller.enqueue({ id, content: slots.default?.({ value }) ?? "" });
+        const name = (promise as any)["$$deferred"];
+        const content = slots.default?.({ value }) ?? "";
+        controller.enqueue({ id, name, value, content });
       })
       .catch((error) => {
         controller.enqueue({

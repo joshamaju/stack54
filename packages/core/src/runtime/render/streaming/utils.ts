@@ -1,3 +1,4 @@
+import { encode } from "../../data.js";
 import type { Chunk } from "./types.js";
 
 export function isPromise(value: any): value is Promise<any> {
@@ -33,9 +34,10 @@ export const renderFallback = ({ id, content }: Chunk) => {
   return `<div style="display: contents;" data-await-fallback="${id}">${content}</div>`;
 };
 
-export const renderChunk = ({ id, content }: Chunk) => {
+export const renderChunk = ({ id, name, value, content }: Chunk) => {
   return `
   <template data-await="${id}">${content}</template>
+  ${name ? encode(value as object, { id: `deferred:${name}` }) : ""}
   <script data-await-swap-init-script="${id}">window.__AWAIT_SWAP__(${id});</script>
   `;
 };
