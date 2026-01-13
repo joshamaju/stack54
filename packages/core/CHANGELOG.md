@@ -1,5 +1,12 @@
 # mpa
 
+## 0.13.1
+
+### Patch Changes
+
+- a4fefaf: Add support for copying static directory into build directory
+- 018de08: Allow dynamic config by exporting a function that returns the config
+
 ## 0.13.0
 
 ### Minor Changes
