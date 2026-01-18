@@ -79,7 +79,11 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
     },
   };
 
-  yield* call(() => vite.build(vite.mergeConfig(config.vite, inline_config)));
+  const { server } = config.environments;
+
+  const vite_config = vite.mergeConfig(config.vite, server?.vite ?? {});
+
+  yield* call(() => vite.build(vite.mergeConfig(vite_config, inline_config)));
 
   if (config.build.copyStaticDir) {
     const dir = path.join(cwd, config.staticDir);
