@@ -1,5 +1,5 @@
 import color from "kleur";
-import * as vite from "vite";
+import { mergeConfig, createServer, type InlineConfig } from "vite";
 
 import { call, suspend } from "effection";
 
@@ -22,8 +22,8 @@ const command: Command = "serve";
 
 export function* dev({
   cwd,
+  port,
   config_file,
-  port = 8080,
 }: EntryOption & { port?: number }) {
   const logger = use_logger();
 
@@ -99,11 +99,6 @@ export function* dev({
    */
   resolved_config.svelte.emitCss = false;
 
-  resolved_config.vite.server ??= {};
-
-  resolved_config.vite.server.cors ??= false;
-  resolved_config.vite.server.port = port ?? resolved_config.vite.server.port;
-
   const mode = process.env.NODE_ENV ?? "development";
 
   const shared_vite_config = make_vite_config(resolved_config, {
@@ -113,19 +108,33 @@ export function* dev({
 
   const env = load(resolved_config.env.dir ?? cwd, mode);
 
-  const internal_vite_config: vite.InlineConfig = {
+  const internal_vite_config: InlineConfig = {
     build: { rollupOptions: { input: resolved_config.entry } },
     define: define(env),
   };
 
+  const envs = resolved_config.environments;
+
+  const vite_config = mergeConfig(
+    mergeConfig(resolved_config.vite, envs.client?.vite ?? {}),
+    envs.server?.vite ?? {}
+  );
+
   const config: typeof merged_config = {
     ...resolved_config,
-    vite: vite.mergeConfig(shared_vite_config, internal_vite_config),
+    vite: mergeConfig(
+      mergeConfig(vite_config, shared_vite_config),
+      internal_vite_config
+    ),
   };
+
+  config.vite.server ??= {};
+  config.vite.server.cors ??= false;
+  config.vite.server.port = port ?? config.vite.server.port ?? 8080;
 
   yield* call(() => run_config_resolved(config));
 
-  const server = yield* call(() => vite.createServer(config.vite));
+  const server = yield* call(() => createServer(config.vite));
 
   yield* call(() => server.listen());
 
