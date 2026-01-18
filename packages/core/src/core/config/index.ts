@@ -17,6 +17,10 @@ type Transformer = (code: string, filename: string) => Maybe<void | string>;
 
 export type Env = { command: Command };
 
+const environment = z.union([z.literal("client"), z.literal("server")]);
+
+type Environment = z.infer<typeof environment>;
+
 interface Hooks {
   buildStart: () => Maybe<void>;
   buildEnd: (manifest: Manifest) => Maybe<void>;
@@ -28,9 +32,10 @@ interface Hooks {
 
 export interface Integration extends Partial<Hooks> {
   name: string;
+  environment?: Environment;
 }
 
-export const userConfigSchema = z.object({
+export const baseConfigSchema = z.object({
   staticDir: z.string().default("static"),
   vite: z.custom<ViteUserConfig>().default({}),
   integrations: z
@@ -66,6 +71,15 @@ export const userConfigSchema = z.object({
         .custom<Omit<CompileOptions, "filename" | "format" | "generate">>()
         .default({ hydratable: true }),
     })
+    .default({}),
+});
+
+const userConfigSchema = baseConfigSchema.extend({
+  environments: z
+    .record(
+      environment,
+      baseConfigSchema.pick({ vite: true, integrations: true })
+    )
     .default({}),
 });
 
