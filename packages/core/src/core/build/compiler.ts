@@ -235,7 +235,11 @@ export function* compile({
     },
   };
 
-  yield* call(() => vite.build(vite.mergeConfig(config.vite, inline_config)));
+  const { client } = config.environments;
+
+  const vite_config = vite.mergeConfig(config.vite, client?.vite ?? {});
+
+  yield* call(() => vite.build(vite.mergeConfig(vite_config, inline_config)));
 
   const manifest_file = path.join(build, ".vite/manifest.json");
 
