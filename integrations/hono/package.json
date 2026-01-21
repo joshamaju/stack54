@@ -29,7 +29,7 @@
   "dependencies": {
     "@remix-run/node": "^2.7.2",
     "glob": "^13.0.0",
-    "set-cookie-parser": "^2.6.0",
+    "set-cookie-parser": "^3.0.0",
     "stack54": "workspace:^"
   },
   "devDependencies": {
