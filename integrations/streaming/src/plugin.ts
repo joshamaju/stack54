@@ -42,23 +42,38 @@ export default function streamingIntegration(): Integration {
                 const awaitable = code.slice(expression.start, expression.end);
 
                 const segment = dedent`
-                <${component} let:value={${value.name}} resolve={${awaitable}}>
-                  <svelte:fragment slot="fallback">
-                    ${code.slice(_.pending.start, _.pending.end)}
-                  </svelte:fragment>
+                <${component} resolve={${awaitable}}>
+                  ${
+                    !_.pending.skip
+                      ? `
+                      <svelte:fragment slot="fallback">
+                        ${code.slice(_.pending.start, _.pending.end)}
+                      </svelte:fragment>
+                      `
+                      : ""
+                  }
+
                   ${
                     !_.catch.skip
                       ? `
                       <svelte:fragment slot="error" let:error={${error.name}}>
                         ${code.slice(
                           catch_[0].start,
-                          catch_[catch_.length - 1].end
+                          catch_[catch_.length - 1].end,
                         )}
                       </svelte:fragment>`
                       : ""
                   }
 
-                  ${code.slice(then[0].start, then[then.length - 1].end)}
+                  ${
+                    !_.then.skip
+                      ? `
+                      <svelte:fragment slot="default" let:value={${value?.name}}>
+                        ${code.slice(then[0].start, then[then.length - 1].end)}
+                      </svelte:fragment>
+                    `
+                      : ""
+                  }
                 </${component}>
                 `;
 
@@ -67,16 +82,19 @@ export default function streamingIntegration(): Integration {
             },
           });
 
-          const sepcifiers = [...components].map((_) => {
-            const sepcifier = `import ${_} from "stack54/components/Await";`;
-            return sepcifier;
-          });
+          const sepcifiers = [...components].map(
+            (_) => `import ${_} from "stack54/components/Await";`,
+          );
 
-          if (ast.instance && components.size > 0) {
-            const { end, start } = ast.instance?.content as any;
-            const script = new MagicString(code.slice(start, end));
-            script.prepend(`${sepcifiers.join("\n")}\n`);
-            code.update(start, end, script.toString());
+          if (components.size > 0) {
+            if (ast.instance) {
+              const { end, start } = ast.instance?.content as any;
+              const script = new MagicString(code.slice(start, end));
+              script.prepend(`${sepcifiers.join("\n")}\n`);
+              code.update(start, end, script.toString());
+            } else {
+              code.prepend(`<script>${sepcifiers.join("\n")}</script>\n`);
+            }
           }
 
           return { code: code.toString(), map: code.generateMap() };
