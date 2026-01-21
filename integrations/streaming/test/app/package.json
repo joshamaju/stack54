@@ -1,5 +1,5 @@
 {
-  "name": "express-test",
+  "name": "hono-test",
   "description": "",
   "type": "module",
   "private": true,
@@ -10,10 +10,11 @@
   },
   "keywords": [],
   "dependencies": {
-    "@stack54/express": "workspace:*",
+    "@stack54/hono": "workspace:*",
     "@stack54/streaming": "workspace:*",
     "@stack54/internal-test-utils": "workspace:*",
-    "express": "^4.21.1",
+    "get-port": "^7.1.0",
+    "hono": "^4.11.3",
     "stack54": "workspace:*",
     "svelte": "^4.2.8"
   },

@@ -1,0 +1,49 @@
+{
+  "name": "@stack54/streaming",
+  "version": "0.0.0",
+  "description": "Stream {#await} blocks from the server",
+  "type": "module",
+  "homepage": "https://github.com/joshamaju/stack54/blob/main/integrations/streaming/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshamaju/stack54.git",
+    "directory": "integrations/streaming"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --w",
+    "test": "vitest run",
+    "changeset": "changeset",
+    "prepublish": "pnpm build",
+    "version": "changeset version",
+    "release": "changeset publish"
+  },
+  "keywords": [],
+  "author": "Joshua Amaju",
+  "license": "ISC",
+  "dependencies": {
+    "magic-string": "^0.30.21",
+    "stack54": "workspace:^",
+    "ts-dedent": "^2.2.0",
+    "vite": "^7.0.0"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./plugin": "./dist/plugin.js"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "svelte": "4.2.8",
+    "typescript": "^5.3.3",
+    "vitest": "^4.0.17"
+  },
+  "peerDependencies": {
+    "svelte": "4.2.8"
+  }
+}
