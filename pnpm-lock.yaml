@@ -436,7 +436,7 @@ importers:
         version: 1.1.2
       devalue:
         specifier: ^5.0.0
-        version: 5.6.1
+        version: 5.6.2
       effection:
         specifier: ^4.0.0
         version: 4.0.0
@@ -1724,8 +1724,8 @@ packages:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
-  devalue@5.6.1:
-    resolution: {integrity: sha512-jDwizj+IlEZBunHcOuuFVBnIMPAEHvTsJj0BcIp94xYguLRVBcXO853px/MyIJvbVzWdsGvrRweIUWJw8hBP7A==}
+  devalue@5.6.2:
+    resolution: {integrity: sha512-nPRkjWzzDQlsejL1WVifk5rvcFi/y1onBRxjaFMjZeR9mFpqu2gmAZ9xUB9/IEanEP/vBtGeGganC/GO1fmufg==}
 
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -4070,7 +4070,7 @@ snapshots:
   detect-libc@2.1.2:
     optional: true
 
-  devalue@5.6.1: {}
+  devalue@5.6.2: {}
 
   dir-glob@3.0.1:
     dependencies:
