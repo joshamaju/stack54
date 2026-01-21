@@ -17,5 +17,11 @@
     {
       "path": "integrations/island"
     },
+    {
+      "path": "integrations/streaming"
+    },
+    {
+      "path": "integrations/service-worker"
+    }
   ]
 }
