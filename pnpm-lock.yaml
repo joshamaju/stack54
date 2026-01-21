@@ -324,7 +324,7 @@ importers:
         specifier: ^5.3.3
         version: 5.9.3
 
-  integrations/servicce-worker:
+  integrations/service-worker:
     dependencies:
       glob:
         specifier: ^13.0.0
