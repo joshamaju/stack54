@@ -354,12 +354,6 @@ importers:
 
   integrations/streaming:
     dependencies:
-      glob:
-        specifier: ^13.0.0
-        version: 13.0.0
-      kleur:
-        specifier: ^4.1.5
-        version: 4.1.5
       magic-string:
         specifier: ^0.30.21
         version: 0.30.21
@@ -372,9 +366,6 @@ importers:
       vite:
         specifier: ^7.0.0
         version: 7.3.1(@types/node@24.10.4)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.21.0)(yaml@2.8.2)
-      zod:
-        specifier: ^3.23.8
-        version: 3.25.76
     devDependencies:
       '@types/node':
         specifier: ^24.0.0
