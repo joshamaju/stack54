@@ -15,7 +15,7 @@
     "@hono/node-server": "^1.19.6",
     "@hono/vite-dev-server": "^0.24.0",
     "hono": "^4.10.6",
-    "stack54": "^0.13.0",
+    "stack54": "^0.14.0",
     "svelte": "^4.2.8"
   },
   "devDependencies": {
