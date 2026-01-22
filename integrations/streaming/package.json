@@ -1,6 +1,6 @@
 {
   "name": "@stack54/streaming",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Stream {#await} blocks from the server",
   "type": "module",
   "homepage": "https://github.com/joshamaju/stack54/blob/main/integrations/streaming/README.md",

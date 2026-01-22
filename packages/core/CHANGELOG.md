@@ -1,5 +1,16 @@
 # mpa
 
+## 0.14.0
+
+### Minor Changes
+
+- d70d118: Add support for environment specific configuration for server and client builds
+
+### Patch Changes
+
+- a4fefaf: Add support for copying static directory into build directory
+- 018de08: Allow dynamic config by exporting a function that returns the config
+
 ## 0.13.0
 
 ### Minor Changes
