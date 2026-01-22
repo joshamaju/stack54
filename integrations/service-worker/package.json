@@ -1,6 +1,6 @@
 {
   "name": "@stack54/service-worker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "type": "module",
   "homepage": "https://github.com/joshamaju/stack54/blob/main/integrations/service-worker/README.md",
