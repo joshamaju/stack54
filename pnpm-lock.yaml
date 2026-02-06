@@ -546,7 +546,7 @@ importers:
         version: 7.0.6
       giget:
         specifier: ^3.0.0
-        version: 3.1.1
+        version: 3.1.2
       kleur:
         specifier: ^4.1.5
         version: 4.1.5
@@ -1907,8 +1907,8 @@ packages:
     resolution: {integrity: sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g==}
     engines: {node: '>= 0.4'}
 
-  giget@3.1.1:
-    resolution: {integrity: sha512-wwGgnwnZuJT7v9RNssirmhWwTo/zeFkbCVF8KDzm0VrH+lPOW0OOl4degdKy6ofNxNjOMpLE0GgCuH/4AJFSzA==}
+  giget@3.1.2:
+    resolution: {integrity: sha512-T2qUpKBHeUTwHcIhydgnJzhL0Hj785ms+JkxaaWQH9SDM/llXeewnOkfJcFShAHjWI+26hOChwUfCoupaXLm8g==}
     hasBin: true
 
   glob-parent@5.1.2:
@@ -4208,7 +4208,7 @@ snapshots:
       dunder-proto: 1.0.1
       es-object-atoms: 1.1.1
 
-  giget@3.1.1: {}
+  giget@3.1.2: {}
 
   glob-parent@5.1.2:
     dependencies:
