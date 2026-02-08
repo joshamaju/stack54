@@ -10,7 +10,7 @@ importers:
     devDependencies:
       '@changesets/cli':
         specifier: ^2.27.1
-        version: 2.29.8(@types/node@25.2.1)
+        version: 2.29.8(@types/node@25.2.2)
       playwright:
         specifier: ^1.41.1
         version: 1.58.2
@@ -32,7 +32,7 @@ importers:
         version: 5.0.6
       '@types/node':
         specifier: ^24.0.0
-        version: 24.10.11
+        version: 24.10.12
       express:
         specifier: ^5.0.0
         version: 5.2.1
@@ -41,7 +41,7 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^7.0.0
-        version: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
+        version: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
 
   integrations/express/test/custom-entry:
     dependencies:
@@ -66,7 +66,7 @@ importers:
         version: 1.58.1
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))
+        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.7
@@ -75,7 +75,7 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^5.0.10
-        version: 5.4.21(@types/node@25.2.1)
+        version: 5.4.21(@types/node@25.2.2)
 
   integrations/express/test/default:
     dependencies:
@@ -103,7 +103,7 @@ importers:
         version: 1.58.1
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))
+        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.7
@@ -112,7 +112,7 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^5.0.10
-        version: 5.4.21(@types/node@25.2.1)
+        version: 5.4.21(@types/node@25.2.2)
 
   integrations/express/test/invalid-entry:
     dependencies:
@@ -137,7 +137,7 @@ importers:
         version: 1.58.1
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))
+        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.7
@@ -146,10 +146,10 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^5.0.10
-        version: 5.4.21(@types/node@25.2.1)
+        version: 5.4.21(@types/node@25.2.2)
       vitest:
         specifier: ^4.0.16
-        version: 4.0.18(@types/node@25.2.1)(yaml@2.8.2)
+        version: 4.0.18(@types/node@25.2.2)(yaml@2.8.2)
 
   integrations/hono:
     dependencies:
@@ -168,7 +168,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^24.0.0
-        version: 24.10.11
+        version: 24.10.12
       '@types/set-cookie-parser':
         specifier: ^2.4.7
         version: 2.4.10
@@ -180,7 +180,7 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^7.0.0
-        version: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
+        version: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
 
   integrations/hono/test/custom-entry:
     dependencies:
@@ -208,7 +208,7 @@ importers:
         version: 1.58.1
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))
+        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.7
@@ -217,7 +217,7 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^5.0.10
-        version: 5.4.21(@types/node@25.2.1)
+        version: 5.4.21(@types/node@25.2.2)
 
   integrations/hono/test/default:
     dependencies:
@@ -245,7 +245,7 @@ importers:
         version: 1.58.1
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))
+        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.7
@@ -254,7 +254,7 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^5.0.10
-        version: 5.4.21(@types/node@25.2.1)
+        version: 5.4.21(@types/node@25.2.2)
 
   integrations/hono/test/invalid-entry:
     dependencies:
@@ -282,7 +282,7 @@ importers:
         version: 1.58.1
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))
+        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.7
@@ -291,10 +291,10 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^5.0.10
-        version: 5.4.21(@types/node@25.2.1)
+        version: 5.4.21(@types/node@25.2.2)
       vitest:
         specifier: ^4.0.16
-        version: 4.0.18(@types/node@25.2.1)(yaml@2.8.2)
+        version: 4.0.18(@types/node@25.2.2)(yaml@2.8.2)
 
   integrations/island:
     dependencies:
@@ -315,11 +315,11 @@ importers:
         version: 2.2.0
       vite:
         specifier: ^7.0.0
-        version: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
+        version: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
     devDependencies:
       '@types/node':
         specifier: ^24.0.0
-        version: 24.10.11
+        version: 24.10.12
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -340,14 +340,14 @@ importers:
         version: 2.2.0
       vite:
         specifier: ^7.0.0
-        version: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
+        version: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
       zod:
         specifier: ^3.23.8
         version: 3.25.76
     devDependencies:
       '@types/node':
         specifier: ^24.0.0
-        version: 24.10.11
+        version: 24.10.12
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -365,11 +365,11 @@ importers:
         version: 2.2.0
       vite:
         specifier: ^7.0.0
-        version: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
+        version: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
     devDependencies:
       '@types/node':
         specifier: ^24.0.0
-        version: 24.10.11
+        version: 24.10.12
       svelte:
         specifier: 4.2.20
         version: 4.2.20
@@ -378,7 +378,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^4.0.17
-        version: 4.0.18(@types/node@24.10.11)(yaml@2.8.2)
+        version: 4.0.18(@types/node@24.10.12)(yaml@2.8.2)
 
   integrations/streaming/test/app:
     dependencies:
@@ -409,7 +409,7 @@ importers:
         version: 1.58.1
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))
+        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.7
@@ -418,7 +418,7 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^5.0.10
-        version: 5.4.21(@types/node@25.2.1)
+        version: 5.4.21(@types/node@25.2.2)
 
   integrations/test-utils:
     dependencies:
@@ -470,10 +470,10 @@ importers:
     devDependencies:
       '@changesets/cli':
         specifier: ^2.27.1
-        version: 2.29.8(@types/node@24.10.11)
+        version: 2.29.8(@types/node@24.10.12)
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.2(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2))
+        version: 3.1.2(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2))
       '@types/cookie':
         specifier: ^0.6.0
         version: 0.6.0
@@ -482,7 +482,7 @@ importers:
         version: 11.0.4
       '@types/node':
         specifier: ^24.0.0
-        version: 24.10.11
+        version: 24.10.12
       '@types/picomatch':
         specifier: ^4.0.0
         version: 4.0.2
@@ -494,10 +494,10 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^7.0.0
-        version: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
+        version: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
       vitest:
         specifier: ^4.0.16
-        version: 4.0.18(@types/node@24.10.11)(yaml@2.8.2)
+        version: 4.0.18(@types/node@24.10.12)(yaml@2.8.2)
 
   packages/core/test/apps/basic:
     dependencies:
@@ -522,7 +522,7 @@ importers:
         version: 1.58.1
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.1
-        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))
+        version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.7
@@ -534,13 +534,13 @@ importers:
         version: 5.9.3
       vite:
         specifier: ^5.0.10
-        version: 5.4.21(@types/node@25.2.1)
+        version: 5.4.21(@types/node@25.2.2)
 
   packages/create:
     dependencies:
       '@inquirer/prompts':
         specifier: ^8.0.0
-        version: 8.2.0(@types/node@24.10.11)
+        version: 8.2.0(@types/node@24.10.12)
       '@octokit/core':
         specifier: ^7.0.0
         version: 7.0.6
@@ -562,10 +562,10 @@ importers:
     devDependencies:
       '@changesets/cli':
         specifier: ^2.27.1
-        version: 2.29.8(@types/node@24.10.11)
+        version: 2.29.8(@types/node@24.10.12)
       '@types/node':
         specifier: ^24.0.0
-        version: 24.10.11
+        version: 24.10.12
       '@types/yargs':
         specifier: ^17.0.33
         version: 17.0.35
@@ -1394,11 +1394,11 @@ packages:
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
 
-  '@types/node@24.10.11':
-    resolution: {integrity: sha512-/Af7O8r1frCVgOz0I62jWUtMohJ0/ZQU/ZoketltOJPZpnb17yoNc9BSoVuV9qlaIXJiPNOpsfq4ByFajSArNQ==}
+  '@types/node@24.10.12':
+    resolution: {integrity: sha512-68e+T28EbdmLSTkPgs3+UacC6rzmqrcWFPQs1C8mwJhI/r5Uxr0yEuQotczNRROd1gq30NGxee+fo0rSIxpyAw==}
 
-  '@types/node@25.2.1':
-    resolution: {integrity: sha512-CPrnr8voK8vC6eEtyRzvMpgp3VyVRhgclonE7qYi6P9sXwYb59ucfrnmFBTaP0yUi8Gk4yZg/LlTJULGxvTNsg==}
+  '@types/node@25.2.2':
+    resolution: {integrity: sha512-BkmoP5/FhRYek5izySdkOneRyXYN35I860MFAGupTdebyE66uZaR+bXLHq8k4DirE5DwQi3NuhvRU1jqTVwUrQ==}
 
   '@types/picomatch@4.0.2':
     resolution: {integrity: sha512-qHHxQ+P9PysNEGbALT8f8YOSHW0KJu6l2xU8DYY0fu/EmGxXdVnuTLvFUvBgPJMSqXq29SYHveejeAha+4AYgA==}
@@ -2821,7 +2821,7 @@ snapshots:
     dependencies:
       '@changesets/types': 6.1.0
 
-  '@changesets/cli@2.29.8(@types/node@24.10.11)':
+  '@changesets/cli@2.29.8(@types/node@24.10.12)':
     dependencies:
       '@changesets/apply-release-plan': 7.0.14
       '@changesets/assemble-release-plan': 6.0.9
@@ -2837,7 +2837,7 @@ snapshots:
       '@changesets/should-skip-package': 0.1.2
       '@changesets/types': 6.1.0
       '@changesets/write': 0.4.0
-      '@inquirer/external-editor': 1.0.3(@types/node@24.10.11)
+      '@inquirer/external-editor': 1.0.3(@types/node@24.10.12)
       '@manypkg/get-packages': 1.1.3
       ansi-colors: 4.1.3
       ci-info: 3.9.0
@@ -2854,7 +2854,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@changesets/cli@2.29.8(@types/node@25.2.1)':
+  '@changesets/cli@2.29.8(@types/node@25.2.2)':
     dependencies:
       '@changesets/apply-release-plan': 7.0.14
       '@changesets/assemble-release-plan': 6.0.9
@@ -2870,7 +2870,7 @@ snapshots:
       '@changesets/should-skip-package': 0.1.2
       '@changesets/types': 6.1.0
       '@changesets/write': 0.4.0
-      '@inquirer/external-editor': 1.0.3(@types/node@25.2.1)
+      '@inquirer/external-editor': 1.0.3(@types/node@25.2.2)
       '@manypkg/get-packages': 1.1.3
       ansi-colors: 4.1.3
       ci-info: 3.9.0
@@ -3118,136 +3118,136 @@ snapshots:
 
   '@inquirer/ansi@2.0.3': {}
 
-  '@inquirer/checkbox@5.0.4(@types/node@24.10.11)':
+  '@inquirer/checkbox@5.0.4(@types/node@24.10.12)':
     dependencies:
       '@inquirer/ansi': 2.0.3
-      '@inquirer/core': 11.1.1(@types/node@24.10.11)
+      '@inquirer/core': 11.1.1(@types/node@24.10.12)
       '@inquirer/figures': 2.0.3
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
-  '@inquirer/confirm@6.0.4(@types/node@24.10.11)':
+  '@inquirer/confirm@6.0.4(@types/node@24.10.12)':
     dependencies:
-      '@inquirer/core': 11.1.1(@types/node@24.10.11)
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
+      '@inquirer/core': 11.1.1(@types/node@24.10.12)
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
-  '@inquirer/core@11.1.1(@types/node@24.10.11)':
+  '@inquirer/core@11.1.1(@types/node@24.10.12)':
     dependencies:
       '@inquirer/ansi': 2.0.3
       '@inquirer/figures': 2.0.3
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
       cli-width: 4.1.0
       mute-stream: 3.0.0
       signal-exit: 4.1.0
       wrap-ansi: 9.0.2
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
-  '@inquirer/editor@5.0.4(@types/node@24.10.11)':
+  '@inquirer/editor@5.0.4(@types/node@24.10.12)':
     dependencies:
-      '@inquirer/core': 11.1.1(@types/node@24.10.11)
-      '@inquirer/external-editor': 2.0.3(@types/node@24.10.11)
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
+      '@inquirer/core': 11.1.1(@types/node@24.10.12)
+      '@inquirer/external-editor': 2.0.3(@types/node@24.10.12)
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
-  '@inquirer/expand@5.0.4(@types/node@24.10.11)':
+  '@inquirer/expand@5.0.4(@types/node@24.10.12)':
     dependencies:
-      '@inquirer/core': 11.1.1(@types/node@24.10.11)
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
+      '@inquirer/core': 11.1.1(@types/node@24.10.12)
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
-  '@inquirer/external-editor@1.0.3(@types/node@24.10.11)':
-    dependencies:
-      chardet: 2.1.1
-      iconv-lite: 0.7.2
-    optionalDependencies:
-      '@types/node': 24.10.11
-
-  '@inquirer/external-editor@1.0.3(@types/node@25.2.1)':
+  '@inquirer/external-editor@1.0.3(@types/node@24.10.12)':
     dependencies:
       chardet: 2.1.1
       iconv-lite: 0.7.2
     optionalDependencies:
-      '@types/node': 25.2.1
+      '@types/node': 24.10.12
 
-  '@inquirer/external-editor@2.0.3(@types/node@24.10.11)':
+  '@inquirer/external-editor@1.0.3(@types/node@25.2.2)':
     dependencies:
       chardet: 2.1.1
       iconv-lite: 0.7.2
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 25.2.2
+
+  '@inquirer/external-editor@2.0.3(@types/node@24.10.12)':
+    dependencies:
+      chardet: 2.1.1
+      iconv-lite: 0.7.2
+    optionalDependencies:
+      '@types/node': 24.10.12
 
   '@inquirer/figures@2.0.3': {}
 
-  '@inquirer/input@5.0.4(@types/node@24.10.11)':
+  '@inquirer/input@5.0.4(@types/node@24.10.12)':
     dependencies:
-      '@inquirer/core': 11.1.1(@types/node@24.10.11)
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
+      '@inquirer/core': 11.1.1(@types/node@24.10.12)
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
-  '@inquirer/number@4.0.4(@types/node@24.10.11)':
+  '@inquirer/number@4.0.4(@types/node@24.10.12)':
     dependencies:
-      '@inquirer/core': 11.1.1(@types/node@24.10.11)
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
+      '@inquirer/core': 11.1.1(@types/node@24.10.12)
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
-  '@inquirer/password@5.0.4(@types/node@24.10.11)':
-    dependencies:
-      '@inquirer/ansi': 2.0.3
-      '@inquirer/core': 11.1.1(@types/node@24.10.11)
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
-    optionalDependencies:
-      '@types/node': 24.10.11
-
-  '@inquirer/prompts@8.2.0(@types/node@24.10.11)':
-    dependencies:
-      '@inquirer/checkbox': 5.0.4(@types/node@24.10.11)
-      '@inquirer/confirm': 6.0.4(@types/node@24.10.11)
-      '@inquirer/editor': 5.0.4(@types/node@24.10.11)
-      '@inquirer/expand': 5.0.4(@types/node@24.10.11)
-      '@inquirer/input': 5.0.4(@types/node@24.10.11)
-      '@inquirer/number': 4.0.4(@types/node@24.10.11)
-      '@inquirer/password': 5.0.4(@types/node@24.10.11)
-      '@inquirer/rawlist': 5.2.0(@types/node@24.10.11)
-      '@inquirer/search': 4.1.0(@types/node@24.10.11)
-      '@inquirer/select': 5.0.4(@types/node@24.10.11)
-    optionalDependencies:
-      '@types/node': 24.10.11
-
-  '@inquirer/rawlist@5.2.0(@types/node@24.10.11)':
-    dependencies:
-      '@inquirer/core': 11.1.1(@types/node@24.10.11)
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
-    optionalDependencies:
-      '@types/node': 24.10.11
-
-  '@inquirer/search@4.1.0(@types/node@24.10.11)':
-    dependencies:
-      '@inquirer/core': 11.1.1(@types/node@24.10.11)
-      '@inquirer/figures': 2.0.3
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
-    optionalDependencies:
-      '@types/node': 24.10.11
-
-  '@inquirer/select@5.0.4(@types/node@24.10.11)':
+  '@inquirer/password@5.0.4(@types/node@24.10.12)':
     dependencies:
       '@inquirer/ansi': 2.0.3
-      '@inquirer/core': 11.1.1(@types/node@24.10.11)
-      '@inquirer/figures': 2.0.3
-      '@inquirer/type': 4.0.3(@types/node@24.10.11)
+      '@inquirer/core': 11.1.1(@types/node@24.10.12)
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
-  '@inquirer/type@4.0.3(@types/node@24.10.11)':
+  '@inquirer/prompts@8.2.0(@types/node@24.10.12)':
+    dependencies:
+      '@inquirer/checkbox': 5.0.4(@types/node@24.10.12)
+      '@inquirer/confirm': 6.0.4(@types/node@24.10.12)
+      '@inquirer/editor': 5.0.4(@types/node@24.10.12)
+      '@inquirer/expand': 5.0.4(@types/node@24.10.12)
+      '@inquirer/input': 5.0.4(@types/node@24.10.12)
+      '@inquirer/number': 4.0.4(@types/node@24.10.12)
+      '@inquirer/password': 5.0.4(@types/node@24.10.12)
+      '@inquirer/rawlist': 5.2.0(@types/node@24.10.12)
+      '@inquirer/search': 4.1.0(@types/node@24.10.12)
+      '@inquirer/select': 5.0.4(@types/node@24.10.12)
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
+
+  '@inquirer/rawlist@5.2.0(@types/node@24.10.12)':
+    dependencies:
+      '@inquirer/core': 11.1.1(@types/node@24.10.12)
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
+    optionalDependencies:
+      '@types/node': 24.10.12
+
+  '@inquirer/search@4.1.0(@types/node@24.10.12)':
+    dependencies:
+      '@inquirer/core': 11.1.1(@types/node@24.10.12)
+      '@inquirer/figures': 2.0.3
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
+    optionalDependencies:
+      '@types/node': 24.10.12
+
+  '@inquirer/select@5.0.4(@types/node@24.10.12)':
+    dependencies:
+      '@inquirer/ansi': 2.0.3
+      '@inquirer/core': 11.1.1(@types/node@24.10.12)
+      '@inquirer/figures': 2.0.3
+      '@inquirer/type': 4.0.3(@types/node@24.10.12)
+    optionalDependencies:
+      '@types/node': 24.10.12
+
+  '@inquirer/type@4.0.3(@types/node@24.10.12)':
+    optionalDependencies:
+      '@types/node': 24.10.12
 
   '@isaacs/balanced-match@4.0.1': {}
 
@@ -3478,49 +3478,49 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1)))(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))':
+  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2)))(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))
+      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))
       debug: 4.4.3
       svelte: 4.2.20
-      vite: 5.4.21(@types/node@25.2.1)
+      vite: 5.4.21(@types/node@25.2.2)
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2)))(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2))':
+  '@sveltejs/vite-plugin-svelte-inspector@2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2)))(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2))
+      '@sveltejs/vite-plugin-svelte': 3.1.2(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2))
       debug: 4.4.3
       svelte: 4.2.20
-      vite: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))':
+  '@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1)))(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.1))
+      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2)))(svelte@4.2.20)(vite@5.4.21(@types/node@25.2.2))
       debug: 4.4.3
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.21
       svelte: 4.2.20
       svelte-hmr: 0.16.0(svelte@4.2.20)
-      vite: 5.4.21(@types/node@25.2.1)
-      vitefu: 0.2.5(vite@5.4.21(@types/node@25.2.1))
+      vite: 5.4.21(@types/node@25.2.2)
+      vitefu: 0.2.5(vite@5.4.21(@types/node@25.2.2))
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2))':
+  '@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2)))(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2))
+      '@sveltejs/vite-plugin-svelte-inspector': 2.1.0(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2)))(svelte@4.2.20)(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2))
       debug: 4.4.3
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.21
       svelte: 4.2.20
       svelte-hmr: 0.16.0(svelte@4.2.20)
-      vite: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
-      vitefu: 0.2.5(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2))
+      vite: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
+      vitefu: 0.2.5(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2))
     transitivePeerDependencies:
       - supports-color
 
@@ -3529,7 +3529,7 @@ snapshots:
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
   '@types/chai@5.2.3':
     dependencies:
@@ -3538,7 +3538,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
   '@types/cookie@0.6.0': {}
 
@@ -3548,14 +3548,14 @@ snapshots:
 
   '@types/express-serve-static-core@4.19.8':
     dependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.2
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
 
   '@types/express-serve-static-core@5.1.1':
     dependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -3576,23 +3576,23 @@ snapshots:
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
   '@types/http-errors@2.0.5': {}
 
   '@types/jsonfile@6.1.4':
     dependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
   '@types/mime@1.3.5': {}
 
   '@types/node@12.20.55': {}
 
-  '@types/node@24.10.11':
+  '@types/node@24.10.12':
     dependencies:
       undici-types: 7.16.0
 
-  '@types/node@25.2.1':
+  '@types/node@25.2.2':
     dependencies:
       undici-types: 7.16.0
 
@@ -3605,26 +3605,26 @@ snapshots:
   '@types/send@0.17.6':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 25.2.1
+      '@types/node': 25.2.2
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
   '@types/serve-static@1.15.10':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 25.2.1
+      '@types/node': 25.2.2
       '@types/send': 0.17.6
 
   '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
   '@types/set-cookie-parser@2.4.10':
     dependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -3641,21 +3641,21 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2))':
+  '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2))':
     dependencies:
       '@vitest/spy': 4.0.18
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
 
-  '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@25.2.1)(yaml@2.8.2))':
+  '@vitest/mocker@4.0.18(vite@7.3.1(@types/node@25.2.2)(yaml@2.8.2))':
     dependencies:
       '@vitest/spy': 4.0.18
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.1(@types/node@25.2.1)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.2.2)(yaml@2.8.2)
 
   '@vitest/pretty-format@4.0.18':
     dependencies:
@@ -4919,16 +4919,16 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite@5.4.21(@types/node@25.2.1):
+  vite@5.4.21(@types/node@25.2.2):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.6
       rollup: 4.57.1
     optionalDependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.2
       fsevents: 2.3.3
 
-  vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2):
+  vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2):
     dependencies:
       esbuild: 0.27.2
       fdir: 6.5.0(picomatch@4.0.3)
@@ -4937,11 +4937,11 @@ snapshots:
       rollup: 4.57.1
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
       fsevents: 2.3.3
       yaml: 2.8.2
 
-  vite@7.3.1(@types/node@25.2.1)(yaml@2.8.2):
+  vite@7.3.1(@types/node@25.2.2)(yaml@2.8.2):
     dependencies:
       esbuild: 0.27.2
       fdir: 6.5.0(picomatch@4.0.3)
@@ -4950,22 +4950,22 @@ snapshots:
       rollup: 4.57.1
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.2
       fsevents: 2.3.3
       yaml: 2.8.2
 
-  vitefu@0.2.5(vite@5.4.21(@types/node@25.2.1)):
+  vitefu@0.2.5(vite@5.4.21(@types/node@25.2.2)):
     optionalDependencies:
-      vite: 5.4.21(@types/node@25.2.1)
+      vite: 5.4.21(@types/node@25.2.2)
 
-  vitefu@0.2.5(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2)):
+  vitefu@0.2.5(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2)):
     optionalDependencies:
-      vite: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
 
-  vitest@4.0.18(@types/node@24.10.11)(yaml@2.8.2):
+  vitest@4.0.18(@types/node@24.10.12)(yaml@2.8.2):
     dependencies:
       '@vitest/expect': 4.0.18
-      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@24.10.11)(yaml@2.8.2))
+      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@24.10.12)(yaml@2.8.2))
       '@vitest/pretty-format': 4.0.18
       '@vitest/runner': 4.0.18
       '@vitest/snapshot': 4.0.18
@@ -4982,10 +4982,10 @@ snapshots:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.3.1(@types/node@24.10.11)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@24.10.12)(yaml@2.8.2)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 24.10.11
+      '@types/node': 24.10.12
     transitivePeerDependencies:
       - jiti
       - less
@@ -4999,10 +4999,10 @@ snapshots:
       - tsx
       - yaml
 
-  vitest@4.0.18(@types/node@25.2.1)(yaml@2.8.2):
+  vitest@4.0.18(@types/node@25.2.2)(yaml@2.8.2):
     dependencies:
       '@vitest/expect': 4.0.18
-      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@25.2.1)(yaml@2.8.2))
+      '@vitest/mocker': 4.0.18(vite@7.3.1(@types/node@25.2.2)(yaml@2.8.2))
       '@vitest/pretty-format': 4.0.18
       '@vitest/runner': 4.0.18
       '@vitest/snapshot': 4.0.18
@@ -5019,10 +5019,10 @@ snapshots:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.3.1(@types/node@25.2.1)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@25.2.2)(yaml@2.8.2)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.2
     transitivePeerDependencies:
       - jiti
       - less
