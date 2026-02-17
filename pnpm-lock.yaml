@@ -69,7 +69,7 @@ importers:
         version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@24.10.13))
       '@tsconfig/svelte':
         specifier: ^5.0.2
-        version: 5.0.7
+        version: 5.0.8
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -106,7 +106,7 @@ importers:
         version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@24.10.13))
       '@tsconfig/svelte':
         specifier: ^5.0.2
-        version: 5.0.7
+        version: 5.0.8
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -140,7 +140,7 @@ importers:
         version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@24.10.13))
       '@tsconfig/svelte':
         specifier: ^5.0.2
-        version: 5.0.7
+        version: 5.0.8
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -211,7 +211,7 @@ importers:
         version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@24.10.13))
       '@tsconfig/svelte':
         specifier: ^5.0.2
-        version: 5.0.7
+        version: 5.0.8
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -248,7 +248,7 @@ importers:
         version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@24.10.13))
       '@tsconfig/svelte':
         specifier: ^5.0.2
-        version: 5.0.7
+        version: 5.0.8
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -285,7 +285,7 @@ importers:
         version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@24.10.13))
       '@tsconfig/svelte':
         specifier: ^5.0.2
-        version: 5.0.7
+        version: 5.0.8
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -412,7 +412,7 @@ importers:
         version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@24.10.13))
       '@tsconfig/svelte':
         specifier: ^5.0.2
-        version: 5.0.7
+        version: 5.0.8
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -430,7 +430,7 @@ importers:
     dependencies:
       '@tsconfig/svelte':
         specifier: ^5.0.2
-        version: 5.0.7
+        version: 5.0.8
       cheerio:
         specifier: ^1.0.0
         version: 1.2.0
@@ -525,7 +525,7 @@ importers:
         version: 3.1.2(svelte@4.2.20)(vite@5.4.21(@types/node@24.10.13))
       '@tsconfig/svelte':
         specifier: ^5.0.2
-        version: 5.0.7
+        version: 5.0.8
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.25
@@ -1342,8 +1342,8 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       vite: ^5.0.0
 
-  '@tsconfig/svelte@5.0.7':
-    resolution: {integrity: sha512-NOtJF9LQnV7k6bpzcXwL/rXdlFHvAT9e0imrftiMc6/+FUNBHRZ8UngDrM+jciA6ENzFYNoFs8rfwumuGF+Dhw==}
+  '@tsconfig/svelte@5.0.8':
+    resolution: {integrity: sha512-UkNnw1/oFEfecR8ypyHIQuWYdkPvHiwcQ78sh+ymIiYoF+uc5H1UBetbjyqT+vgGJ3qQN6nhucJviX6HesWtKQ==}
 
   '@types/body-parser@1.19.6':
     resolution: {integrity: sha512-HLFeCYgz89uk22N5Qg3dvGvsv46B8GLvKKo1zKG4NybA8U2DiEO3w9lqGg29t/tfLRJpJ6iQxnVw4OnB7MoM9g==}
@@ -3488,7 +3488,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tsconfig/svelte@5.0.7': {}
+  '@tsconfig/svelte@5.0.8': {}
 
   '@types/body-parser@1.19.6':
     dependencies:
