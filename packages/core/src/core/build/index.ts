@@ -18,7 +18,7 @@ import { builder } from "./build.js";
 import { Command, EntryOption } from "../types.js";
 
 export function* build({ cwd, ..._ }: EntryOption) {
-  const logger = use_logger();
+  const logger = yield* use_logger();
 
   logger.info("loading configuration");
 

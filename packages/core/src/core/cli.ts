@@ -1,19 +1,25 @@
 import color from "kleur";
 import sade from "sade";
+import { ILogObj, Logger as TSLogger } from "tslog";
 
 import { run } from "effection";
 
 import { InvalidConfig } from "./config/index.js";
-import { use_logger } from "./logger.js";
+
 import { format_config_error } from "./message.js";
 import { VERSION } from "../../version.js";
+import { Logger } from "./logger.js";
 
 const config_option = "Config path, default path if not specified";
 
 const program = sade("stack54").version(VERSION);
 
 const cwd = process.cwd();
-const logger = use_logger();
+
+const logger = new TSLogger<ILogObj>({
+  hideLogPositionForProduction: true,
+  type: "pretty",
+});
 
 function handle_error(error: unknown) {
   if (error instanceof InvalidConfig) {
@@ -40,6 +46,7 @@ program
 
     const task = run(function* () {
       try {
+        yield* Logger.set(logger);
         yield* dev({ cwd, config_file: args.config, port: args.port });
       } catch (error) {
         handle_error(error);
@@ -54,7 +61,7 @@ program
     };
 
     process.on("unhandledRejection", async (error) => {
-      logger.error(error);
+      handle_error(error);
       process.exit(1);
     });
 
@@ -70,6 +77,7 @@ program
 
     const task = run(function* () {
       try {
+        yield* Logger.set(logger);
         yield* build({ cwd, config_file: args.config });
       } catch (error) {
         handle_error(error);

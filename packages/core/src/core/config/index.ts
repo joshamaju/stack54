@@ -10,6 +10,8 @@ import z, { ZodError } from "zod";
 
 import { get_svelte_config } from "../utils/vite.js";
 import { Command, Manifest } from "../types.js";
+import { Operation, until } from "effection";
+import { use_logger } from "../logger.js";
 
 type Maybe<T> = T | Promise<T>;
 
@@ -102,19 +104,19 @@ export class Config {
     private file: string,
   ) {}
 
-  async load(command: Command): Promise<ResolvedConfig> {
+  *load(command: Command): Operation<ResolvedConfig> {
     const file = this.file;
 
     let config: UserConfig | ((command: Command) => UserConfig) = {};
 
+    const logger = yield* use_logger();
+
     if (existsSync(file)) {
       const url = pathToFileURL(file);
-      const module = await import(`${url.href}?ts=${Date.now()}`);
+      const module = yield* until(import(`${url.href}?ts=${Date.now()}`));
       config = module.default;
     } else {
-      console.warn(
-        `Config file "${this.file}" not found. Using default config`,
-      );
+      logger.warn(`Config file "${this.file}" not found. Using default config`);
     }
 
     const _config = typeof config == "function" ? config(command) : config;

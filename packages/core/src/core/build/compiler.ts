@@ -20,6 +20,7 @@ import {
 } from "../integrations/hooks.js";
 import { ManifestEntry } from "../types.js";
 import { copy } from "../utils/filesystem.js";
+import { use_logger } from "../logger.js";
 
 function collect_assets(code: string, filename: string): Array<Element> {
   type Visitor = (node: BaseNode) => BaseNode;
@@ -138,6 +139,11 @@ export function* compile({
   const root = path.join(dir, name);
   const build = path.join(root, "build");
 
+  const logger = yield* use_logger("client");
+
+  console.log();
+  logger.debug("Building", { filename });
+
   const preprocessors = config.svelte.preprocess ?? [];
 
   const processed: Processed = yield* call(() =>
@@ -156,6 +162,7 @@ export function* compile({
 
   // skip views with no client assets to process
   if (assets.length <= 0) {
+    logger.debug("Skipping view. No asset");
     return null;
   }
 
@@ -256,9 +263,13 @@ export function* compile({
   const move_assets = yield* spawn(function* () {
     const dir = path.join(build, config.build.assetsDir);
 
+    console.log();
+
     try {
+      logger.debug("Attempting to move generated assets to output directory");
       yield* call(() => copy(dir, path.join(outDir, config.build.assetsDir)));
     } catch (error) {
+      logger.debug("Build generated no asset");
       // no assets
     }
   });

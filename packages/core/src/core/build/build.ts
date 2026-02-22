@@ -9,7 +9,7 @@ import picomatch from "picomatch";
 
 import { ResolvedConfig } from "../config/index.js";
 import { define, Env, partition } from "../env.js";
-import { make_vite_logger } from "../logger.js";
+import { make_vite_logger, use_logger } from "../logger.js";
 import { Manifest } from "../types.js";
 import { parse_id } from "../utils/view.js";
 import { compile } from "./compiler.js";
@@ -34,6 +34,8 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
 
   const matcher = picomatch(config.views, { cwd, contains: true });
 
+  const logger = yield* use_logger();
+
   const manifests: Manifest = {};
 
   const plugin: Plugin = {
@@ -41,7 +43,7 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
     buildEnd(error) {
       if (error) {
         console.log();
-        console.log(error);
+        logger.error(error, "Build failed");
       }
     },
     transform: {
@@ -63,7 +65,7 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
 
   const env_define = define(env);
 
-  const vite_logger = make_vite_logger("server");
+  const vite_logger = yield* make_vite_logger("server");
 
   const inline_config: InlineConfig = {
     plugins: [plugin],
@@ -91,7 +93,7 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
     try {
       yield* call(() => copy(dir, path.join(outDir, config.build.assetsDir)));
     } catch (error) {
-      console.log(error);
+      logger.error(error);
     }
   }
 

@@ -23,6 +23,7 @@ import { make_vite_config } from "../utils/vite.js";
 import { attach_full_path } from "./attach-full-path/index.js";
 import { live_reload_plugin } from "./live-reload-plugin/index.js";
 import { resolve_inline_imports_plugin } from "./resolve-inline-imports-plugin/index.js";
+import { clearScreen } from "../utils/console.js";
 
 const command: Command = "serve";
 
@@ -34,7 +35,7 @@ export function start_server({
   return resource<ViteDevServer>(function* (provide) {
     const conf = new Config(cwd, config_file);
 
-    const user_config = yield* call(() => conf.load(command));
+    const user_config = yield* conf.load(command);
 
     user_config.integrations = [
       ...(user_config.integrations ?? []),
@@ -165,7 +166,7 @@ function is_restart_target(file: string, config_file: string) {
 
 export function* dev(args: EntryOption & { port?: number }) {
   let initial = true;
-  const logger = use_logger();
+  const logger = yield* use_logger();
   const channel = createSignal<string>();
 
   const filename = config_file(args.cwd, args.config_file);
@@ -228,6 +229,8 @@ export function* dev(args: EntryOption & { port?: number }) {
     throw error;
   }
 
+  logger.info("starting dev server");
+
   let task = yield* spawn(runner);
 
   task.catch(catcher);
@@ -249,6 +252,7 @@ export function* dev(args: EntryOption & { port?: number }) {
   try {
     yield* suspend();
   } finally {
+    clearScreen();
     logger.info("stopping server...");
     yield* task.halt();
     logger.info("stopped server");
