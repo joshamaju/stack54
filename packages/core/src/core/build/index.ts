@@ -34,7 +34,7 @@ export function* build({ cwd, ..._ }: EntryOption) {
   let merged_config =
     user_config.integrations.length <= 0
       ? user_config
-      : yield* call(() => run_config_setup(user_config, { command }));
+      : yield* run_config_setup(user_config, { command });
 
   const resolved_config = yield* call(() => conf.resolve(merged_config));
 
@@ -54,13 +54,13 @@ export function* build({ cwd, ..._ }: EntryOption) {
   });
 
   if (config.integrations.length > 0) {
-    yield* call(() => run_config_resolved(config));
+    yield* run_config_resolved(config);
   }
 
   const env = load(config.env.dir ?? cwd, mode);
 
   if (config.integrations.length > 0) {
-    yield* call(() => run_build_start(config));
+    yield* run_build_start(config);
   }
 
   yield* clean;
@@ -68,7 +68,7 @@ export function* build({ cwd, ..._ }: EntryOption) {
   const manifest = yield* builder({ cwd, outDir, config, env });
 
   if (config.integrations.length > 0) {
-    yield* call(() => run_build_end(config, manifest));
+    yield* run_build_end(config, manifest);
   }
 
   const end = process.hrtime.bigint();

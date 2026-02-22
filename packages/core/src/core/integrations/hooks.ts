@@ -1,3 +1,4 @@
+import { call, Operation, until } from "effection";
 import type { Env, ResolvedConfig } from "../config/index.js";
 import { merge } from "../config/merge.js";
 import { Manifest } from "../types.js";
@@ -27,56 +28,54 @@ function get_plugins(config: ResolvedConfig) {
 //   return { all, client, server };
 // }
 
-export async function run_config_setup(
+export function* run_config_setup(
   config: ResolvedConfig,
-  env: Env
-): Promise<ResolvedConfig> {
+  env: Env,
+): Operation<ResolvedConfig> {
   const plugins = get_plugins(config);
 
   let merged = config;
 
   for (const integration of plugins) {
-    const plugin = await resolve(integration);
-    const config = await plugin.config?.call(plugin, merged, env);
+    const plugin = yield* until(resolve(integration));
+    const value = plugin.config?.call(plugin, merged, env);
+    const config = value instanceof Promise ? yield* until(value) : value;
     if (config) merged = merge(merged, config) as ResolvedConfig;
   }
 
   return merged;
 }
 
-export async function run_config_resolved(config: ResolvedConfig) {
+export function* run_config_resolved(config: ResolvedConfig) {
   const plugins = get_plugins(config);
 
   for (const integration of plugins) {
-    const plugin = await resolve(integration);
-    await plugin.configResolved?.call(plugin, config);
+    const plugin = yield* until(resolve(integration));
+    yield* call(async () => plugin.configResolved?.call(plugin, config));
   }
 }
 
-export async function run_build_start(config: ResolvedConfig) {
+export function* run_build_start(config: ResolvedConfig) {
   const plugins = get_plugins(config);
 
   for (const integration of plugins) {
-    const plugin = await resolve(integration);
-    await plugin.buildStart?.call(plugin);
+    const plugin = yield* until(resolve(integration));
+    yield* call(async () => plugin.buildStart?.call(plugin));
   }
 }
 
-export async function run_build_end(
+export function* run_build_end(config: ResolvedConfig, manifest: Manifest) {
+  const plugins = get_plugins(config);
+
+  for (const integration of plugins) {
+    const plugin = yield* until(resolve(integration));
+    yield* call(async () => plugin.buildEnd?.call(plugin, manifest));
+  }
+}
+
+export function* run_html_pre_transform(
   config: ResolvedConfig,
-  manifest: Manifest
-) {
-  const plugins = get_plugins(config);
-
-  for (const integration of plugins) {
-    const plugin = await resolve(integration);
-    await plugin.buildEnd?.call(plugin, manifest);
-  }
-}
-
-export async function run_html_pre_transform(
-  config: ResolvedConfig,
-  { code, filename }: { code: string; filename: string }
+  { code, filename }: { code: string; filename: string },
 ) {
   const plugins = [
     ...config.integrations,
@@ -86,12 +85,13 @@ export async function run_html_pre_transform(
   let _code = code;
 
   for (const integration of plugins) {
-    const plugin = await resolve(integration);
+    const plugin = yield* until(resolve(integration));
     const can_execute = plugin.environment == "client" || !plugin.environment;
     const v = plugin.transform;
 
     if (v && can_execute && typeof v !== "function" && v.order == "pre") {
-      const code = await v.handle.call(plugin, _code, filename);
+      const value = v.handle.call(plugin, _code, filename);
+      const code = yield* call(async () => value);
       if (code) _code = code;
     }
   }
@@ -99,9 +99,9 @@ export async function run_html_pre_transform(
   return _code;
 }
 
-export async function run_html_post_transform(
+export function* run_html_post_transform(
   config: ResolvedConfig,
-  { code, filename }: { code: string; filename: string }
+  { code, filename }: { code: string; filename: string },
 ) {
   const plugins = [
     ...config.integrations,
@@ -113,7 +113,7 @@ export async function run_html_post_transform(
   for (const integration of plugins) {
     let fn;
 
-    const plugin = await resolve(integration);
+    const plugin = yield* until(resolve(integration));
     const can_execute = plugin.environment == "client" || !plugin.environment;
     const value = plugin.transform;
 
@@ -126,7 +126,7 @@ export async function run_html_post_transform(
     }
 
     if (fn) {
-      const code = await fn.call(plugin, _code, filename);
+      const code = yield* call(async () => fn.call(plugin, _code, filename));
       if (code) _code = code;
     }
   }

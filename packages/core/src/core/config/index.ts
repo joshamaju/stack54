@@ -112,7 +112,9 @@ export class Config {
       const module = await import(`${url.href}?ts=${Date.now()}`);
       config = module.default;
     } else {
-      if (this.file) throw `Config file ${this.file} not found`;
+      console.warn(
+        `Config file "${this.file}" not found. Using default config`,
+      );
     }
 
     const _config = typeof config == "function" ? config(command) : config;

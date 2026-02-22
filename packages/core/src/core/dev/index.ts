@@ -41,9 +41,7 @@ export function start_server({
       live_reload_plugin(),
     ];
 
-    let merged_config = yield* call(() =>
-      run_config_setup(user_config, { command }),
-    );
+    let merged_config = yield* run_config_setup(user_config, { command });
 
     let { assetPrefix } = user_config.build;
 
@@ -135,7 +133,7 @@ export function start_server({
     config.vite.server.cors ??= false;
     config.vite.server.port = port ?? config.vite.server.port ?? 8080;
 
-    yield* call(() => run_config_resolved(config));
+    yield* run_config_resolved(config);
 
     const server = yield* call(() => createServer(config.vite));
 
@@ -149,18 +147,18 @@ export function start_server({
   });
 }
 
-const STACK_CONFIG_FILES = new Set([
-  "stack.config.js",
-  "stack.config.ts",
-  "stack.config.mjs",
-  "stack.config.mts",
-]);
+// const STACK_CONFIG_FILES = new Set([
+//   "stack.config.js",
+//   "stack.config.ts",
+//   "stack.config.mjs",
+//   "stack.config.mts",
+// ]);
 
 function is_restart_target(file: string, config_file: string) {
-  const basename = path.basename(file);
+  // const basename = path.basename(file);
 
-  if (basename.startsWith(".env")) return true;
-  if (STACK_CONFIG_FILES.has(basename)) return true;
+  // if (basename.startsWith(".env")) return true;
+  // if (STACK_CONFIG_FILES.has(basename)) return true;
 
   return path.resolve(file) === config_file;
 }
@@ -168,7 +166,7 @@ function is_restart_target(file: string, config_file: string) {
 export function* dev(args: EntryOption & { port?: number }) {
   let initial = true;
   const logger = use_logger();
-  const channel = createSignal();
+  const channel = createSignal<string>();
 
   const filename = config_file(args.cwd, args.config_file);
 
@@ -190,6 +188,10 @@ export function* dev(args: EntryOption & { port?: number }) {
     server.watcher.on("change", fn);
     server.watcher.on("unlink", fn);
     server.watcher.on("add", fn);
+
+    server.restart = async function () {
+      channel.send("restart");
+    };
 
     if (initial) {
       console.log();
