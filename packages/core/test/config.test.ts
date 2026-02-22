@@ -12,7 +12,7 @@ it("should load config", async () => {
 
 it("should resolve config with glob entry", async () => {
   const cwd = join(process.cwd(), "test/fixtures");
-  const loader = new Config(cwd, "./glob-config.js");
+  const loader = new Config(cwd, join(cwd, "./glob-config.js"));
   const config = await loader.resolve(await loader.load("build"));
   expect(config).toMatchObject({ entry: "stub-entry.js" });
 });

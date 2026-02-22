@@ -40,7 +40,7 @@ export const baseConfigSchema = z.object({
   vite: z.custom<ViteUserConfig>().default({}),
   integrations: z
     .array(
-      z.union([z.custom<Integration>(), z.promise(z.custom<Integration>())])
+      z.union([z.custom<Integration>(), z.promise(z.custom<Integration>())]),
     )
     .default([]),
   views: z.array(z.string()).default(["src/views/**/*.svelte"]),
@@ -78,7 +78,7 @@ const userConfigSchema = baseConfigSchema.extend({
   environments: z
     .record(
       environment,
-      baseConfigSchema.pick({ vite: true, integrations: true })
+      baseConfigSchema.pick({ vite: true, integrations: true }),
     )
     .default({}),
 });
@@ -92,15 +92,18 @@ export class InvalidConfig {
   constructor(public cause: ZodError<UserConfig>) {}
 }
 
-export class Config {
-  #file: string;
+export function config_file(cwd: string, file?: string) {
+  return path.join(cwd, file ?? DEFAULT_FILE);
+}
 
-  constructor(private cwd = process.cwd(), private file?: string) {
-    this.#file = path.join(cwd, file ?? DEFAULT_FILE);
-  }
+export class Config {
+  constructor(
+    private cwd = process.cwd(),
+    private file: string,
+  ) {}
 
   async load(command: Command): Promise<ResolvedConfig> {
-    const file = this.#file;
+    const file = this.file;
 
     let config: UserConfig | ((command: Command) => UserConfig) = {};
 
@@ -131,8 +134,8 @@ export class Config {
             await Promise.all(
               Object.entries(file).map(async ([k, v]) => {
                 return [k, (await glob(v, { cwd }))[0]] as const;
-              })
-            )
+              }),
+            ),
           )
         : await (async () => {
             const files = await glob(file, { cwd });

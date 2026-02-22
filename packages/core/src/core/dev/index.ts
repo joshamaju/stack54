@@ -10,15 +10,14 @@ import * as path from "node:path";
 
 import { call, createSignal, each, resource, spawn, suspend } from "effection";
 
-import { Config } from "../config/index.js";
+import { Config, config_file } from "../config/index.js";
 import { define, load } from "../env.js";
 import {
   run_config_resolved,
   run_config_setup,
 } from "../integrations/hooks.js";
-import { logger, use_logger } from "../logger.js";
+import { use_logger } from "../logger.js";
 import { Command, EntryOption } from "../types.js";
-import { clearScreen } from "../utils/console.js";
 import { array } from "../utils/index.js";
 import { make_vite_config } from "../utils/vite.js";
 import { attach_full_path } from "./attach-full-path/index.js";
@@ -167,12 +166,14 @@ function is_restart_target(file: string, config_file: string) {
 }
 
 export function* dev(args: EntryOption & { port?: number }) {
-  let is_restart = false;
+  let initial = true;
   const logger = use_logger();
   const channel = createSignal();
 
+  const filename = config_file(args.cwd, args.config_file);
+
   const fn = (file: string) => {
-    if (is_restart_target(file, "")) {
+    if (is_restart_target(file, filename)) {
       channel.send("restart");
     }
   };
@@ -180,7 +181,7 @@ export function* dev(args: EntryOption & { port?: number }) {
   function* runner() {
     const start = performance.now();
 
-    const server = yield* start_server(args);
+    const server = yield* start_server({ ...args, config_file: filename });
 
     const time = performance.now() - start;
 
@@ -190,13 +191,13 @@ export function* dev(args: EntryOption & { port?: number }) {
     server.watcher.on("unlink", fn);
     server.watcher.on("add", fn);
 
-    if (!is_restart) {
+    if (initial) {
       console.log();
       server.printUrls();
     }
 
     server.bindCLIShortcuts({
-      print: !is_restart,
+      print: initial,
       customShortcuts: [
         {
           key: "r",
@@ -208,7 +209,7 @@ export function* dev(args: EntryOption & { port?: number }) {
       ],
     });
 
-    if (!is_restart) {
+    if (initial) {
       console.log();
       logger.info("watching for changes...");
     }
@@ -232,7 +233,7 @@ export function* dev(args: EntryOption & { port?: number }) {
   yield* spawn(function* () {
     for (const event of yield* each(channel)) {
       if (event === "restart") {
-        is_restart = true;
+        initial = false;
         logger.info("restarting...");
         yield* task.halt();
         task = yield* spawn(runner);

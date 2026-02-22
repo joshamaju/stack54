@@ -3,7 +3,7 @@ import * as path from "node:path";
 
 import { call, spawn } from "effection";
 
-import { Config } from "../config/index.js";
+import { Config, config_file } from "../config/index.js";
 import { load } from "../env.js";
 import {
   run_build_end,
@@ -17,14 +17,16 @@ import { make_vite_config } from "../utils/vite.js";
 import { builder } from "./build.js";
 import { Command, EntryOption } from "../types.js";
 
-export function* build({ cwd, config_file }: EntryOption) {
+export function* build({ cwd, ..._ }: EntryOption) {
   const logger = use_logger();
 
   logger.info("loading configuration");
 
   const start = process.hrtime.bigint();
 
-  const conf = new Config(cwd, config_file);
+  const filename = config_file(cwd, _.config_file);
+
+  const conf = new Config(cwd, filename);
 
   const command: Command = "build";
   const user_config = yield* call(() => conf.load(command));
