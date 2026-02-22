@@ -55,7 +55,6 @@ program
 
     process.on("unhandledRejection", async (error) => {
       logger.error(error);
-      await close();
       process.exit(1);
     });
 
