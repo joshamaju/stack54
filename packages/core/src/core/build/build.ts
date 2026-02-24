@@ -63,19 +63,44 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
     },
   };
 
+  let resolved_vite_config: vite.ResolvedConfig | undefined;
+
+  const copy_assets: Plugin = {
+    name: "stack54:copy",
+    configResolved(config) {
+      resolved_vite_config = config;
+    },
+
+    async writeBundle() {
+      if (resolved_vite_config) {
+        const { build } = resolved_vite_config;
+
+        const dir = path.join(build.outDir, build.assetsDir);
+
+        try {
+          await copy(dir, path.join(outDir, config.build.assetsDir));
+          await fs.rm(dir, { recursive: true });
+        } catch (error) {
+          // no server assets directory
+        }
+      }
+    },
+  };
+
   const env_define = define(env);
 
   const vite_logger = yield* make_vite_logger("server");
 
   const inline_config: InlineConfig = {
-    plugins: [plugin],
     define: env_define,
     mode: "production",
     customLogger: vite_logger,
+    plugins: [plugin, copy_assets],
     build: {
       ssr: true,
       ssrEmitAssets: true,
       minify: config.build.minify,
+      assetsDir: config.build.assetsDir,
       outDir: path.join(outDir, "server"),
       rollupOptions: { input: config.entry },
     },
