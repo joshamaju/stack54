@@ -10,7 +10,7 @@ import z, { ZodError } from "zod";
 
 import { get_svelte_config } from "../utils/vite.js";
 import { Command, Manifest } from "../types.js";
-import { Operation, until } from "effection";
+import { all, call, Operation, until, useAbortSignal } from "effection";
 import { use_logger } from "../logger.js";
 
 type Maybe<T> = T | Promise<T>;
@@ -127,22 +127,29 @@ export class Config {
     return result.data;
   }
 
-  async resolve(config: ResolvedConfig) {
+  *resolve(config: ResolvedConfig) {
     const cwd = this.cwd;
 
     const { entry: file } = config;
 
+    const signal = yield* useAbortSignal();
+
     const entry =
       typeof file !== "string" && !Array.isArray(file)
         ? Object.fromEntries(
-            await Promise.all(
-              Object.entries(file).map(async ([k, v]) => {
-                return [k, (await glob(v, { cwd }))[0]] as const;
+            yield* all(
+              Object.entries(file).map(([k, v]) => {
+                return call(function* () {
+                  return [
+                    k,
+                    (yield* until(glob(v, { cwd, signal })))[0],
+                  ] as const;
+                });
               }),
             ),
           )
-        : await (async () => {
-            const files = await glob(file, { cwd });
+        : yield* (function* () {
+            const files = yield* until(glob(file, { cwd, signal }));
             return Array.isArray(file) ? files : files[0];
           })();
 
