@@ -10,10 +10,10 @@ import picomatch from "picomatch";
 import { ResolvedConfig } from "../config/index.js";
 import { define, Env, partition } from "../env.js";
 import { make_vite_logger, use_logger } from "../logger.js";
-import { Manifest } from "../types.js";
+import { ManifestEntry } from "../types.js";
+import { copy } from "../utils/filesystem.js";
 import { parse_id } from "../utils/view.js";
 import { compile } from "./compiler.js";
-import { copy } from "../utils/filesystem.js";
 
 type Opts = { config: ResolvedConfig; outDir: string; env: Env; cwd: string };
 
@@ -36,7 +36,7 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
 
   const logger = yield* use_logger();
 
-  const manifests: Manifest = {};
+  const manifests = new Map<string, ManifestEntry[]>();
 
   const plugin: Plugin = {
     name: "stack54:compiler",
@@ -55,7 +55,7 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
           return scope.run(function* () {
             const args = { dir, code, config, outDir, filename, env: public_ };
             const result = yield* compile(args);
-            manifests[filename] = result?.manifest ?? [];
+            manifests.set(filename, result?.manifest ?? []);
             return result?.code;
           });
         }
@@ -97,5 +97,5 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
     }
   }
 
-  return manifests;
+  return Object.fromEntries(manifests);
 }
