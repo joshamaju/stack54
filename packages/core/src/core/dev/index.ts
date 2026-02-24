@@ -220,7 +220,9 @@ export function* dev(args: EntryOption & { port?: number }) {
     try {
       yield* suspend();
     } finally {
-      server.watcher.off("change", fn);
+      server.watcher.on("change", fn);
+      server.watcher.on("unlink", fn);
+      server.watcher.on("add", fn);
     }
   }
 
