@@ -98,6 +98,33 @@ export function config_file(cwd: string, file?: string) {
   return path.join(cwd, file ?? DEFAULT_FILE);
 }
 
+export function* resolve(config: ResolvedConfig, cwd: string) {
+  const { entry: file } = config;
+
+  const signal = yield* useAbortSignal();
+
+  const entry =
+    typeof file !== "string" && !Array.isArray(file)
+      ? Object.fromEntries(
+          yield* all(
+            Object.entries(file).map(([k, v]) => {
+              return call(function* () {
+                return [
+                  k,
+                  (yield* until(glob(v, { cwd, signal })))[0],
+                ] as const;
+              });
+            }),
+          ),
+        )
+      : yield* (function* () {
+          const files = yield* until(glob(file, { cwd, signal }));
+          return Array.isArray(file) ? files : files[0];
+        })();
+
+  return { ...config, entry, svelte: get_svelte_config(config) };
+}
+
 export class Config {
   constructor(
     private cwd = process.cwd(),
@@ -128,31 +155,6 @@ export class Config {
   }
 
   *resolve(config: ResolvedConfig) {
-    const cwd = this.cwd;
-
-    const { entry: file } = config;
-
-    const signal = yield* useAbortSignal();
-
-    const entry =
-      typeof file !== "string" && !Array.isArray(file)
-        ? Object.fromEntries(
-            yield* all(
-              Object.entries(file).map(([k, v]) => {
-                return call(function* () {
-                  return [
-                    k,
-                    (yield* until(glob(v, { cwd, signal })))[0],
-                  ] as const;
-                });
-              }),
-            ),
-          )
-        : yield* (function* () {
-            const files = yield* until(glob(file, { cwd, signal }));
-            return Array.isArray(file) ? files : files[0];
-          })();
-
-    return { ...config, entry, svelte: get_svelte_config(config) };
+    return yield* resolve(config, this.cwd);
   }
 }
