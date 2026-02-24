@@ -1,8 +1,10 @@
+import color from "kleur";
 import { call, Operation, until } from "effection";
 import type { Env, ResolvedConfig } from "../config/index.js";
 import { merge } from "../config/merge.js";
 import { Manifest } from "../types.js";
 import { resolve } from "../utils/integration.js";
+import { use_logger } from "../logger.js";
 
 function get_plugins(config: ResolvedConfig) {
   const plugins = [
@@ -14,20 +16,6 @@ function get_plugins(config: ResolvedConfig) {
   return plugins;
 }
 
-// function partition(integrations: Integration[]) {
-//   const all: Integration[] = [];
-//   const client: Integration[] = [];
-//   const server: Integration[] = [];
-
-//   for (const plugin of integrations) {
-//     if (plugin.environment == "client") client.push(plugin);
-//     else if (plugin.environment == "server") server.push(plugin);
-//     else all.push(plugin);
-//   }
-
-//   return { all, client, server };
-// }
-
 export function* run_config_setup(
   config: ResolvedConfig,
   env: Env,
@@ -36,10 +24,21 @@ export function* run_config_setup(
 
   let merged = config;
 
+  const logger = yield* use_logger("plugin");
+
   for (const integration of plugins) {
+    const start = performance.now();
     const plugin = yield* until(resolve(integration));
+
+    const child = logger.getSubLogger({ name: plugin.name });
+    child.debug(`executing plugin`);
+
     const value = plugin.config?.call(plugin, merged, env);
     const config = value instanceof Promise ? yield* until(value) : value;
+
+    const time = performance.now() - start;
+    child.debug(`executed in ${Math.round(time)} ${color.dim("ms")}`);
+
     if (config) merged = merge(merged, config) as ResolvedConfig;
   }
 
@@ -84,14 +83,26 @@ export function* run_html_pre_transform(
 
   let _code = code;
 
+  const logger = yield* use_logger("plugin");
+
   for (const integration of plugins) {
+    const start = performance.now();
+
     const plugin = yield* until(resolve(integration));
+
     const can_execute = plugin.environment == "client" || !plugin.environment;
     const v = plugin.transform;
 
     if (v && can_execute && typeof v !== "function" && v.order == "pre") {
+      const child = logger.getSubLogger({ name: plugin.name });
+      child.debug(`executing plugin`);
+
       const value = v.handle.call(plugin, _code, filename);
       const code = yield* call(async () => value);
+
+      const time = performance.now() - start;
+      child.debug(`executed in ${Math.round(time)} ${color.dim("ms")}`);
+
       if (code) _code = code;
     }
   }
@@ -110,8 +121,12 @@ export function* run_html_post_transform(
 
   let _code = code;
 
+  const logger = yield* use_logger("plugin");
+
   for (const integration of plugins) {
     let fn;
+
+    const start = performance.now();
 
     const plugin = yield* until(resolve(integration));
     const can_execute = plugin.environment == "client" || !plugin.environment;
@@ -126,7 +141,14 @@ export function* run_html_post_transform(
     }
 
     if (fn) {
+      const child = logger.getSubLogger({ name: plugin.name });
+      child.debug(`executing plugin`);
+
       const code = yield* call(async () => fn.call(plugin, _code, filename));
+
+      const time = performance.now() - start;
+      child.debug(`executed in ${Math.round(time)} ${color.dim("ms")}`);
+
       if (code) _code = code;
     }
   }
