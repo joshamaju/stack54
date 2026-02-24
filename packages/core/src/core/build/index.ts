@@ -53,13 +53,15 @@ export function* build({ cwd, ..._ }: EntryOption) {
     yield* call(() => fs.rm(outDir, { recursive: true, force: true }));
   });
 
-  if (config.integrations.length > 0) {
+  const { integrations } = config;
+
+  if (integrations.length > 0) {
     yield* run_config_resolved(config);
   }
 
   const env = load(config.env.dir ?? cwd, mode);
 
-  if (config.integrations.length > 0) {
+  if (integrations.length > 0) {
     yield* run_build_start(config);
   }
 
@@ -67,7 +69,7 @@ export function* build({ cwd, ..._ }: EntryOption) {
 
   const manifest = yield* builder({ cwd, outDir, config, env });
 
-  if (config.integrations.length > 0) {
+  if (integrations.length > 0) {
     yield* run_build_end(config, manifest);
   }
 
