@@ -29,14 +29,14 @@ export function* build({ cwd, ..._ }: EntryOption) {
   const conf = new Config(cwd, filename);
 
   const command: Command = "build";
-  const user_config = yield* call(() => conf.load(command));
+  const user_config = yield* conf.load(command);
 
   let merged_config =
     user_config.integrations.length <= 0
       ? user_config
       : yield* run_config_setup(user_config, { command });
 
-  const resolved_config = yield* call(() => conf.resolve(merged_config));
+  const resolved_config = yield* conf.resolve(merged_config);
 
   const mode = process.env.NODE_ENV ?? "production";
 
