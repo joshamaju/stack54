@@ -1,7 +1,7 @@
 import color from "kleur";
 import sade from "sade";
 import { ILogObj, Logger as TSLogger } from "tslog";
-
+import figlet from "figlet";
 import { run } from "effection";
 
 import { InvalidConfig } from "./config/index.js";
@@ -93,4 +93,7 @@ program
     process.on("SIGTERM", shutdown);
   });
 
-program.parse(process.argv);
+figlet("stack54", function (_, data) {
+  console.log(data);
+  program.parse(process.argv);
+});
