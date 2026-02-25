@@ -1,7 +1,7 @@
 import color from "kleur";
 import sade from "sade";
 import { ILogObj, Logger as TSLogger } from "tslog";
-import figlet from "figlet";
+
 import { run } from "effection";
 
 import { InvalidConfig } from "./config/index.js";
@@ -42,7 +42,13 @@ program
   .option("config", config_option)
   .option("-p, --port", "Port to run the server on")
   .action(async (args) => {
+    const figlet = import("figlet");
+
     const { dev } = await import("./dev/index.js");
+
+    const data = await (await figlet).default("stack54");
+
+    console.log(data);
 
     const task = run(function* () {
       try {
@@ -93,7 +99,4 @@ program
     process.on("SIGTERM", shutdown);
   });
 
-figlet("stack54", function (_, data) {
-  console.log(data);
-  program.parse(process.argv);
-});
+program.parse(process.argv);
