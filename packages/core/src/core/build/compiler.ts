@@ -43,9 +43,7 @@ function collect_assets(code: string, filename: string): Array<Element> {
       walk(node, (node) => {
         if (node.type == "Element") {
           const node_: Element = node as any;
-          const name = node_.name;
-
-          if (name == "link" || name == "style" || name == "script") {
+          if (should_process_asset(node_)) {
             assets.push(node_);
           }
         }
@@ -54,6 +52,49 @@ function collect_assets(code: string, filename: string): Array<Element> {
   });
 
   return assets;
+}
+
+function get_static_attribute(node: Element, name: string): string | undefined {
+  const attribute = (node.attributes as any[]).find(
+    (attr) => attr?.type === "Attribute" && attr?.name === name,
+  );
+
+  if (
+    !attribute ||
+    !Array.isArray(attribute.value) ||
+    attribute.value.length <= 0
+  ) {
+    return undefined;
+  }
+
+  const value = attribute.value[0];
+  return value?.type === "Text" ? value.data.trim() : undefined;
+}
+
+function is_remote_asset_url(value: string): boolean {
+  return /^[a-zA-Z][a-zA-Z\d+\-.]*:/.test(value) || value.startsWith("//");
+}
+
+function should_process_asset(node: Element): boolean {
+  if (node.name === "style") return true;
+
+  if (node.name === "link") {
+    const href = get_static_attribute(node, "href");
+    // const rel = (get_static_attribute(node, "rel") ?? "").toLowerCase();
+
+    // if (rel === "preconnect" || rel === "dns-prefetch") return false;
+    if (href && is_remote_asset_url(href)) return false;
+
+    return true;
+  }
+
+  if (node.name === "script") {
+    const src = get_static_attribute(node, "src");
+    if (src && is_remote_asset_url(src)) return false;
+    return true;
+  }
+
+  return false;
 }
 
 function parseHTML(html: string) {
