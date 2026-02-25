@@ -4,7 +4,7 @@ import * as path from "node:path";
 import type { InlineConfig, Plugin } from "vite";
 import * as vite from "vite";
 
-import { call, ensure, useScope } from "effection";
+import { call, ensure, until, useScope } from "effection";
 import picomatch from "picomatch";
 
 import { ResolvedConfig } from "../config/index.js";
@@ -18,13 +18,14 @@ import { compile } from "./compiler.js";
 type Opts = { config: ResolvedConfig; outDir: string; env: Env; cwd: string };
 
 export function* builder({ cwd, env, config, outDir }: Opts) {
-  const dir = path.join(cwd, ".stack54");
+  const stack54_dir = path.join(cwd, ".stack54");
+  const dir = path.join(stack54_dir, "tmp");
 
   const scope = yield* useScope();
 
-  yield* call(() => fs.rm(dir, { recursive: true, force: true }));
+  yield* until(fs.rm(dir, { recursive: true, force: true }));
 
-  yield* call(() => fs.mkdir(dir));
+  yield* call(() => fs.mkdir(dir, { recursive: true }));
 
   yield* ensure(function* () {
     yield* call(() => fs.rm(dir, { recursive: true, force: true }));

@@ -10,7 +10,7 @@ import type { Plugin } from "vite";
 import * as vite from "vite";
 
 import * as cheerio from "cheerio";
-import { all, call, Operation, spawn } from "effection";
+import { all, call, Operation } from "effection";
 import MagicString from "magic-string";
 
 import type { ResolvedConfig } from "../config/index.js";
@@ -19,7 +19,6 @@ import {
   run_html_pre_transform,
 } from "../integrations/hooks.js";
 import { ManifestEntry } from "../types.js";
-import { copy } from "../utils/filesystem.js";
 import { use_logger } from "../logger.js";
 
 function collect_assets(code: string, filename: string): Array<Element> {
@@ -137,7 +136,6 @@ export function* compile({
   const name = path.join(p.dir, p.name).replaceAll(path.sep, "_");
 
   const root = path.join(dir, name);
-  const build = path.join(root, "build");
 
   const logger = yield* use_logger("client");
 
@@ -182,15 +180,6 @@ export function* compile({
     }),
   );
 
-  let output_bundle: vite.Rollup.OutputBundle | undefined;
-
-  const collect_bundle: Plugin = {
-    name: "stack54:collect-bundle",
-    writeBundle(_, bundle) {
-      output_bundle = bundle;
-    },
-  };
-
   /**
    * resolves imports (including import aliases) from original file
    */
@@ -230,11 +219,13 @@ export function* compile({
     logLevel: "silent",
     mode: "production",
     envPrefix: config.env.publicPrefix,
-    plugins: [resolve, stamp, collect_bundle],
+    plugins: [resolve, stamp],
+    // cacheDir: cache_dir,
     build: {
       ssr: false,
-      outDir: build,
+      write: false,
       manifest: true,
+      emptyOutDir: false,
       modulePreload: false,
       assetsDir: config.build.assetsDir,
       rollupOptions: {
@@ -247,32 +238,70 @@ export function* compile({
 
   const vite_config = vite.mergeConfig(config.vite, client?.vite ?? {});
 
-  yield* call(() => vite.build(vite.mergeConfig(vite_config, inline_config)));
+  const output = (yield* call(() =>
+    vite.build(vite.mergeConfig(vite_config, inline_config)),
+  )) as any;
 
-  const manifest_file = path.join(build, ".vite/manifest.json");
+  const output_bundle: vite.Rollup.OutputBundle = {};
+  const result = Array.isArray(output) ? output : [output];
 
-  const vite_manifest: vite.Manifest = yield* call(async () => {
-    const content = await fs.readFile(manifest_file, "utf-8");
-    return JSON.parse(content);
-  });
+  for (const built of result) {
+    const chunks = built?.output;
+
+    if (Array.isArray(chunks)) {
+      for (const chunk of chunks) {
+        output_bundle[chunk.fileName] = chunk;
+      }
+    }
+  }
+
+  const manifest_asset = Object.values(output_bundle).find(
+    (entry): entry is vite.Rollup.OutputAsset =>
+      entry.type === "asset" &&
+      (entry.fileName === ".vite/manifest.json" ||
+        entry.fileName.endsWith("/manifest.json")),
+  );
+
+  const manifest_source = manifest_asset
+    ? typeof manifest_asset.source === "string"
+      ? manifest_asset.source
+      : manifest_asset.source.toString()
+    : "{}";
+
+  const vite_manifest = JSON.parse(manifest_source) as vite.Manifest;
 
   const vite_manifest_entries = Object.values(vite_manifest).map(
     (_) => `/${_.file}`,
   );
 
-  const move_assets = yield* spawn(function* () {
-    const dir = path.join(build, config.build.assetsDir);
+  const assets_dir_prefix = `${config.build.assetsDir}/`;
 
-    console.log();
+  const generated_assets = Object.values(output_bundle).filter((entry) =>
+    entry.fileName.startsWith(assets_dir_prefix),
+  );
 
-    try {
-      logger.debug("Attempting to move generated assets to output directory");
-      yield* call(() => copy(dir, path.join(outDir, config.build.assetsDir)));
-    } catch (error) {
-      logger.debug("Build generated no asset");
-      // no assets
-    }
-  });
+  if (generated_assets.length > 0) {
+    const target_assets = path.join(outDir, config.build.assetsDir);
+
+    yield* call(() => fs.mkdir(target_assets, { recursive: true }));
+
+    yield* all(
+      generated_assets.map((entry) =>
+        call(async () => {
+          const file = path.join(outDir, entry.fileName);
+          await fs.mkdir(path.dirname(file), { recursive: true });
+
+          if (entry.type === "chunk") {
+            await fs.writeFile(file, entry.code);
+          } else {
+            await fs.writeFile(file, entry.source);
+          }
+        }),
+      ),
+    );
+  } else {
+    logger.debug("Build generated no asset");
+  }
 
   const output_files = [...Object.keys(output_bundle ?? {})];
 
@@ -322,8 +351,6 @@ export function* compile({
     config.integrations.length <= 0
       ? code
       : yield* run_html_post_transform(config, { code, filename });
-
-  yield* move_assets;
 
   return { code, manifest };
 }

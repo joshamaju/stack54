@@ -2,9 +2,9 @@ import { svelte, vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import * as vite from "vite";
 
 import { ResolvedConfig } from "../config/index.js";
-import { array } from "./index.js";
-import { integrations_container_plugin } from "../vite-plugins/integrations/index.js";
 import { Command } from "../types.js";
+import { integrations_container_plugin } from "../vite-plugins/integrations/index.js";
+import { array } from "./index.js";
 
 type CreateViteOptions = {
   mode: string;
@@ -28,9 +28,15 @@ export function get_svelte_config(config: ResolvedConfig) {
 
 export function make_vite_config(
   config: ResolvedConfig,
-  { mode, command, logger }: CreateViteOptions
+  { mode, command, logger }: CreateViteOptions,
 ) {
   const { plugins, ...vite_config } = config.vite;
+  const entries =
+    typeof config.entry === "string"
+      ? [config.entry]
+      : Array.isArray(config.entry)
+        ? config.entry
+        : Object.values(config.entry ?? {});
 
   const inline_config: vite.InlineConfig = {
     mode,
@@ -42,12 +48,14 @@ export function make_vite_config(
     publicDir: config.staticDir,
     base: config.build.assetPrefix,
     envPrefix: config.env.publicPrefix,
+    resolve: { conditions: ["browser", "default"] },
     plugins: [
       svelte(config.svelte) as vite.PluginOption,
       integrations_container_plugin(config),
       ...(plugins ?? []),
     ],
-    resolve: { conditions: ["browser", "default"] },
+    optimizeDeps:
+      command === "serve" ? { entries: entries.filter(Boolean) } : undefined,
     build: {
       copyPublicDir: false,
       minify: config.build.minify ?? config.vite.build?.minify,
