@@ -1,0 +1,5 @@
+features:
+  - HTMX
+  - Tailwindcss
+  - Express
+  - Typescript
