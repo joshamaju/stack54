@@ -1,5 +1,17 @@
 # mpa
 
+## 0.15.0
+
+### Minor Changes
+
+- da0c5d9: Adds support for emitting server generated assets
+- ec35489: Skip remote assets in views to speed up build
+
+### Patch Changes
+
+- 3cf196b: Restart server when config files changes and adds restart key bindings
+- bb862c6: Reduce filesystem operations to improve build time
+
 ## 0.14.0
 
 ### Minor Changes
