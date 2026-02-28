@@ -1,5 +1,15 @@
 # @stack54/service-worker
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [da0c5d9]
+- Updated dependencies [ec35489]
+- Updated dependencies [3cf196b]
+- Updated dependencies [bb862c6]
+  - stack54@0.15.0
+
 ## 0.1.2
 
 ### Patch Changes
