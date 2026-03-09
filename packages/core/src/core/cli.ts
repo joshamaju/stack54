@@ -42,11 +42,11 @@ program
   .option("config", config_option)
   .option("-p, --port", "Port to run the server on")
   .action(async (args) => {
-    const figlet = import("figlet");
+    const figlet = import("figlet").then((_) => _.default("stack54"));
 
     const { dev } = await import("./dev/index.js");
 
-    const data = await (await figlet).default("stack54");
+    const data = await figlet;
 
     console.log(data);
 
