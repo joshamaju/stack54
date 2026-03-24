@@ -472,7 +472,7 @@ importers:
         version: 4.10.2
       xstate:
         specifier: ^5.28.0
-        version: 5.28.0
+        version: 5.29.0
       zod:
         specifier: ^3.22.4
         version: 3.25.76
@@ -2784,8 +2784,8 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  xstate@5.28.0:
-    resolution: {integrity: sha512-Iaqq6ZrUzqeUtA3hC5LQKZfR8ZLzEFTImMHJM3jWEdVvXWdKvvVLXZEiNQWm3SCA9ZbEou/n5rcsna1wb9t28A==}
+  xstate@5.29.0:
+    resolution: {integrity: sha512-p0hiOPhhBgXn29t18zDScaN95+y1MAu1Pz5Z2IduCuOUh+d3RqJO7fmexbuQ6rlwFNgYFeXvFsFeiuiAiH3mhg==}
 
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
@@ -5019,7 +5019,7 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  xstate@5.28.0: {}
+  xstate@5.29.0: {}
 
   y18n@5.0.8: {}
 
