@@ -13,7 +13,7 @@ importers:
         version: 2.30.0(@types/node@24.12.0)
       playwright:
         specifier: ^1.41.1
-        version: 1.58.2
+        version: 1.59.0
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -2323,8 +2323,18 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  playwright-core@1.59.0:
+    resolution: {integrity: sha512-PW/X/IoZ6BMUUy8rpwHEZ8Kc0IiLIkgKYGNFaMs5KmQhcfLILNx9yCQD0rnWeWfz1PNeqcFP1BsihQhDOBCwZw==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   playwright@1.58.2:
     resolution: {integrity: sha512-vA30H8Nvkq/cPBnNw4Q8TWz1EJyqgpuinBcHET0YVJVFldr8JDNiU9LaWAE1KqSkRYazuaBhTpB5ZzShOezQ6A==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  playwright@1.59.0:
+    resolution: {integrity: sha512-wihGScriusvATUxmhfENxg0tj1vHEFeIwxlnPFKQTOQVd7aG08mUfvvniRP/PtQOC+2Bs52kBOC/Up1jTXeIbw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -4546,9 +4556,17 @@ snapshots:
 
   playwright-core@1.58.2: {}
 
+  playwright-core@1.59.0: {}
+
   playwright@1.58.2:
     dependencies:
       playwright-core: 1.58.2
+    optionalDependencies:
+      fsevents: 2.3.2
+
+  playwright@1.59.0:
+    dependencies:
+      playwright-core: 1.59.0
     optionalDependencies:
       fsevents: 2.3.2
 
