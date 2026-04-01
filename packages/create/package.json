@@ -35,7 +35,7 @@
     "@changesets/cli": "^2.27.1",
     "@types/node": "^24.0.0",
     "@types/yargs": "^17.0.33",
-    "typescript": "^5.3.3"
+    "typescript": "^6.0.0"
   },
   "dependencies": {
     "@inquirer/prompts": "^8.0.0",
