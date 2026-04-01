@@ -15,8 +15,8 @@ importers:
         specifier: ^1.41.1
         version: 1.59.0
       typescript:
-        specifier: ^5.3.3
-        version: 5.9.3
+        specifier: ^6.0.0
+        version: 6.0.2
 
   integrations/express:
     dependencies:
@@ -37,8 +37,8 @@ importers:
         specifier: ^5.0.0
         version: 5.2.1
       typescript:
-        specifier: ^5.3.3
-        version: 5.9.3
+        specifier: ^6.0.0
+        version: 6.0.2
       vite:
         specifier: ^7.0.0
         version: 7.3.1(@types/node@24.12.0)(yaml@2.8.3)
@@ -155,7 +155,7 @@ importers:
     dependencies:
       '@remix-run/node':
         specifier: ^2.7.2
-        version: 2.17.4(typescript@5.9.3)
+        version: 2.17.4(typescript@6.0.2)
       glob:
         specifier: ^13.0.0
         version: 13.0.6
@@ -176,8 +176,8 @@ importers:
         specifier: ^4.6.10
         version: 4.12.9
       typescript:
-        specifier: ^5.3.3
-        version: 5.9.3
+        specifier: ^6.0.0
+        version: 6.0.2
       vite:
         specifier: ^7.0.0
         version: 7.3.1(@types/node@24.12.0)(yaml@2.8.3)
@@ -321,8 +321,8 @@ importers:
         specifier: ^24.0.0
         version: 24.12.0
       typescript:
-        specifier: ^5.3.3
-        version: 5.9.3
+        specifier: ^6.0.0
+        version: 6.0.2
 
   integrations/service-worker:
     dependencies:
@@ -349,8 +349,8 @@ importers:
         specifier: ^24.0.0
         version: 24.12.0
       typescript:
-        specifier: ^5.3.3
-        version: 5.9.3
+        specifier: ^6.0.0
+        version: 6.0.2
 
   integrations/streaming:
     dependencies:
@@ -374,8 +374,8 @@ importers:
         specifier: 4.2.20
         version: 4.2.20
       typescript:
-        specifier: ^5.3.3
-        version: 5.9.3
+        specifier: ^6.0.0
+        version: 6.0.2
       vitest:
         specifier: ^4.0.17
         version: 4.0.18(@types/node@24.12.0)(yaml@2.8.3)
@@ -499,8 +499,8 @@ importers:
         specifier: ^4.2.8
         version: 4.2.20
       typescript:
-        specifier: ^5.3.3
-        version: 5.9.3
+        specifier: ^6.0.0
+        version: 6.0.2
       vite:
         specifier: ^7.0.0
         version: 7.3.1(@types/node@24.12.0)(yaml@2.8.3)
@@ -579,8 +579,8 @@ importers:
         specifier: ^17.0.33
         version: 17.0.35
       typescript:
-        specifier: ^5.3.3
-        version: 5.9.3
+        specifier: ^6.0.0
+        version: 6.0.2
 
 packages:
 
@@ -2611,6 +2611,11 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  typescript@6.0.2:
+    resolution: {integrity: sha512-bGdAIrZ0wiGDo5l8c++HWtbaNCWTS4UTv7RaTH/ThVIgjkveJt83m74bBHMJkuCbslY8ixgLBVZJIOiQlQTjfQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
@@ -3339,9 +3344,9 @@ snapshots:
     dependencies:
       playwright: 1.58.2
 
-  '@remix-run/node@2.17.4(typescript@5.9.3)':
+  '@remix-run/node@2.17.4(typescript@6.0.2)':
     dependencies:
-      '@remix-run/server-runtime': 2.17.4(typescript@5.9.3)
+      '@remix-run/server-runtime': 2.17.4(typescript@6.0.2)
       '@remix-run/web-fetch': 4.4.2
       '@web3-storage/multipart-parser': 1.0.0
       cookie-signature: 1.2.2
@@ -3349,11 +3354,11 @@ snapshots:
       stream-slice: 0.1.2
       undici: 6.23.0
     optionalDependencies:
-      typescript: 5.9.3
+      typescript: 6.0.2
 
   '@remix-run/router@1.23.2': {}
 
-  '@remix-run/server-runtime@2.17.4(typescript@5.9.3)':
+  '@remix-run/server-runtime@2.17.4(typescript@6.0.2)':
     dependencies:
       '@remix-run/router': 1.23.2
       '@types/cookie': 0.6.0
@@ -3363,7 +3368,7 @@ snapshots:
       source-map: 0.7.6
       turbo-stream: 2.4.1
     optionalDependencies:
-      typescript: 5.9.3
+      typescript: 6.0.2
 
   '@remix-run/web-blob@3.1.0':
     dependencies:
@@ -4904,6 +4909,8 @@ snapshots:
       mime-types: 3.0.2
 
   typescript@5.9.3: {}
+
+  typescript@6.0.2: {}
 
   undici-types@7.16.0: {}
 
