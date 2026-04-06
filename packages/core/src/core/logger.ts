@@ -1,13 +1,13 @@
+import color from "kleur";
+import { ContextLogger, Formatter, LogRecord } from "@jamx/logger";
 import { createContext } from "effection";
-import { ILogObj, Logger as TSLogger } from "tslog";
-
 import type { Rollup, Logger as ViteLogger } from "vite";
 
-export const Logger = createContext<TSLogger<ILogObj>>("Logger");
+export const Logger = createContext<ContextLogger>("Logger");
 
 export function* use_logger(label?: string) {
   const logger = yield* Logger.expect();
-  return label ? logger.getSubLogger({ name: label }) : logger;
+  return label ? logger.child({ logger: label }) : logger;
 }
 
 export function* make_vite_logger(scope: "client" | "server") {
@@ -33,7 +33,7 @@ export function* make_vite_logger(scope: "client" | "server") {
     },
     error(message, opts) {
       logger_.hasWarned = true;
-      logger.error(opts?.error, message);
+      logger.error(message, { error: opts?.error });
     },
     // Don't allow clear screen
     clearScreen: () => {},
@@ -43,4 +43,28 @@ export function* make_vite_logger(scope: "client" | "server") {
   };
 
   return logger_;
+}
+
+export class TextFormatter implements Formatter {
+  format(log: LogRecord): string {
+    const loggerName =
+      typeof log.meta.logger === "string" && log.meta.logger.length > 0
+        ? `[${log.meta.logger}]`
+        : "";
+
+    const { logger: _logger, ...displayMeta } = log.meta;
+
+    const pieces = [
+      color.dim(log.timestamp.toLocaleTimeString()),
+      loggerName,
+      log.message,
+    ].filter(Boolean);
+
+    const metaOutput =
+      Object.keys(displayMeta).length > 0
+        ? ` ${JSON.stringify(displayMeta)}`
+        : "";
+
+    return `${pieces.join(" ")}${metaOutput}`;
+  }
 }

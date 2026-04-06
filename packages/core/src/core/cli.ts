@@ -1,14 +1,18 @@
+import {
+  ConsoleTransport,
+  ContextLogger,
+  Logger as SimpleLogger,
+} from "@jamx/logger";
 import color from "kleur";
 import sade from "sade";
-import { ILogObj, Logger as TSLogger } from "tslog";
 
 import { run } from "effection";
 
 import { InvalidConfig } from "./config/index.js";
 
-import { format_config_error } from "./message.js";
 import { VERSION } from "../../version.js";
-import { Logger } from "./logger.js";
+import { Logger, TextFormatter } from "./logger.js";
+import { format_config_error } from "./message.js";
 
 const config_option = "Config path, default path if not specified";
 
@@ -16,10 +20,9 @@ const program = sade("stack54").version(VERSION);
 
 const cwd = process.cwd();
 
-const logger = new TSLogger<ILogObj>({
-  hideLogPositionForProduction: true,
-  type: "pretty",
-});
+const logger = new ContextLogger(
+  new SimpleLogger({ transport: new ConsoleTransport(new TextFormatter()) }),
+);
 
 function handle_error(error: unknown) {
   if (error instanceof InvalidConfig) {
@@ -29,7 +32,7 @@ function handle_error(error: unknown) {
     logger.error(`[ParseError] ${filename}:${start.line}:${start.column}`);
     console.log(color.red(frame));
   } else {
-    logger.error(error);
+    logger.error(String(error));
   }
 
   console.log();

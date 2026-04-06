@@ -44,7 +44,7 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
     buildEnd(error) {
       if (error) {
         console.log();
-        logger.error(error, "Build failed");
+        logger.error("Build failed", { error });
       }
     },
     transform: {
@@ -119,7 +119,7 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
     try {
       yield* call(() => copy(dir, path.join(outDir, config.build.assetsDir)));
     } catch (error) {
-      logger.error(error);
+      logger.error(String(error));
     }
   }
 

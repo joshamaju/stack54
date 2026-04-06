@@ -30,7 +30,7 @@ export function* run_config_setup(
     const start = performance.now();
     const plugin = yield* until(resolve(integration));
 
-    const child = logger.getSubLogger({ name: plugin.name });
+    const child = logger.child({ logger: plugin.name });
     child.debug(`executing plugin`);
 
     const value = plugin.config?.call(plugin, merged, env);
@@ -94,7 +94,7 @@ export function* run_html_pre_transform(
     const v = plugin.transform;
 
     if (v && can_execute && typeof v !== "function" && v.order == "pre") {
-      const child = logger.getSubLogger({ name: plugin.name });
+      const child = logger.child({ logger: plugin.name });
       child.debug(`executing plugin`);
 
       const value = v.handle.call(plugin, _code, filename);
@@ -141,7 +141,7 @@ export function* run_html_post_transform(
     }
 
     if (fn) {
-      const child = logger.getSubLogger({ name: plugin.name });
+      const child = logger.child({ logger: plugin.name });
       child.debug(`executing plugin`);
 
       const code = yield* call(async () => fn.call(plugin, _code, filename));
