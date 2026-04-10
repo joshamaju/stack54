@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Head } from "stack54/components";
+  import { Head } from "stack54/components/Head";
   import { delay } from "./utils";
   const promise = delay(1000);
 </script>
