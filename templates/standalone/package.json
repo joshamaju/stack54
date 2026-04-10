@@ -9,9 +9,9 @@
     "view:build": "stack54 build",
     "test:integration": "playwright test",
     "start:dev": "NODE_ENV=development tsx ./src/main.ts",
-    "test": "npm run test:integration && npm run test:unit",
-    "dev": "nodemon --exec 'npm run start:dev' --watch build/server -e js",
-    "view:dev": "nodemon --exec 'npm run build' --watch resources -e js,ts,svelte"
+    "test": "npm run test:unit && npm run test:integration",
+    "dev": "nodemon --exec 'npm run start:dev' --watch src --watch build/server -e js",
+    "view:dev": "nodemon --exec 'npm run view:build' --watch resources -e js,ts,svelte,css"
   },
   "keywords": [],
   "dependencies": {
