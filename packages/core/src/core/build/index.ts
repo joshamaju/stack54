@@ -40,7 +40,7 @@ export function* build({ cwd, ..._ }: EntryOption) {
 
   const mode = process.env.NODE_ENV ?? "production";
 
-  const shared_vite_config = make_vite_config(resolved_config, {
+  const shared_vite_config = yield* make_vite_config(resolved_config, {
     mode,
     command,
   });
