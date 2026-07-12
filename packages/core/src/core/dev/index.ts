@@ -110,7 +110,7 @@ export function* setup(
 
   const mode = process.env.NODE_ENV ?? "development";
 
-  const shared_vite_config = make_vite_config(resolved_config, {
+  const shared_vite_config = yield* make_vite_config(resolved_config, {
     mode,
     command,
   });
