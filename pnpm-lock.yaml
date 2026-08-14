@@ -558,7 +558,7 @@ importers:
         version: 7.0.7
       giget:
         specifier: ^3.0.0
-        version: 3.2.0
+        version: 3.3.1
       kleur:
         specifier: ^4.1.5
         version: 4.1.5
@@ -2489,8 +2489,8 @@ packages:
   get-tsconfig@4.13.7:
     resolution: {integrity: sha512-7tN6rFgBlMgpBML5j8typ92BKFi2sFQvIdpAqLA2beia5avZDrMs0FLZiM5etShWq5irVyGcGMEA1jcDaK7A/Q==}
 
-  giget@3.2.0:
-    resolution: {integrity: sha512-GvHTWcykIR/fP8cj8dMpuMMkvaeJfPvYnhq0oW+chSeIr+ldX21ifU2Ms6KBoyKZQZmVaUAAhQ2EZ68KJF8a7A==}
+  giget@3.3.1:
+    resolution: {integrity: sha512-r+mvuDjrjMpsdw46Kmeydb8bdHm7wOKw8wNBtTndkjbPjgAp5oUJUxRE76wZFknxIPokfWvep2qSXK37aXE6zg==}
     hasBin: true
 
   glob-parent@5.1.2:
@@ -5498,7 +5498,7 @@ snapshots:
       resolve-pkg-maps: 1.0.0
     optional: true
 
-  giget@3.2.0: {}
+  giget@3.3.1: {}
 
   glob-parent@5.1.2:
     dependencies:
