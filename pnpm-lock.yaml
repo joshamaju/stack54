@@ -13,7 +13,7 @@ importers:
         version: 2.31.1(@types/node@25.6.0)
       playwright:
         specifier: ^1.41.1
-        version: 1.59.1
+        version: 1.62.1
       typescript:
         specifier: ^5.3.3
         version: 5.9.3
@@ -3010,9 +3010,9 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright-core@1.59.1:
-    resolution: {integrity: sha512-HBV/RJg81z5BiiZ9yPzIiClYV/QMsDCKUyogwH9p3MCP6IYjUFu/MActgYAvK0oWyV9NlwM3GLBjADyWgydVyg==}
-    engines: {node: '>=18'}
+  playwright-core@1.62.1:
+    resolution: {integrity: sha512-wPYSwEBJY9GHraISXqyqtx0na0LpO3XEX7jNDhntbex7tzUS7kLnZsOlFruFJB4Hi/rhDMjXGqHewDZ68nYZVw==}
+    engines: {node: '>=20'}
     hasBin: true
 
   playwright@1.58.2:
@@ -3020,9 +3020,9 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.59.1:
-    resolution: {integrity: sha512-C8oWjPR3F81yljW9o5OxcWzfh6avkVwDD2VYdwIGqTkl+OGFISgypqzfu7dOe4QNLL2aqcWBmI3PMtLIK233lw==}
-    engines: {node: '>=18'}
+  playwright@1.62.1:
+    resolution: {integrity: sha512-0M+L3LAD8/nm554LOla9Ayx0j0tmFZ0FBcoQ7F1VuVHpM/XpiC8RcDzBQB8W5+hA8L22THxELzeF+2WcUzvcLg==}
+    engines: {node: '>=20'}
     hasBin: true
 
   possible-typed-array-names@1.1.0:
@@ -5962,7 +5962,7 @@ snapshots:
 
   playwright-core@1.58.2: {}
 
-  playwright-core@1.59.1: {}
+  playwright-core@1.62.1: {}
 
   playwright@1.58.2:
     dependencies:
@@ -5970,9 +5970,9 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.2
 
-  playwright@1.59.1:
+  playwright@1.62.1:
     dependencies:
-      playwright-core: 1.59.1
+      playwright-core: 1.62.1
     optionalDependencies:
       fsevents: 2.3.2
 
