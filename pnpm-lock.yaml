@@ -312,7 +312,7 @@ importers:
         version: 4.2.20
       ts-dedent:
         specifier: ^2.2.0
-        version: 2.2.0
+        version: 2.3.0
       vite:
         specifier: ^7.0.0
         version: 7.3.6(@types/node@24.13.3)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3)
@@ -337,7 +337,7 @@ importers:
         version: link:../../packages/core
       ts-dedent:
         specifier: ^2.2.0
-        version: 2.2.0
+        version: 2.3.0
       vite:
         specifier: ^7.0.0
         version: 7.3.6(@types/node@24.13.3)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3)
@@ -362,7 +362,7 @@ importers:
         version: link:../../packages/core
       ts-dedent:
         specifier: ^2.2.0
-        version: 2.2.0
+        version: 2.3.0
       vite:
         specifier: ^7.0.0
         version: 7.3.6(@types/node@24.13.3)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.1)(tsx@4.21.0)(yaml@2.8.3)
@@ -469,7 +469,7 @@ importers:
         version: 1.8.1
       ts-dedent:
         specifier: ^2.2.0
-        version: 2.2.0
+        version: 2.3.0
       tslog:
         specifier: ^4.10.2
         version: 4.10.2
@@ -3329,8 +3329,8 @@ packages:
     resolution: {integrity: sha512-hdF5ZgjTqgAntKkklYw0R03MG2x/bSzTtkxmIRw/sTNV8YXsCJ1tfLAX23lhxhHJlEf3CRCOCGGWw3vI3GaSPw==}
     engines: {node: '>=18'}
 
-  ts-dedent@2.2.0:
-    resolution: {integrity: sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ==}
+  ts-dedent@2.3.0:
+    resolution: {integrity: sha512-JfJeIHke7y2egdGGgRAvpCwYFUsHlM2gPcrVOxFkznt/4uzQ7HFmvE63iFHVLBJNDuyDOQgijDK/tXH/f6Msjg==}
     engines: {node: '>=6.10'}
 
   tslog@4.10.2:
@@ -6387,7 +6387,7 @@ snapshots:
       punycode: 2.3.1
     optional: true
 
-  ts-dedent@2.2.0: {}
+  ts-dedent@2.3.0: {}
 
   tslog@4.10.2: {}
 
