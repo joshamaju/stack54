@@ -472,7 +472,7 @@ importers:
         version: 2.3.0
       tslog:
         specifier: ^4.10.2
-        version: 4.10.2
+        version: 4.11.0
       xstate:
         specifier: ^5.28.0
         version: 5.30.0
@@ -3333,8 +3333,8 @@ packages:
     resolution: {integrity: sha512-JfJeIHke7y2egdGGgRAvpCwYFUsHlM2gPcrVOxFkznt/4uzQ7HFmvE63iFHVLBJNDuyDOQgijDK/tXH/f6Msjg==}
     engines: {node: '>=6.10'}
 
-  tslog@4.10.2:
-    resolution: {integrity: sha512-XuELoRpMR+sq8fuWwX7P0bcj+PRNiicOKDEb3fGNURhxWVyykCi9BNq7c4uVz7h7P0sj8qgBsr5SWS6yBClq3g==}
+  tslog@4.11.0:
+    resolution: {integrity: sha512-gBe0FTKkRpOv3DenGipjQWQe073jNd1cOLj3nYfVM0/NP29sQzAIx6kfyfTTsQOiWMC+B+tSr289lNXtu7HCmQ==}
     engines: {node: '>=16'}
 
   tsx@4.21.0:
@@ -6389,7 +6389,7 @@ snapshots:
 
   ts-dedent@2.3.0: {}
 
-  tslog@4.10.2: {}
+  tslog@4.11.0: {}
 
   tsx@4.21.0:
     dependencies:
