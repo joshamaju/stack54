@@ -39,11 +39,11 @@
   ],
   "devDependencies": {
     "@types/node": "^24.0.0",
-    "svelte": "4.2.20",
+    "svelte": "5.51.5",
     "typescript": "^5.3.3",
     "vitest": "^4.0.17"
   },
   "peerDependencies": {
-    "svelte": "4.2.20"
+    "svelte": "5.51.5"
   }
 }
