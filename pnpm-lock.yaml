@@ -429,8 +429,8 @@ importers:
   packages/core:
     dependencies:
       '@jamx/logger':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.3.0
+        version: 0.3.0
       '@tsconfig/svelte':
         specifier: ^5.0.2
         version: 5.0.8
@@ -1430,8 +1430,8 @@ packages:
       '@types/node':
         optional: true
 
-  '@jamx/logger@0.1.0':
-    resolution: {integrity: sha512-ySdY+98kFAAfOP41hsG1yXxTv3elmv+CpZ+fVDgK9PeAJewkCb76mInF0bhW9xMaf4WrY8VJkq3sK3FHjH665g==}
+  '@jamx/logger@0.3.0':
+    resolution: {integrity: sha512-OFkSPx0AvLU0LFWb7MEYeLPMm5pxTCdv66t5WHT02oppQiZNIQqzCsdChLF37F17QjHUv2Bu9xNxdk7iWR0lbw==}
     engines: {node: '>=18'}
 
   '@jridgewell/gen-mapping@0.3.13':
@@ -1507,6 +1507,9 @@ packages:
 
   '@octokit/types@17.0.0':
     resolution: {integrity: sha512-ByP1v7YL5SMveFPP7+sj0/ZuWCOOg/Chs4NafOMpq6WNIM/hdGY0S7C0TCGDBWu1aGmOxmUIhMx3cO+IdwYZ1Q==}
+
+  '@paydirt/fmt@0.3.1':
+    resolution: {integrity: sha512-senJIDjZwkSjoTlTT9JgQUsQVVn+GTZBfAwBHBSwItoYAab2yweZcTM1mxKMz57+IHaaZFRPhqNZXuNVaLsuLQ==}
 
   '@playwright/test@1.58.2':
     resolution: {integrity: sha512-akea+6bHYBBfA9uQqSYmlJXn61cTa+jbO87xVLCWbTqbWadRVmhxlXATaOjOgcBaWU4ePo0wB41KMFv3o35IXA==}
@@ -4301,7 +4304,9 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.13.3
 
-  '@jamx/logger@0.1.0': {}
+  '@jamx/logger@0.3.0':
+    dependencies:
+      '@paydirt/fmt': 0.3.1
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -4400,6 +4405,8 @@ snapshots:
   '@octokit/types@17.0.0':
     dependencies:
       '@octokit/openapi-types': 28.0.0
+
+  '@paydirt/fmt@0.3.1': {}
 
   '@playwright/test@1.58.2':
     dependencies:
