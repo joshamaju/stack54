@@ -26,7 +26,7 @@ export function get_svelte_config(config: ResolvedConfig) {
   return { ...svelte_config, preprocess: preprocessors };
 }
 
-export function make_vite_config(
+export function* make_vite_config(
   config: ResolvedConfig,
   { mode, command, logger }: CreateViteOptions,
 ) {
@@ -51,7 +51,7 @@ export function make_vite_config(
     resolve: { conditions: ["browser", "default"] },
     plugins: [
       svelte(config.svelte) as vite.PluginOption,
-      integrations_container_plugin(config),
+      yield* integrations_container_plugin(config),
       ...(plugins ?? []),
     ],
     optimizeDeps:
