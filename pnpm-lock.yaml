@@ -442,7 +442,7 @@ importers:
         version: 5.9.2
       effection:
         specifier: ^4.0.0
-        version: 4.1.0
+        version: 4.1.1
       es-module-lexer:
         specifier: ^2.0.0
         version: 2.3.1
@@ -2265,8 +2265,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  effection@4.1.0:
-    resolution: {integrity: sha512-/BJuaYhzDrvC/nrIW054z1itmCNjVNFtyv/J26xrS4pP2MLfm5TG8VFe5f4zl1oGcAoF1fq1GfDO+v0qx6URPw==}
+  effection@4.1.1:
+    resolution: {integrity: sha512-Wcxbklo/8oxuOxJkEhSwwHxfyfdLuCvZ65OTQoFokHTwHdzfqDKB58YRyVyxT2vqIojv/wEPurzOB3RCoHXb4w==}
     engines: {node: '>= 16'}
 
   emoji-regex@10.6.0:
@@ -5119,7 +5119,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  effection@4.1.0: {}
+  effection@4.1.1: {}
 
   emoji-regex@10.6.0: {}
 
