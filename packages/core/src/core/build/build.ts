@@ -13,6 +13,7 @@ import { make_vite_logger, use_logger } from "../logger.js";
 import { ManifestEntry } from "../types.js";
 import { copy } from "../utils/filesystem.js";
 import { parse_id } from "../utils/view.js";
+import { copy_server_assets } from "./assets.js";
 import { compile } from "./compiler.js";
 
 type Opts = { config: ResolvedConfig; outDir: string; env: Env; cwd: string };
@@ -78,12 +79,10 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
 
         const dir = path.join(build.outDir, build.assetsDir);
 
-        try {
-          await copy(dir, path.join(outDir, config.build.assetsDir));
-          await fs.rm(dir, { recursive: true });
-        } catch (error) {
-          // no server assets directory
-        }
+        await copy_server_assets(
+          dir,
+          path.join(outDir, config.build.assetsDir),
+        );
       }
     },
   };
@@ -115,12 +114,7 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
 
   if (config.build.copyStaticDir) {
     const dir = path.join(cwd, config.staticDir);
-
-    try {
-      yield* call(() => copy(dir, path.join(outDir, config.build.assetsDir)));
-    } catch (error) {
-      logger.error(String(error));
-    }
+    yield* call(() => copy(dir, path.join(outDir, config.build.assetsDir)));
   }
 
   return Object.fromEntries(manifests);

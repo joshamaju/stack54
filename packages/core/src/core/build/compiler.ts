@@ -15,6 +15,7 @@ import MagicString from "magic-string";
 
 import type { ResolvedConfig } from "../config/index.js";
 import {
+  has_html_integrations,
   run_html_post_transform,
   run_html_pre_transform,
 } from "../integrations/hooks.js";
@@ -190,7 +191,7 @@ export function* compile({
   );
 
   code =
-    config.integrations.length <= 0
+    !has_html_integrations(config)
       ? processed.code
       : yield* run_html_pre_transform(config, {
           code: processed.code,
@@ -389,7 +390,7 @@ export function* compile({
   code = s.toString();
 
   code =
-    config.integrations.length <= 0
+    !has_html_integrations(config)
       ? code
       : yield* run_html_post_transform(config, { code, filename });
 

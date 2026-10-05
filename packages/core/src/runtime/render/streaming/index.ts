@@ -33,14 +33,31 @@ function render_to_stream(
 ) {
   let current_id = 0;
   const pending = new Set<Chunk["id"]>();
+  let cancelled = false;
+  let failed = false;
 
   let controller: ReadableStreamDefaultController<Chunk>;
+  let reader: ReadableStreamDefaultReader<Chunk> | undefined;
 
   const stream = new ReadableStream<Chunk>({
     start(control) {
       controller = control;
     },
+    cancel() {
+      cancelled = true;
+    },
   });
+
+  const enqueue = (chunk: Chunk) => {
+    if (cancelled || failed) return;
+
+    try {
+      controller.enqueue(chunk);
+    } catch (error) {
+      failed = true;
+      controller.error(error);
+    }
+  };
 
   const suspend = ({ slots, resolve }: Args) => {
     const id = current_id++;
@@ -49,18 +66,31 @@ function render_to_stream(
 
     const promise = isPromise(resolve) ? resolve : Promise.resolve(resolve);
 
-    promise
-      .then((value) => {
-        const name = (promise as any)["$$deferred"];
-        const content = slots.default?.({ value }) ?? "";
-        controller.enqueue({ id, name, value, content });
-      })
-      .catch((error) => {
-        controller.enqueue({
-          id,
-          content: slots.error?.({ error }) ?? String(error),
-        });
-      });
+    promise.then(
+      (value) => {
+        if (cancelled || failed) return;
+        try {
+          const name = (promise as any)["$$deferred"];
+          const content = slots.default?.({ value }) ?? "";
+          enqueue({ id, name, value, content });
+        } catch (error) {
+          failed = true;
+          controller.error(error);
+        }
+      },
+      (error) => {
+        if (cancelled || failed) return;
+        try {
+          enqueue({
+            id,
+            content: slots.error?.({ error }) ?? String(error),
+          });
+        } catch (error) {
+          failed = true;
+          controller.error(error);
+        }
+      },
+    );
 
     const fallback = slots.fallback?.({}) ?? "";
 
@@ -69,10 +99,8 @@ function render_to_stream(
 
   const encoder = new TextEncoder();
 
-  return new ReadableStream({
+  return new ReadableStream<Uint8Array>({
     async start(controller) {
-      const cleanup = () => controller.close();
-
       const html = Storage.run(suspend, () => {
         const out = template.render(...args);
         const head = out.head + `<style>${out.css.code}</style>` + swap_script;
@@ -81,15 +109,32 @@ function render_to_stream(
 
       controller.enqueue(encoder.encode(html));
 
-      // Immediately close the stream if Await was not used.
-      if (pending.size <= 0) cleanup();
-
-      // @ts-ignore
-      for await (const chunk of stream) {
-        pending.delete(chunk.id);
-        controller.enqueue(encoder.encode(renderChunk(chunk)));
-        if (pending.size <= 0) cleanup();
+      if (pending.size <= 0) {
+        controller.close();
+        return;
       }
+
+      reader = stream.getReader();
+      try {
+        while (!cancelled) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          pending.delete(value.id);
+          controller.enqueue(encoder.encode(renderChunk(value)));
+          if (pending.size <= 0) {
+            controller.close();
+            break;
+          }
+        }
+      } finally {
+        reader.releaseLock();
+        reader = undefined;
+      }
+    },
+    cancel(reason) {
+      cancelled = true;
+      return reader?.cancel(reason);
     },
   });
 }

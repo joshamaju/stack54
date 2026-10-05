@@ -33,6 +33,56 @@ it("should resolve config with glob entry", async () => {
   expect(config).toMatchObject({ entry: "stub-entry.js" });
 });
 
+it("should reject entry globs that match no files", async () => {
+  const cwd = join(process.cwd(), "test/fixtures");
+  const loader = new Config(cwd, join(cwd, "./glob-config.js"));
+
+  await expect(
+    run(function* () {
+      yield* Logger.set(logger);
+      const config = yield* loader.load("build");
+      return yield* loader.resolve({
+        ...config,
+        entry: "missing-entry-*.ts",
+      });
+    }),
+  ).rejects.toThrow('No entry files matched configured pattern: missing-entry-*.ts');
+});
+
+it("should identify named entry globs that match no files", async () => {
+  const cwd = join(process.cwd(), "test/fixtures");
+  const loader = new Config(cwd, join(cwd, "./glob-config.js"));
+
+  await expect(
+    run(function* () {
+      yield* Logger.set(logger);
+      const config = yield* loader.load("build");
+      return yield* loader.resolve({
+        ...config,
+        entry: { client: "missing-client-entry-*.ts" },
+      });
+    }),
+  ).rejects.toThrow(
+    'No entry files matched "missing-client-entry-*.ts" for named entry "client"',
+  );
+});
+
+it("should reject entry arrays when none of their globs match", async () => {
+  const cwd = join(process.cwd(), "test/fixtures");
+  const loader = new Config(cwd, join(cwd, "./glob-config.js"));
+
+  await expect(
+    run(function* () {
+      yield* Logger.set(logger);
+      const config = yield* loader.load("build");
+      return yield* loader.resolve({
+        ...config,
+        entry: ["missing-entry-*.ts"],
+      });
+    }),
+  ).rejects.toThrow("No entry files matched configured pattern");
+});
+
 it("should merge configs", () => {
   const _default: UserConfig = {
     views: ["src/views/**/*.svelte"],

@@ -6,6 +6,7 @@ import { call, spawn } from "effection";
 import { Config, config_file } from "../config/index.js";
 import { load } from "../env.js";
 import {
+  has_integrations,
   run_build_end,
   run_build_start,
   run_config_resolved,
@@ -32,7 +33,7 @@ export function* build({ cwd, ..._ }: EntryOption) {
   const user_config = yield* conf.load(command);
 
   let merged_config =
-    user_config.integrations.length <= 0
+    !has_integrations(user_config)
       ? user_config
       : yield* run_config_setup(user_config, { command });
 
@@ -53,15 +54,13 @@ export function* build({ cwd, ..._ }: EntryOption) {
     yield* call(() => fs.rm(outDir, { recursive: true, force: true }));
   });
 
-  const { integrations } = config;
-
-  if (integrations.length > 0) {
+  if (has_integrations(config)) {
     yield* run_config_resolved(config);
   }
 
   const env = load(config.env.dir ?? cwd, mode);
 
-  if (integrations.length > 0) {
+  if (has_integrations(config)) {
     yield* run_build_start(config);
   }
 
@@ -69,7 +68,7 @@ export function* build({ cwd, ..._ }: EntryOption) {
 
   const manifest = yield* builder({ cwd, outDir, config, env });
 
-  if (integrations.length > 0) {
+  if (has_integrations(config)) {
     yield* run_build_end(config, manifest);
   }
 

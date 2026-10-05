@@ -109,16 +109,24 @@ export function* resolve(config: ResolvedConfig, cwd: string) {
           yield* all(
             Object.entries(file).map(([k, v]) => {
               return call(function* () {
-                return [
-                  k,
-                  (yield* until(glob(v, { cwd, signal })))[0],
-                ] as const;
+                const matches = yield* until(glob(v, { cwd, signal }));
+                if (matches.length === 0) {
+                  throw new Error(
+                    `No entry files matched "${v}" for named entry "${k}"`,
+                  );
+                }
+                return [k, matches[0]] as const;
               });
             }),
           ),
         )
       : yield* (function* () {
           const files = yield* until(glob(file, { cwd, signal }));
+          if (files.length === 0) {
+            throw new Error(
+              `No entry files matched configured pattern${Array.isArray(file) && file.length > 1 ? "s" : ""}: ${Array.isArray(file) ? file.join(", ") : file}`,
+            );
+          }
           return Array.isArray(file) ? files : files[0];
         })();
 

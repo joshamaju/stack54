@@ -16,6 +16,17 @@ function get_plugins(config: ResolvedConfig) {
   return plugins;
 }
 
+export function has_integrations(config: ResolvedConfig) {
+  return get_plugins(config).length > 0;
+}
+
+export function has_html_integrations(config: ResolvedConfig) {
+  return (
+    config.integrations.length > 0 ||
+    (config.environments.client?.integrations.length ?? 0) > 0
+  );
+}
+
 export function* run_config_setup(
   config: ResolvedConfig,
   env: Env,
