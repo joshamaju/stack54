@@ -4,8 +4,6 @@ import * as set_cookie_parser from "set-cookie-parser";
 function get_raw_body(req: IncomingMessage, body_size_limit?: number) {
   const h = req.headers;
 
-  if (!h["content-type"]) return null;
-
   const content_length = Number(h["content-length"]);
 
   // check if no request body
