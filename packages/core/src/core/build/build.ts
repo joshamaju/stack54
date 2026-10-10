@@ -53,7 +53,12 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
       async handler(code, id) {
         const { filename } = parse_id(id);
 
-        if (filename.endsWith(".svelte") && matcher(filename)) {
+        if (
+          config.svelte.extensions.some((extension) =>
+            filename.endsWith(extension),
+          ) &&
+          matcher(filename)
+        ) {
           return scope.run(function* () {
             const args = { dir, code, config, outDir, filename, env: public_ };
             const result = yield* compile(args);

@@ -12,7 +12,12 @@ export default function streamingIntegration(): Integration {
     transform: {
       order: "pre",
       async handler(content, filename, options) {
-        if (filename.endsWith(".svelte") && options?.ssr) {
+        if (
+          config.svelte.extensions.some((extension) =>
+            filename.endsWith(extension),
+          ) &&
+          options?.ssr
+        ) {
           const preprocessors = config.svelte.preprocess ?? [];
 
           const processed = await preprocess(content, preprocessors, {
