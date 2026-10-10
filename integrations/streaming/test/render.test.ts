@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-// import { renderToStream, await as await_ } from "../src/rendering/index.js";
+import streamingIntegration from "../src/plugin.js";
 
 // // Mock Template
 // const createMockTemplate = (renderFn: any) => ({
@@ -85,4 +85,23 @@ import { describe, it, expect } from "vitest";
 //   });
 // });
 
-it("stub", () => {});
+it("transforms nested await blocks without overlapping edits", async () => {
+  const integration = streamingIntegration();
+  const configured = integration.config?.({} as any, { command: "build" });
+  const plugin = (configured as any).vite.plugins[0];
+  integration.configResolved?.({ svelte: { preprocess: [] } } as any);
+
+  const result = await plugin.transform.handler(
+    `<script>export let outer;</script>
+{#await outer}<p>pending</p>
+{:then outerValue}
+  {#await outerValue.inner}<span>inner pending</span>
+  {:then innerValue}<b>{innerValue}</b>{/await}
+{/await}`,
+    "/src/nested.svelte",
+    { ssr: true },
+  );
+
+  expect(result.code.match(/<Await_\d+ resolve=/g)).toHaveLength(2);
+  expect(result.code).toContain("inner pending");
+});
