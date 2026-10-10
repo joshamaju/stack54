@@ -101,7 +101,8 @@ export default async function serviceWorkerIntegration(
     },
     configResolved(config_) {
       config = config_;
-      const file = join(cwd, config.staticDir, `${filename}.js`);
+      const out_dir = user_config.outDir ?? config.staticDir;
+      const file = join(cwd, out_dir, `${filename}.js`);
       if (fs.existsSync(file)) fs.rmSync(file);
     },
     configureServer(server) {
@@ -172,7 +173,7 @@ export default async function serviceWorkerIntegration(
 
       const start = process.hrtime.bigint();
 
-      const out = join(cwd, config.staticDir);
+      const out = join(cwd, user_config.outDir ?? config.staticDir);
 
       await vite.build({
         publicDir: false,
