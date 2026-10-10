@@ -13,6 +13,9 @@ import { to_fs } from "../../utils/filesystem.js";
 import { Rule, Tags, rules } from "./rules.js";
 
 function isLocalPath(path: string) {
+  /** Only relative references are rewritten; protocol, protocol-relative, and
+   * root-relative URLs already have browser-visible addressing semantics.
+   */
   return (
     !path.startsWith("http:") &&
     !path.startsWith("https:") &&
@@ -25,6 +28,7 @@ const DYNAMIC_IMPORT = 2;
 
 export const RESOLVER_PREFIX = "/@resolve:";
 
+/** Convert the tag/attribute rules to a lookup table for the AST visitor. */
 const rules_by_tag = rules.reduce((acc, rule) => {
   acc[rule.tag] = [...(acc[rule.tag] ?? []), rule];
   return acc;
@@ -61,6 +65,10 @@ export function attach_full_path({
             const rules = rules_by_tag[name];
 
             if (rules) {
+              /** Resolve relative asset attributes from the Svelte file's
+               * directory, then expose the file through Vite's /@fs route
+               * under the configured asset prefix.
+               */
               for (let rule of rules) {
                 if (name === rule.tag) {
                   for (let attr of node_.attributes) {
@@ -93,6 +101,9 @@ export function attach_full_path({
 
                 if (code.trim() !== "") {
                   const filename = args.filename;
+                  /** Lexer offsets let us rewrite only import specifiers while
+                   * preserving the rest of the inline script verbatim.
+                   */
                   const [imports] = lexer.parse(code);
 
                   const ss = new MagicString(code).trimLines();
@@ -105,10 +116,16 @@ export function attach_full_path({
                       const { query, pathname } = url.parse(slice);
 
                       if (slice.startsWith("./") || slice.startsWith("../")) {
+                        /** Relative imports use the source component as their
+                         * base, even though Vite processes a generated view.
+                         */
                         const file = path.resolve(parsed.dir, pathname!);
                         resolved = path.join(assetPrefix, to_fs(file));
                       } else {
                         try {
+                          /** Package imports resolve through Node first; bare
+                           * aliases fall through to Vite's resolver below.
+                           */
                           resolved = to_fs(require.resolve(slice));
                         } catch (error) {
                           if (
@@ -117,12 +134,18 @@ export function attach_full_path({
                           ) {
                             const init = query || undefined;
                             const q = new url.URLSearchParams(init);
+                            /** The resolver plugin needs the original importer
+                             * to apply project aliases from the right directory.
+                             */
                             q.set("file", filename);
                             resolved = `${RESOLVER_PREFIX}${pathname}?${q.toString()}`;
                           }
                         }
                       }
 
+                      /** es-module-lexer marks dynamic imports separately, and
+                       * those replacement spans need a quoted string literal.
+                       */
                       ss.overwrite(
                         imported.s,
                         imported.e,
