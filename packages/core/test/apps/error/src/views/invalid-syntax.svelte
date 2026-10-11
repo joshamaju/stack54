@@ -1,3 +1,3 @@
-{#iff true}
+{#if true}
   <p data-testid="locals">Syntax</p>
-{/iff}
+{/if}

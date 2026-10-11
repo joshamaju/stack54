@@ -7,6 +7,9 @@ export function make<
   P extends Record<string, any>,
   T extends ComponentType<Await<P>>
 >(Component: T): T {
+  /** On the Node export, replace Svelte's SSR renderer so Await registers its
+   * slots with Stack54's streaming context instead of rendering placeholders.
+   */
   // @ts-expect-error
   if (Component.$$render) {
     // @ts-expect-error

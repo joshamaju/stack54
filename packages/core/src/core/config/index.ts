@@ -103,6 +103,9 @@ export function* resolve(config: ResolvedConfig, cwd: string) {
 
   const signal = yield* useAbortSignal();
 
+  /** Resolve entry patterns together and tie glob work to this operation's
+   * abort signal so cancelled config loads do not leave searches running.
+   */
   const entry =
     typeof file !== "string" && !Array.isArray(file)
       ? Object.fromEntries(
@@ -115,6 +118,9 @@ export function* resolve(config: ResolvedConfig, cwd: string) {
                     `No entry files matched "${v}" for named entry "${k}"`,
                   );
                 }
+                /** A named entry represents one Rollup input, so use the first
+                 * match returned for that configured glob.
+                 */
                 return [k, matches[0]] as const;
               });
             }),
@@ -142,12 +148,16 @@ export class Config {
   *load(command: Command): Operation<ResolvedConfig> {
     const file = this.file;
 
+    /** Config may be exported as a value or a command-aware factory. */
     let config: UserConfig | ((command: Command) => UserConfig) = {};
 
     const logger = yield* use_logger();
 
     if (existsSync(file)) {
       const url = pathToFileURL(file);
+      /** The timestamp bypasses the ESM module cache so dev restarts pick up
+       * edits to the configuration module.
+       */
       const module = yield* until(import(`${url.href}?ts=${Date.now()}`));
       config = module.default;
     } else {

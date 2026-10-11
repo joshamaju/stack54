@@ -18,6 +18,9 @@ export async function copy_server_assets(sourceDir: string, targetDir: string) {
     throw error;
   }
 
+  /** Vite emits SSR-referenced files under the server output; move them to the
+   * shared client asset directory after copying so the server tree stays lean.
+   */
   await copy(sourceDir, targetDir);
   await fs.rm(sourceDir, { recursive: true });
 }
