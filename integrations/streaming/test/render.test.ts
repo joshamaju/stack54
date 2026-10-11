@@ -89,7 +89,9 @@ it("transforms nested await blocks without overlapping edits", async () => {
   const integration = streamingIntegration();
   const configured = integration.config?.({} as any, { command: "build" });
   const plugin = (configured as any).vite.plugins[0];
-  integration.configResolved?.({ svelte: { preprocess: [] } } as any);
+  integration.configResolved?.({
+    svelte: { preprocess: [], extensions: [".svelte"] },
+  } as any);
 
   const result = await plugin.transform.handler(
     `<script>export let outer;</script>
