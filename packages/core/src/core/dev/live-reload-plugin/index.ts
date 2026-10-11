@@ -26,6 +26,9 @@ export function live_reload_plugin(): Integration {
         );
 
         if (is_view && vite_config.mode == "development") {
+          /** Inject Vite's client only where the component explicitly opts in
+           * with <LiveReload />, keeping production and other modules untouched.
+           */
           const s = new MagicString(code);
           s.replace(markup, script);
           return { code: s.toString(), map: s.generateMap() };

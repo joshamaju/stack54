@@ -49,6 +49,9 @@ function render_to_stream(
   });
 
   const enqueue = (chunk: Chunk) => {
+    /** A cancelled response has no reader; a failed controller cannot accept
+     * more chunks. Ignore late promise settlements in either state.
+     */
     if (cancelled || failed) return;
 
     try {
@@ -60,6 +63,9 @@ function render_to_stream(
   };
 
   const suspend = ({ slots, resolve }: Args) => {
+    /** IDs are local to one render and let out-of-order promise completions
+     * replace the correct fallback independently.
+     */
     const id = current_id++;
 
     pending.add(id);
@@ -101,6 +107,9 @@ function render_to_stream(
 
   return new ReadableStream<Uint8Array>({
     async start(controller) {
+      /** Svelte's render runs synchronously, so AsyncLocalStorage lets Await
+       * components register their pending slots during that render call.
+       */
       const html = Storage.run(suspend, () => {
         const out = template.render(...args);
         const head = out.head + `<style>${out.css.code}</style>` + swap_script;
@@ -116,6 +125,9 @@ function render_to_stream(
 
       reader = stream.getReader();
       try {
+        /** Completion order may differ from document order; IDs let the client
+         * patch the matching fallback without blocking other boundaries.
+         */
         while (!cancelled) {
           const { done, value } = await reader.read();
           if (done) break;

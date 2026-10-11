@@ -7,6 +7,9 @@ import { resolve } from "../utils/integration.js";
 import { use_logger } from "../logger.js";
 
 function get_plugins(config: ResolvedConfig) {
+  /** Preserve registration order: shared hooks run before server and client
+   * environment-specific integrations.
+   */
   const plugins = [
     ...config.integrations,
     ...(config.environments.server?.integrations ?? []),
@@ -45,7 +48,11 @@ export function* run_config_setup(
     child.debug(`executing plugin`);
 
     const value = plugin.config?.call(plugin, merged, env);
-    const config = value instanceof Promise ? yield* until(value) : value;
+    /** Config hooks may return native promises or other promise-like values. */
+    const config: object | void =
+      value && typeof (value as PromiseLike<unknown>).then === "function"
+        ? yield* until(Promise.resolve(value as PromiseLike<object | void>))
+        : (value as object | void);
 
     const time = performance.now() - start;
     child.debug(`executed in ${Math.round(time)} ${color.dim("ms")}`);
@@ -101,6 +108,7 @@ export function* run_html_pre_transform(
 
     const plugin = yield* until(resolve(integration));
 
+    /** View HTML is client-facing, so server-only integrations must not alter it. */
     const can_execute = plugin.environment == "client" || !plugin.environment;
     const v = plugin.transform;
 
@@ -109,6 +117,9 @@ export function* run_html_pre_transform(
       child.debug(`executing plugin`);
 
       const value = v.handle.call(plugin, _code, filename);
+      /** Each transform receives the previous transform's output, matching
+       * Vite's ordered plugin pipeline.
+       */
       const code = yield* call(async () => value);
 
       const time = performance.now() - start;
@@ -155,6 +166,7 @@ export function* run_html_post_transform(
       const child = logger.child({ logger: plugin.name });
       child.debug(`executing plugin`);
 
+      /** Preserve registration order and feed each transformed result forward. */
       const code = yield* call(async () => fn.call(plugin, _code, filename));
 
       const time = performance.now() - start;

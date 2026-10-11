@@ -1,5 +1,8 @@
-import { Integration } from "../config";
+import type { Integration } from "../config";
 
-export async function resolve(integration: Integration | Promise<Integration>) {
-  return integration instanceof Promise ? await integration : integration;
+/** Resolve an integration value, including thenables from other realms. */
+export async function resolve(
+  integration: Integration | PromiseLike<Integration>,
+) {
+  return await integration;
 }

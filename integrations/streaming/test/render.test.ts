@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-// import { renderToStream, await as await_ } from "../src/rendering/index.js";
+import streamingIntegration from "../src/plugin.js";
 
 // // Mock Template
 // const createMockTemplate = (renderFn: any) => ({
@@ -85,4 +85,19 @@ import { describe, it, expect } from "vitest";
 //   });
 // });
 
-it("stub", () => {});
+it("transforms files with configured Svelte extensions", async () => {
+  const integration = streamingIntegration();
+  const configured = integration.config?.({} as any, { command: "build" });
+  const plugin = (configured as any).vite.plugins[0];
+  integration.configResolved?.({
+    svelte: { preprocess: [], extensions: [".component"] },
+  } as any);
+
+  const result = await plugin.transform.handler(
+    "<h1>Custom extension</h1>",
+    "/src/example.component",
+    { ssr: true },
+  );
+
+  expect(result.code).toContain("Custom extension");
+});

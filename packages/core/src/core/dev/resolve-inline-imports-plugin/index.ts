@@ -21,6 +21,9 @@ export function resolve_inline_imports_plugin(): Plugin {
 
         const file = query.get("file")?.trim();
 
+        /** Remove the importer hint before resolving; it is metadata for this
+         * plugin, not part of the target module's query string.
+         */
         query.delete("file");
 
         if (file) {
