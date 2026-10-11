@@ -24,6 +24,9 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
 
   const scope = yield* useScope();
 
+  /** Keep per-view fragments isolated during compilation, then remove them even
+   * when Vite fails or the build operation is cancelled.
+   */
   yield* until(fs.rm(dir, { recursive: true, force: true }));
 
   yield* call(() => fs.mkdir(dir, { recursive: true }));

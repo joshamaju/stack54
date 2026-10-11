@@ -48,6 +48,9 @@ export function make_vite_config(
     publicDir: config.staticDir,
     base: config.build.assetPrefix,
     envPrefix: config.env.publicPrefix,
+    /** Resolve browser exports for both the client bundle and SSR-rendered
+     * templates, which share the same component graph.
+     */
     resolve: { conditions: ["browser", "default"] },
     plugins: [
       svelte(config.svelte) as vite.PluginOption,

@@ -3,6 +3,9 @@ import { HEAD_INSERTION_MARKER } from "../constants.js";
 import { is_template } from "./utils.js";
 
 export function render(output: Output) {
+  /** Head content and collected CSS share one marker so templates control the
+   * insertion point without the renderer parsing or rebuilding the document.
+   */
   const head = output.head + `<style>${output.css.code}</style>`;
   return output.html.replace(HEAD_INSERTION_MARKER, head);
 }
