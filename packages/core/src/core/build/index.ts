@@ -64,6 +64,9 @@ export function* build({ cwd, ..._ }: EntryOption) {
     yield* run_build_start(config);
   }
 
+  /** Await output cleanup before invoking Vite; the cleanup task overlaps
+   * config resolution and integration setup above.
+   */
   yield* clean;
 
   const manifest = yield* builder({ cwd, outDir, config, env });

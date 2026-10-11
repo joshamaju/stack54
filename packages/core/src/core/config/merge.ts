@@ -3,6 +3,9 @@ import { array } from "../utils/index.js";
 import { UserConfig } from "./index.js";
 
 export function merge(defaults: UserConfig, overrides: UserConfig): UserConfig {
+  /** Vite owns its plugin/config merge semantics; Stack54 concatenates view,
+   * integration, and preprocessor lists so defaults remain active.
+   */
   return {
     ...defaults,
     ...overrides,

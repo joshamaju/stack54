@@ -162,6 +162,9 @@ const machine = createMachine({
     events: { type: "start" } | { type: "restart"; reload?: boolean };
   },
   on: {
+    /** Config edits reload user config; manual or source-triggered restarts
+     * reuse it and only recreate the Vite server.
+     */
     restart: [
       {
         target: ".load",
@@ -214,6 +217,9 @@ const machine = createMachine({
       exit: assign({ started: true }),
       entry: assign({
         watcher: ({ spawn, context }) => {
+          /** Keep the restart shortcut and config watcher scoped to the active
+           * server instance; the actor is stopped when setup restarts.
+           */
           return spawn("watcher", { id: "watcher", input: context });
         },
       }),

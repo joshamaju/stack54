@@ -24,6 +24,9 @@ export function partition(env: Env, public_prefix: string) {
 }
 
 export function define(env: Env) {
+  /** Replace exact import.meta.env references at bundle time, rather than
+   * exposing the complete process environment to client code.
+   */
   return Object.fromEntries(
     Object.entries(env).map(([key, val]) => {
       return [`import.meta.env.${key}`, JSON.stringify(val)];

@@ -7,6 +7,9 @@ export function posixify(str: string) {
 
 export function to_fs(str: string) {
   str = posixify(str);
+  /** Vite's /@fs route expects absolute paths and a leading slash before
+   * Windows drive letters after separator normalization.
+   */
   return `/@fs${
     // Windows/Linux separation - Windows starts with a drive letter, we need a / in front there
     str.startsWith("/") ? "" : "/"
@@ -21,6 +24,7 @@ export async function copy(srcDir: string, destDir: string) {
   for (const file of files) {
     const srcFile = path.resolve(srcDir, file);
 
+    /** Avoid recursively copying a directory into itself. */
     if (srcFile === destDir) {
       continue;
     }
