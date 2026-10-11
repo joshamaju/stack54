@@ -4,7 +4,7 @@ import * as path from "node:path";
 
 import type { Processed } from "svelte/compiler";
 import * as compiler from "svelte/compiler";
-import type { BaseNode, Element } from "svelte/types/compiler/interfaces";
+import type { Element } from "svelte/types/compiler/interfaces";
 
 import type { Plugin } from "vite";
 import * as vite from "vite";
@@ -22,33 +22,20 @@ import {
 import { ManifestEntry } from "../types.js";
 import { use_logger } from "../logger.js";
 
-function collect_assets(code: string, filename: string): Array<Element> {
-  type Visitor = (node: BaseNode) => BaseNode;
-
-  const walk = (node: BaseNode, visitor: Visitor): BaseNode => {
-    if (node.children) {
-      node.children = node.children.map((_) => walk(_, visitor));
-    }
-
-    return visitor(node);
-  };
-
+/** Collect asset elements in one AST traversal so nested assets appear once. */
+export function collect_assets(code: string, filename: string): Array<Element> {
   const assets: Array<Element> = [];
 
   const ast = compiler.parse(code, { filename });
 
-  // @ts-expect-error
-  compiler.walk(ast.html, {
-    enter(node) {
-      // @ts-expect-error
-      walk(node, (node) => {
-        if (node.type == "Element") {
-          const node_: Element = node as any;
-          if (should_process_asset(node_)) {
-            assets.push(node_);
-          }
+  (compiler.walk as any)(ast.html, {
+    enter(node: any) {
+      if (node.type == "Element") {
+        const node_: Element = node as any;
+        if (should_process_asset(node_)) {
+          assets.push(node_);
         }
-      });
+      }
     },
   });
 
@@ -56,6 +43,9 @@ function collect_assets(code: string, filename: string): Array<Element> {
 }
 
 function get_static_attribute(node: Element, name: string): string | undefined {
+  /** Dynamic attributes cannot be resolved at build time, so only use literal
+   * text values when deciding whether a URL belongs in the client bundle.
+   */
   const attribute = (node.attributes as any[]).find(
     (attr) => attr?.type === "Attribute" && attr?.name === name,
   );
@@ -229,6 +219,9 @@ export function* compile({
     name: "stack54:resolver",
     async resolveId(source, importer) {
       if (importer) {
+        /** Resolve relative imports against the original view, not the
+         * temporary HTML fragment Vite is currently compiling.
+         */
         const resolved = await this.resolve(source, filename);
 
         if (resolved) return resolved;
@@ -246,6 +239,9 @@ export function* compile({
     name: "stack54:stamp",
     transformIndexHtml: {
       handler(html, ctx) {
+        /** Mark only the current fragment so its transformed HTML can be
+         * matched back to the original Svelte node after Vite bundles it.
+         */
         const frag = keyvalue.get(ctx.filename);
 
         if (frag) {
@@ -312,6 +308,9 @@ export function* compile({
 
   const vite_manifest = JSON.parse(manifest_source) as vite.Manifest;
 
+  /** Vite's manifest uses these paths to distinguish emitted files from
+   * unchanged source attributes when rebuilding each HTML fragment.
+   */
   const vite_manifest_entries = Object.values(vite_manifest).map(
     (_) => `/${_.file}`,
   );
@@ -354,6 +353,9 @@ export function* compile({
    * and updates the attributes of the asset to match the output file
    */
   for (const [filename, { id, node }] of fragments) {
+    /** Fragment input paths are temporary absolute paths; matching by suffix
+     * links each Rollup output back to the original source fragment.
+     */
     const file = output_files.find((k) =>
       k.endsWith(filename.replace(dir, "")),
     );

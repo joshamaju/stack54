@@ -13,4 +13,5 @@
   {@html head}
 {/if}
 
+<!-- The renderer replaces this marker with collected head elements and CSS. -->
 {@html HEAD_INSERTION_MARKER}
