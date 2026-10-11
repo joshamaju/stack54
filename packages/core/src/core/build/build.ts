@@ -24,6 +24,9 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
 
   const scope = yield* useScope();
 
+  /** Keep per-view fragments isolated during compilation, then remove them even
+   * when Vite fails or the build operation is cancelled.
+   */
   yield* until(fs.rm(dir, { recursive: true, force: true }));
 
   yield* call(() => fs.mkdir(dir, { recursive: true }));
@@ -53,7 +56,12 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
       async handler(code, id) {
         const { filename } = parse_id(id);
 
-        if (filename.endsWith(".svelte") && matcher(filename)) {
+        if (
+          config.svelte.extensions.some((extension) =>
+            filename.endsWith(extension),
+          ) &&
+          matcher(filename)
+        ) {
           return scope.run(function* () {
             const args = { dir, code, config, outDir, filename, env: public_ };
             const result = yield* compile(args);

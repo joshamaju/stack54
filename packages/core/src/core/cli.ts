@@ -62,6 +62,9 @@ program
       }
     });
 
+    /** Halt the Effection task before exiting so Vite watchers and server
+     * resources get their cancellation hooks.
+     */
     const close = () => task.halt();
 
     const shutdown = async () => {
