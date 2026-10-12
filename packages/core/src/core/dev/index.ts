@@ -119,7 +119,7 @@ export function* setup(
 
   const internal_vite_config: InlineConfig = {
     build: { rollupOptions: { input: resolved_config.entry } },
-    define: define(env),
+    environments: { ssr: { define: define(env) } },
   };
 
   const envs = resolved_config.environments;
