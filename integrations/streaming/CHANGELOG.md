@@ -1,5 +1,16 @@
 # @stack54/streaming
 
+## 0.1.2
+
+### Patch Changes
+
+- d8ff7f5: Apply Svelte transforms to every configured Svelte file extension.
+- 965bfb5: Transform nested Svelte await blocks without overlapping source edits.
+- Updated dependencies [b5156a6]
+- Updated dependencies [83373f0]
+- Updated dependencies [d8ff7f5]
+  - stack54@0.15.1
+
 ## 0.1.1
 
 ### Patch Changes

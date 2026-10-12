@@ -1,5 +1,13 @@
 # mpa
 
+## 0.15.1
+
+### Patch Changes
+
+- b5156a6: Keep private environment replacements in Vite's SSR environment during development so client modules cannot receive private values.
+- 83373f0: Fix core asset handling
+- d8ff7f5: Apply Svelte transforms to every configured Svelte file extension.
+
 ## 0.15.0
 
 ### Minor Changes
