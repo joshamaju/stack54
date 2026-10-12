@@ -38,7 +38,7 @@ export default function middleware(
       done =
         done ||
         ((err: unknown, str: string) => {
-          if (err) return req.next?.(err);
+          if (err) return next(err);
           this.send(str);
         });
 

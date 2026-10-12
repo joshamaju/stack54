@@ -31,12 +31,18 @@ function resolve_component<T>(
   >;
 
   const path_ = Array.isArray(path)
+    /** A path list supports generated route aliases; choose the first key that
+     * exists in the supplied component map.
+     */
     ? Object.keys(components_).find((entry) => path.includes(entry))
     : path;
 
   if (!path_) throw new Error("Template not found");
 
   const entry = components_[path_];
+  /** Lazy imports preserve their asynchronous return type; eager modules
+   * expose their template directly.
+   */
   // @ts-expect-error
   return is_lazy(entry) ? entry().then((_) => _.default) : entry.default;
 }

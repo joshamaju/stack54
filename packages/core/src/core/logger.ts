@@ -26,6 +26,9 @@ export function* make_vite_logger(scope: "client" | "server") {
       logger.warn(message);
     },
     warnOnce(message) {
+      /** Vite may report the same warning from several transforms; retain only
+       * one copy per build logger to keep output readable.
+       */
       if (warnedMessages.has(message)) return;
       logger_.hasWarned = true;
       logger.warn(message);
