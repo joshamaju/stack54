@@ -85,6 +85,29 @@ import streamingIntegration from "../src/plugin.js";
 //   });
 // });
 
+it("transforms nested await blocks without overlapping edits", async () => {
+  const integration = streamingIntegration();
+  const configured = integration.config?.({} as any, { command: "build" });
+  const plugin = (configured as any).vite.plugins[0];
+  integration.configResolved?.({
+    svelte: { preprocess: [], extensions: [".svelte"] },
+  } as any);
+
+  const result = await plugin.transform.handler(
+    `<script>export let outer;</script>
+{#await outer}<p>pending</p>
+{:then outerValue}
+  {#await outerValue.inner}<span>inner pending</span>
+  {:then innerValue}<b>{innerValue}</b>{/await}
+{/await}`,
+    "/src/nested.svelte",
+    { ssr: true },
+  );
+
+  expect(result.code.match(/<Await_\d+ resolve=/g)).toHaveLength(2);
+  expect(result.code).toContain("inner pending");
+});
+
 it("transforms files with configured Svelte extensions", async () => {
   const integration = streamingIntegration();
   const configured = integration.config?.({} as any, { command: "build" });
