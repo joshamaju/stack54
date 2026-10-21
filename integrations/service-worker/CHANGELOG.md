@@ -1,5 +1,15 @@
 # @stack54/service-worker
 
+## 0.1.4
+
+### Patch Changes
+
+- 89b59e1: Honor the service worker integration's configured output directory.
+- Updated dependencies [b5156a6]
+- Updated dependencies [83373f0]
+- Updated dependencies [d8ff7f5]
+  - stack54@0.15.1
+
 ## 0.1.3
 
 ### Patch Changes
