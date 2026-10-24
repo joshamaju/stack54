@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Head } from "stack54/components";
+  import { Head } from "stack54/components/Head";
 </script>
 
 <svelte:head>

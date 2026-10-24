@@ -1,6 +1,6 @@
 <script lang="ts">
   import Await from "stack54/components/Await";
-  import { Head } from "stack54/components";
+  import { Head } from "stack54/components/Head";
   import { delay } from "./utils";
 </script>
 
