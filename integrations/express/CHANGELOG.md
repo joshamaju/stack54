@@ -1,5 +1,17 @@
 # @stack54/express
 
+## 1.1.3
+
+### Patch Changes
+
+- 665cf6c: Forward render errors to Express's error middleware when no render callback is supplied.
+- Updated dependencies [20eb193]
+- Updated dependencies [b5156a6]
+- Updated dependencies [8741960]
+- Updated dependencies [83373f0]
+- Updated dependencies [d8ff7f5]
+  - stack54@1.0.0
+
 ## 1.1.2
 
 ### Patch Changes

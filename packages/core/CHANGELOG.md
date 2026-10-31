@@ -1,5 +1,18 @@
 # mpa
 
+## 1.0.0
+
+### Major Changes
+
+- 20eb193: Migrate Stack54 to Svelte 5. This is a breaking compatibility change: the new Stack54 major requires Svelte 5, and island components no longer support slotted children.
+
+### Patch Changes
+
+- b5156a6: Keep private environment replacements in Vite's SSR environment during development so client modules cannot receive private values.
+- 8741960: Use Svelte's modern AST for compiler transforms and traverse it with `estree-walker`.
+- 83373f0: Fix core asset handling
+- d8ff7f5: Apply Svelte transforms to every configured Svelte file extension.
+
 ## 0.15.0
 
 ### Minor Changes
