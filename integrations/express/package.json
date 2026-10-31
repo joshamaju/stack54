@@ -28,7 +28,7 @@
     "!dist/test"
   ],
   "dependencies": {
-    "glob": "^13.0.0",
+    "glob": "^14.0.0",
     "stack54": "workspace:^"
   },
   "devDependencies": {
