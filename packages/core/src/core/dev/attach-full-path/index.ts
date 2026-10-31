@@ -4,13 +4,13 @@ import * as url from "node:url";
 
 import type { PreprocessorGroup } from "svelte/compiler";
 import * as compiler from "svelte/compiler";
+import { walk } from "estree-walker";
 
 import * as lexer from "es-module-lexer";
 import MagicString from "magic-string";
 
 import { to_fs } from "../../utils/filesystem.js";
 import { Rule, Tags, rules } from "./rules.js";
-import { walk_ast } from "../../utils/walk.js";
 
 type Element = {
   type: string;
@@ -55,19 +55,19 @@ export function attach_full_path({
     async markup(args) {
       const name = args.filename!;
 
-      const ast = compiler.parse(args.content, { modern: false });
+      const ast = compiler.parse(args.content, { modern: true });
       const parsed = path.parse(name);
 
       const s = new MagicString(args.content, { filename: name });
 
       await lexer.init;
 
-      /** The compiler walker descends into children, so rewrite each node here
+      /** The AST walker descends into children, so rewrite each node here
        * once to avoid applying overlapping edits to nested assets and scripts.
        */
-      walk_ast(ast.html, {
+      walk(ast.fragment as any, {
         enter(node) {
-          if (node.type == "Element") {
+          if ((node as any).type === "RegularElement") {
             const node_: Element = node as any;
 
             const name = node_.name as Tags;
@@ -103,7 +103,9 @@ export function attach_full_path({
             }
 
             if (name == "script") {
-              const content = node_.children?.find((_) => _.type == "Text");
+              const content = (node as any).fragment?.nodes?.find(
+                (child: any) => child.type === "Text",
+              );
 
               if (content && args.filename) {
                 const code = (content as Text).data;

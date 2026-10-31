@@ -21,6 +21,7 @@
   "author": "Joshua Amaju",
   "license": "ISC",
   "dependencies": {
+    "estree-walker": "^3.0.3",
     "magic-string": "^0.30.5",
     "magic-string-stack": "^1.0.0",
     "stack54": "workspace:^",

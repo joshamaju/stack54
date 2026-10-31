@@ -66,6 +66,7 @@
     "cheerio": "^1.0.0",
     "devalue": "^5.0.0",
     "effection": "^4.0.0",
+    "estree-walker": "^3.0.3",
     "es-module-lexer": "^2.0.0",
     "figlet": "^1.10.0",
     "glob": "^13.0.0",
