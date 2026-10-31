@@ -1,5 +1,21 @@
 # @stack54/island
 
+## 0.4.0
+
+### Minor Changes
+
+- 20eb193: Migrate Stack54 to Svelte 5. This is a breaking compatibility change: the new Stack54 major requires Svelte 5, and island components no longer support slotted children.
+
+### Patch Changes
+
+- 8741960: Use Svelte's modern AST for compiler transforms and traverse it with `estree-walker`.
+- Updated dependencies [20eb193]
+- Updated dependencies [b5156a6]
+- Updated dependencies [8741960]
+- Updated dependencies [83373f0]
+- Updated dependencies [d8ff7f5]
+  - stack54@1.0.0
+
 ## 0.3.13
 
 ### Patch Changes

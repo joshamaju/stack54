@@ -1,5 +1,17 @@
 # @stack54/hono
 
+## 0.1.3
+
+### Patch Changes
+
+- 2dd0c8d: Read request bodies even when clients omit the content type header.
+- Updated dependencies [20eb193]
+- Updated dependencies [b5156a6]
+- Updated dependencies [8741960]
+- Updated dependencies [83373f0]
+- Updated dependencies [d8ff7f5]
+  - stack54@1.0.0
+
 ## 0.1.2
 
 ### Patch Changes
