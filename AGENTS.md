@@ -12,7 +12,13 @@
 - `pnpm build` runs the TypeScript build across the workspace (`tsc -b tsconfig.build.json`).
 - `pnpm test` runs package tests across the workspace (excluding `templates/` and `playground/`).
 - Package-level commands are available; for example `pnpm -C packages/core test` or `pnpm -C integrations/streaming test`.
-- Release tooling uses Changesets: `pnpm changeset` to add a changeset, `pnpm version` to apply versions.
+- Release tooling uses Changesets: run `pnpm changeset` to describe user-facing package changes. Do not manually edit package versions or publish packages.
+
+## Automated Release Process
+- Merging a PR with Changesets to `main` triggers `.github/workflows/release.yml`.
+- The workflow installs dependencies, runs the build and tests, then uses Changesets to open or update the automated version PR.
+- Merging that version PR triggers the workflow to publish the versioned packages to npm.
+- Add Changesets to feature/fix PRs; leave version bumps and npm publishing to this workflow.
 
 ## Coding Style & Naming Conventions
 - TypeScript + ESM modules are standard across packages.
