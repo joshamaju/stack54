@@ -1,32 +1,17 @@
-import type { Output, Template } from "../../types/template.js";
+import { render as render_component } from "svelte/server";
+import type { Options, Props, Template } from "../../types/template.js";
 import { HEAD_INSERTION_MARKER } from "../constants.js";
-import { is_template } from "./utils.js";
 
-export function render(output: Output) {
-  /** Head content and collected CSS share one marker so templates control the
-   * insertion point without the renderer parsing or rebuilding the document.
-   */
-  const head = output.head + `<style>${output.css.code}</style>`;
-  return output.html.replace(HEAD_INSERTION_MARKER, head);
+export function render(output: { body: string; head: string }) {
+  return output.body.replace(HEAD_INSERTION_MARKER, output.head);
 }
 
 export function unsafe_render_to_string(
-  template: Template | Output | any,
-  ...args: Parameters<Template["render"]>
+  template: Template,
+  props?: Props,
+  options?: Options
 ): string {
-  let output: Output;
-
-  if ("html" in template) {
-    output = template;
-  } else {
-    if (is_template(template)) {
-      output = template.render(...args);
-    } else {
-      throw new Error("Not a valid SSR component");
-    }
-  }
-
-  return render(output);
+  return render(render_component(template, { props, context: options?.context }));
 }
 
 export { unsafe_render_to_string as renderToString };

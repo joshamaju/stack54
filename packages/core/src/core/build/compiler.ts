@@ -4,7 +4,6 @@ import * as path from "node:path";
 
 import type { Processed } from "svelte/compiler";
 import * as compiler from "svelte/compiler";
-import type { Element } from "svelte/types/compiler/interfaces";
 
 import type { Plugin } from "vite";
 import * as vite from "vite";
@@ -21,15 +20,25 @@ import {
 } from "../integrations/hooks.js";
 import { ManifestEntry } from "../types.js";
 import { use_logger } from "../logger.js";
+import { walk_ast } from "../utils/walk.js";
+
+type Element = {
+  type: string;
+  name: string;
+  attributes: Array<any>;
+  children?: Array<any>;
+  start: number;
+  end: number;
+};
 
 /** Collect asset elements in one AST traversal so nested assets appear once. */
 export function collect_assets(code: string, filename: string): Array<Element> {
   const assets: Array<Element> = [];
 
-  const ast = compiler.parse(code, { filename });
+  const ast = compiler.parse(code, { filename, modern: false });
 
-  (compiler.walk as any)(ast.html, {
-    enter(node: any) {
+  walk_ast(ast.html, {
+    enter(node) {
       if (node.type == "Element") {
         const node_: Element = node as any;
         if (should_process_asset(node_)) {

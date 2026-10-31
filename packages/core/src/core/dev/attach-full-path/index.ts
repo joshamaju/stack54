@@ -4,13 +4,22 @@ import * as url from "node:url";
 
 import type { PreprocessorGroup } from "svelte/compiler";
 import * as compiler from "svelte/compiler";
-import type { Element, Text } from "svelte/types/compiler/interfaces";
 
 import * as lexer from "es-module-lexer";
 import MagicString from "magic-string";
 
 import { to_fs } from "../../utils/filesystem.js";
 import { Rule, Tags, rules } from "./rules.js";
+import { walk_ast } from "../../utils/walk.js";
+
+type Element = {
+  type: string;
+  name: string;
+  attributes: Array<any>;
+  children?: Array<any>;
+};
+
+type Text = { type: string; data: string; start: number; end: number };
 
 function isLocalPath(path: string) {
   /** Only relative references are rewritten; protocol, protocol-relative, and
@@ -46,7 +55,7 @@ export function attach_full_path({
     async markup(args) {
       const name = args.filename!;
 
-      const ast = compiler.parse(args.content);
+      const ast = compiler.parse(args.content, { modern: false });
       const parsed = path.parse(name);
 
       const s = new MagicString(args.content, { filename: name });
@@ -56,8 +65,8 @@ export function attach_full_path({
       /** The compiler walker descends into children, so rewrite each node here
        * once to avoid applying overlapping edits to nested assets and scripts.
        */
-      (compiler.walk as any)(ast.html, {
-        enter(node: any) {
+      walk_ast(ast.html, {
+        enter(node) {
           if (node.type == "Element") {
             const node_: Element = node as any;
 

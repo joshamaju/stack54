@@ -4,24 +4,18 @@ import { renderToStream, await as renderAwait } from "../src/runtime/render/stre
 import type { Template } from "../src/types/template";
 
 function make_template(resolve: PromiseLike<unknown>): Template {
-  return {
-    render() {
-      const fallback = renderAwait({
-        resolve,
-        slots: {
-          fallback: () => "loading",
-          default: ({ value }) => String(value),
-          error: ({ error }) => error.message,
-        },
-      });
+  return ((renderer: { push(value: string): void }) => {
+    const fallback = renderAwait({
+      resolve,
+      slots: {
+        fallback: () => "loading",
+        default: ({ value }) => String(value),
+        error: ({ error }) => error.message,
+      },
+    });
 
-      return {
-        html: `<main>${fallback}</main>`,
-        head: "",
-        css: { code: "", map: null },
-      };
-    },
-  };
+    renderer.push(`<main>${fallback}</main>`);
+  }) as Template;
 }
 
 it("should stop processing deferred renders when the stream is cancelled", async () => {

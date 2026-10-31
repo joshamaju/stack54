@@ -16,13 +16,13 @@
     </div>
 
     <script type="module">
+      import { hydrate } from "svelte";
       import Component from "./component.svelte";
 
       const btn = document.querySelector('[data-testid="hydrate"]');
 
       btn.addEventListener("click", () => {
-        new Component({
-          hydrate: true,
+        hydrate(Component, {
           target: document.getElementById("app"),
         });
       });

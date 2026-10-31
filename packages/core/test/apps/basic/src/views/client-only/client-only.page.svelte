@@ -9,10 +9,11 @@
   </div>
 
   <script type="module">
+    import { mount } from "svelte";
     import ClientOnly from "./client-only.svelte";
 
     window.HYDRATE = function () {
-      new ClientOnly({ hydrate: true, target: document.getElementById("app") });
+      mount(ClientOnly, { target: document.getElementById("app") });
 
       document.dispatchEvent(
         new CustomEvent("client-only:hydrated", { bubbles: true })

@@ -1,4 +1,4 @@
-<script island="idle">
+<script>
   import { ClientOnly } from "stack54/components";
 </script>
 
