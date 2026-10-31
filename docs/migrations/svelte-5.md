@@ -24,7 +24,7 @@ The last tagged releases before this migration are `stack54@0.14.0`, `@stack54/e
 - [x] Phase 3: Migrate island hydration (slotted children unsupported)
 - [x] Phase 4: Exclude `@stack54/streaming` from this Svelte 5 major
 - [ ] Phase 5: Update maintained examples and templates (source/manifests complete; release-dependent lockfiles and remaining project builds pending)
-- [ ] Phase 6: Validate, document, and prepare release (verification and versioning complete; publication pending)
+- [ ] Phase 6: Validate, document, and prepare release (verification complete; automated release PR and publication pending)
 
 ## Phase 0: Confirm support policy and baseline
 
@@ -78,9 +78,9 @@ The last tagged releases before this migration are `stack54@0.14.0`, `@stack54/e
 
 - [x] Keep `@stack54/streaming` out of the Svelte 5 release; its published `0.1.1` release remains on the Svelte 4 line.
 - [x] Document that streaming users must stay on the pre-major Stack54 release line.
-- [ ] At release versioning, apply Changesets with `--ignore @stack54/streaming` so the incompatible integration remains on its Svelte 4 line.
+- [x] Configure Changesets to ignore `@stack54/streaming` during automated versioning and publishing.
 
-The integration still uses Svelte 4 SSR hooks and is not compatible with the new major. A future Svelte 5 streaming effort requires its own migration plan and release decision. The streaming-only Changeset remains queued while the package is ignored. Mixed Changesets were split before versioning.
+The integration still uses Svelte 4 SSR hooks and is not compatible with the new major. A future Svelte 5 streaming effort requires its own migration plan and release decision. `.changeset/config.json` ignores the package so its queued Changeset cannot version or publish it with Stack54 1.x. Remove the ignore only as part of a separately planned streaming release. Mixed Changesets were split before versioning.
 
 ## Phase 5: Update maintained examples and templates
 
@@ -126,7 +126,7 @@ The integration still uses Svelte 4 SSR hooks and is not compatible with the new
 - The first Svelte 5 workspace build under Node 25 exposed an `Arrayable` type import that the new Svelte Vite plugin no longer exports; core config now declares the small local `T | T[]` helper instead. The build also tried to compile the explicitly excluded Svelte 4 streaming integration and failed against the changed workspace config/compiler APIs. The root build references now omit streaming; keep it on its separate Svelte 4 maintenance/release path.
 - The core basic app fixture had its island integration commented out, so Svelte 5 treated Stack54's `<script island="...">` marker as an unknown attribute. The fixture now enables `@stack54/island`; its production build passes without those warnings.
 - The Svelte 4 API scan found no remaining component-class constructors, `$destroy`, or private `svelte/internal` imports in the included migration scope. Remaining `.render(...)` calls belong to Stack54/framework view-rendering APIs; the Svelte `Component.$$render` dependency is isolated to excluded streaming. Modern AST adoption remains separately deferred as agreed.
-- `.changeset/bright-islands-hydrate.md` records the Svelte 5 breaking change as a core major and island minor. Package version fields remain on their current released versions; apply Changesets when preparing the release, ignoring `@stack54/streaming`.
+- `.changeset/bright-islands-hydrate.md` records the Svelte 5 breaking change as a core major and island minor. Package version fields remain on their current released versions; the automated release workflow will apply Changesets while ignoring `@stack54/streaming`.
 - Island hydration now uses `hydrate(Component, { target, props })`, but the old `$$slots`/`slotty` bridge is removed. For the Svelte 5 major, island components must not receive slotted children; render that content outside the island boundary. This is an intentional limitation, not an unresolved migration item.
 - Svelte 5 exposes `Snippet` props and `createRawSnippet`, but a snippet created from captured `innerHTML` would only reproduce markup; it would not recreate the parent component's compiled behavior or event handlers. The no-slotted-children boundary avoids treating an HTML snapshot as a replacement for the old slot bridge. See [Svelte snippets](https://svelte.dev/docs/svelte/snippet), [createRawSnippet](https://svelte.dev/docs/svelte/svelte#createrawsnippet), and [hydrate](https://svelte.dev/docs/svelte/svelte#hydrate).
 - The former commented island scenarios are replaced by active coverage for no-slot hydration, nested islands, delayed hydration, markup changes, cleanup, and merged head output. Slotted children are intentionally excluded.
@@ -135,4 +135,4 @@ The integration still uses Svelte 4 SSR hooks and is not compatible with the new
 - The included workspace tests pass sequentially, including Express/Hono integration fixtures and the core basic app's 25 browser tests. Running all workspace projects concurrently caused the invalid-entry test to exceed its timeout while nested Playwright installs ran; the root `test` script now uses workspace concurrency 1. The streaming integration remains excluded by design.
 - The root TypeScript workspace build passes under Node 25. Production builds passed for the core basic Express fixture and Hono default fixture. Browser tests reported no island marker warnings after enabling the island integration in the basic fixture. Svelte still reports the compatibility `Await.resolve` property warning; this migration retains legacy component syntax supported by Svelte 5.
 - Svelte 5 renders `undefined` interpolations as empty text; the affected environment/locals browser assertions now check the actual output. The ClientOnly fixture now uses `onMount` so its content is absent from SSR and appears after mount, and its dedicated fixture is kept separate from island auto-hydration.
-- Added [Svelte 5 release notes](./svelte-5-release-notes.md). Remaining release tasks are Changesets versioning with `--ignore @stack54/streaming`, publishing the resulting packages, then regenerating the two tracked example pnpm lockfiles and building standalone, Tailwind, and HTMX generated projects against the published package. Do not publish `@stack54/streaming` as part of this migration.
+- Added [Svelte 5 release notes](./svelte-5-release-notes.md). Remaining release tasks are merging the automated version PR and allowing the workflow to publish the resulting packages, then regenerating the two tracked example pnpm lockfiles and building standalone, Tailwind, and HTMX generated projects against the published package. Do not publish `@stack54/streaming` as part of this migration.
