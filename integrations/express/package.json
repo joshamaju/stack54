@@ -24,7 +24,8 @@
   "author": "Joshua Amaju",
   "license": "ISC",
   "files": [
-    "dist"
+    "dist",
+    "!dist/test"
   ],
   "dependencies": {
     "glob": "^13.0.0",
@@ -35,7 +36,7 @@
     "@types/node": "^24.0.0",
     "express": "^5.0.0",
     "typescript": "^5.3.3",
-    "vite": "^7.0.0"
+    "vite": "^8.0.9"
   },
   "exports": {
     "./render": "./dist/render.js",

@@ -2,30 +2,24 @@ import MagicString from "magic-string";
 import { dedent } from "ts-dedent";
 
 import type { PreprocessorGroup } from "svelte/compiler";
-import { parse, preprocess, walk } from "svelte/compiler";
-import { BaseNode, Element } from "svelte/types/compiler/interfaces";
+import { parse, preprocess } from "svelte/compiler";
 
 import { to_fs } from "stack54/internals";
 import { ResolvedConfig } from "stack54/config";
+import { walk_ast } from "./walk.js";
 
 type Attributes = Record<string, string | boolean>;
 
+type Element = {
+  type: string;
+  children?: Array<any>;
+  start: number;
+  end: number;
+};
+
 type Loc = { start: number; end: number };
 
-type Slot = Loc & { name?: string };
-
 type Head = Loc & { content: Loc };
-
-function visit(
-  node: BaseNode,
-  visitor: (node: BaseNode) => BaseNode
-): BaseNode {
-  if (node.children) {
-    node.children = node.children.map((_) => visit(_, visitor));
-  }
-
-  return visitor(node);
-}
 
 const KEY = "island";
 const CONFIG = "value";
@@ -59,7 +53,7 @@ export async function make(
 
   if (!script) return;
 
-  const ast = parse(processed.code);
+  const ast = parse(processed.code, { modern: false });
 
   if (!ast.instance) return;
 
@@ -104,41 +98,24 @@ export async function make(
     }
   }
 
-  const slots: Array<Slot> = [];
   let svelte_head: Head | undefined;
 
-  // @ts-expect-error
-  walk(ast.html, {
+  walk_ast(ast.html, {
     enter(node) {
-      // @ts-expect-error
-      visit(node, (node) => {
-        const node_: Element = node as any;
+      const node_: Element = node as any;
 
-        if (node_.type == "Head") {
-          const first = node_.children?.[0];
-          const last = node_.children?.[node_.children.length - 1];
+      if (node_.type == "Head") {
+        const first = node_.children?.[0];
+        const last = node_.children?.[node_.children.length - 1];
 
-          if (first && last) {
-            svelte_head = {
-              end: node_.end,
-              start: node_.start,
-              content: { start: first.start, end: last.end },
-            };
-          }
+        if (first && last) {
+          svelte_head = {
+            end: node_.end,
+            start: node_.start,
+            content: { start: first.start, end: last.end },
+          };
         }
-
-        if (node.type == "Slot") {
-          const name_attr = node_.attributes.find(
-            (attr) => attr.type == "Attribute" && attr.name == "name"
-          );
-
-          const name = name_attr?.value.find((val: any) => val.type == "Text");
-
-          slots.push({ ...node, name: name?.data });
-        }
-
-        return node;
-      });
+      }
     },
   });
 
@@ -169,13 +146,6 @@ export async function make(
     head = s.slice(content.start, content.end);
     s.overwrite(start, end, "");
   }
-
-  slots.forEach(({ end, start, name }) => {
-    const slot = s.slice(start, end);
-    const attr = name ? `name="${name}"` : "";
-    const content = `<stack54-slot style="display:contents;" ${attr}>${slot}</stack54-slot>`;
-    s.overwrite(start, end, content);
-  });
 
   const markup = s.toString().replace(SFC_script_style, "");
 

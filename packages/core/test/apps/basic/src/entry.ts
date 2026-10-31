@@ -43,7 +43,8 @@ app.get("/env/view-private-and-public", (_, res) => {
 });
 
 app.get("/island/no-slot", (_, res) => res.render("island/no-slot.page"));
-app.get("/island/with-slot", (_, res) => res.render("island/with-slot.page"));
+app.get("/island/idle", (_, res) => res.render("island/idle.page"));
+app.get("/island/nested", (_, res) => res.render("island/nested.page"));
 app.get("/island/head", (_, res) => res.render("island/head/index.page"));
 
 app.use((_, res, next) => {

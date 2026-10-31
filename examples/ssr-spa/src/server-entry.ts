@@ -1,4 +1,5 @@
 import express from "express";
+import { render } from "svelte/server";
 import { ServerApp } from "svelte-pilot";
 import { engine, View } from "@stack54/express/view";
 
@@ -26,9 +27,13 @@ app.all("*", async (req, res) => {
     return;
   }
 
-  const body = ServerApp.render({ router, route });
+  const rendered = render(ServerApp, { props: { router, route } });
 
-  return res.render("app", { ...body, state: route.ssrState });
+  return res.render("app", {
+    html: rendered.body,
+    head: rendered.head,
+    state: route.ssrState,
+  });
 });
 
 export default app;

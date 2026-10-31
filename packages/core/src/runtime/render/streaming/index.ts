@@ -1,4 +1,5 @@
 import { AsyncLocalStorage } from "node:async_hooks";
+import { render as render_component } from "svelte/server";
 
 import type { Chunk } from "./types.js";
 import type { Template } from "../../../types/template.js";
@@ -29,7 +30,8 @@ const await_ = (args: Args) => {
 
 function render_to_stream(
   template: Template,
-  ...args: Parameters<Template["render"]>
+  props?: Record<string, any>,
+  options?: { context?: Map<string, unknown> }
 ) {
   let current_id = 0;
   const pending = new Set<Chunk["id"]>();
@@ -111,9 +113,14 @@ function render_to_stream(
        * components register their pending slots during that render call.
        */
       const html = Storage.run(suspend, () => {
-        const out = template.render(...args);
-        const head = out.head + `<style>${out.css.code}</style>` + swap_script;
-        return out.html.replace(HEAD_INSERTION_MARKER, head);
+        const out = render_component(template, {
+          props,
+          context: options?.context,
+        });
+        return out.body.replace(
+          HEAD_INSERTION_MARKER,
+          out.head + swap_script
+        );
       });
 
       controller.enqueue(encoder.encode(html));

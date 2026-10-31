@@ -1,5 +1,7 @@
 # stack54 island
 
+> **Svelte 5 compatibility:** island components must not receive slotted children. Render child content outside the island component boundary. The Svelte 5 hydration runtime cannot recreate the caller's compiled default or named slot content.
+
 ## Directives
 
 ### load

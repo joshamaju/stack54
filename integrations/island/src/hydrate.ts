@@ -1,37 +1,11 @@
-import { SvelteComponent } from "svelte";
+import { hydrate, unmount } from "svelte";
+import type { Component } from "svelte";
 import type { Callback } from "./directives/types.js";
-
-// @ts-expect-error no export type definition
-import { detach, insert, noop } from "svelte/internal";
-
-// https://github.com/lukeed/freshie/blob/5930c2eb8008aac93dcdad1da730e620db327072/packages/%40freshie/ui.svelte/index.js#L20
-function slotty(elem: Element | Comment) {
-  return function (...args: any[]) {
-    let frag: any = {};
-
-    frag.c = frag.c || noop;
-    frag.l = frag.l || noop;
-
-    frag.m =
-      frag.m ||
-      function (target: any, anchor: any) {
-        insert(target, elem, anchor);
-      };
-
-    frag.d =
-      frag.d ||
-      function (detaching: any) {
-        if (detaching) detach(elem);
-      };
-
-    return frag;
-  };
-}
 
 class Island extends HTMLElement {
   hydrated = false;
 
-  private instance?: SvelteComponent<any, any, any>;
+  private instance?: Record<string, any>;
 
   // connectedCallback() {
   //   if (
@@ -104,27 +78,10 @@ class Island extends HTMLElement {
     load((Component) => {
       import("stack54/data").then(({ parse }) => {
         const props = parse(this.getAttribute("props")!);
-        const slots = this.querySelectorAll("stack54-slot");
-
-        const slotted: Array<[string, Element]> = [];
-
-        for (let slot of slots) {
-          const closest = slot.closest(this.tagName);
-          if (!closest?.isSameNode(this)) continue;
-          const name = slot.getAttribute("name") || "default";
-          slotted.push([name, slot]);
-        }
-
-        const _props = {
-          ...props,
-          $$scope: {},
-          $$slots: Object.fromEntries(
-            slotted.map(([k, _]) => [k, [slotty(_ as any)]])
-          ),
-        };
-
-        const opts = { target, props: _props, hydrate: true, $$inline: true };
-        this.instance = new Component(opts);
+        this.instance = hydrate(Component as Component<any>, {
+          target,
+          props,
+        });
 
         this.hydrated = true;
         this.dispatchEvent(new CustomEvent("stack54:hydrate"));
@@ -133,7 +90,7 @@ class Island extends HTMLElement {
   };
 
   disconnectedCallback() {
-    this.instance?.$destroy();
+    if (this.instance) void unmount(this.instance);
   }
 }
 

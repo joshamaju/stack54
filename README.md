@@ -4,6 +4,16 @@ Escape framework hell. A **server-first web stack** for building server-rendered
 
 stack54 does not provide routing, servers, or client runtimes. It focuses on **processing assets, rendering templates, and producing HTML**, while leaving application structure, request handling, and client behavior entirely up to you.
 
+## Compatibility
+
+The upcoming Stack54 1.x release is a breaking upgrade and requires Svelte `^5.46.4`, `@sveltejs/vite-plugin-svelte` `^7.3.1`, Vite `^8.0.9`, and Node.js `^20.19.0 || >=22.12.0`. Existing Svelte 4 component syntax remains supported; converting components to runes is not required.
+
+Code that passes Svelte components directly to Stack54 must use Svelte 5 `Component` values. Stack54 renders them through `svelte/server`; Svelte 4 component constructors, instance `.render()` calls, and `css.code` output are no longer supported. The `renderToString(template, props, options)` call shape remains the same. Client entry points that instantiate components must use Svelte 5 `mount`/`hydrate` and `unmount` APIs instead of constructors and `$destroy`. Island components in this major do not support slotted children; render that content outside the island boundary.
+
+Stack54 defaults `svelte.emitCss` to `false`, so component styles are included in the Svelte server render's `head`. If you set it to `true`, Vite emits component styles as separate CSS assets. Stack54 does not look up those assets in Vite's manifest or add `<link rel="stylesheet">` tags for them, so your app must link the emitted files in the document `<head>`. Automatic linking is tracked in a [separate follow-up plan](docs/plans/external-svelte-css-assets.md).
+
+If you need Svelte 4, stay on the last compatible Stack54 line: `stack54@0.14.0` with the matching integration releases. Use Svelte `^4.2.8`, `@sveltejs/vite-plugin-svelte` `^3.0.1`, and Vite `^5.3.5`. `@stack54/streaming@0.1.1` is only for that older line and is excluded from Stack54 1.x. See the [migration notes](docs/migrations/svelte-5.md) for the full package version matrix.
+
 ---
 
 ## Key features

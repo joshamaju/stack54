@@ -2,6 +2,7 @@
   "extends": "./tsconfig.base.json",
   "include": [],
   "references": [
+    // The Svelte 4 streaming package is excluded from the Svelte 5 build/release.
     {
       "path": "packages/core"
     },
@@ -16,9 +17,6 @@
     },
     {
       "path": "integrations/island"
-    },
-    {
-      "path": "integrations/streaming"
     },
     {
       "path": "integrations/service-worker"

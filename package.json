@@ -15,7 +15,7 @@
     "release": "changeset publish",
     "build": "tsc -b tsconfig.build.json",
     "version": "changeset version && pnpm -r generate-version && git add --all",
-    "test": "pnpm --filter '!./templates/**' --filter '!./playground/**' -r test"
+    "test": "pnpm --filter '!./templates/**' --filter '!./playground/**' --filter '!./integrations/streaming/**' -r --workspace-concurrency=1 test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",

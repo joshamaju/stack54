@@ -60,7 +60,7 @@ test.describe("ENV", () => {
 
     await hydrate.click();
 
-    await expect(private_env).toHaveText("undefined");
+    await expect(private_env).toHaveText("");
     await expect(public_env).toHaveText("public_env");
   });
 });

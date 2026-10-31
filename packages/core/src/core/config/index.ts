@@ -2,7 +2,6 @@ import { existsSync } from "node:fs";
 import * as path from "node:path";
 import { pathToFileURL } from "node:url";
 
-import type { Arrayable } from "@sveltejs/vite-plugin-svelte";
 import { glob } from "glob";
 import type { CompileOptions, PreprocessorGroup } from "svelte/compiler";
 import type { ViteDevServer, UserConfig as ViteUserConfig } from "vite";
@@ -14,6 +13,7 @@ import { all, call, Operation, until, useAbortSignal } from "effection";
 import { use_logger } from "../logger.js";
 
 type Maybe<T> = T | Promise<T>;
+type Arrayable<T> = T | T[];
 
 type Transformer = (code: string, filename: string) => Maybe<void | string>;
 
@@ -71,7 +71,7 @@ export const baseConfigSchema = z.object({
       preprocess: z.custom<Arrayable<PreprocessorGroup>>().optional(),
       compilerOptions: z
         .custom<Omit<CompileOptions, "filename" | "format" | "generate">>()
-        .default({ hydratable: true }),
+        .default({}),
     })
     .default({}),
 });
