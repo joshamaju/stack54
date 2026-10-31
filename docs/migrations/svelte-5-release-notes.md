@@ -22,4 +22,4 @@ Island components support Svelte 5 hydration and unmount behavior. Islands do no
 
 ## Legacy Svelte syntax
 
-Svelte 5 supports legacy Svelte 4 component syntax, so this release does not require converting components to runes or snippets. The compiler AST migration still uses the legacy AST shape intentionally; a modern AST conversion is deferred.
+Svelte 5 supports legacy Svelte 4 component syntax, so this release does not require converting components to runes or snippets. Core and island compiler transforms use Svelte's modern AST with `estree-walker`; the excluded Svelte 4 streaming integration retains its legacy compiler transform.
