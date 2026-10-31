@@ -4,6 +4,7 @@ import * as path from "node:path";
 
 import type { Processed } from "svelte/compiler";
 import * as compiler from "svelte/compiler";
+import { walk } from "estree-walker";
 
 import type { Plugin } from "vite";
 import * as vite from "vite";
@@ -20,7 +21,6 @@ import {
 } from "../integrations/hooks.js";
 import { ManifestEntry } from "../types.js";
 import { use_logger } from "../logger.js";
-import { walk_ast } from "../utils/walk.js";
 
 type Element = {
   type: string;
@@ -35,11 +35,11 @@ type Element = {
 export function collect_assets(code: string, filename: string): Array<Element> {
   const assets: Array<Element> = [];
 
-  const ast = compiler.parse(code, { filename, modern: false });
+  const ast = compiler.parse(code, { filename, modern: true });
 
-  walk_ast(ast.html, {
+  walk(ast.fragment as any, {
     enter(node) {
-      if (node.type == "Element") {
+      if ((node as any).type === "RegularElement") {
         const node_: Element = node as any;
         if (should_process_asset(node_)) {
           assets.push(node_);

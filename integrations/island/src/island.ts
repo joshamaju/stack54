@@ -3,10 +3,10 @@ import { dedent } from "ts-dedent";
 
 import type { PreprocessorGroup } from "svelte/compiler";
 import { parse, preprocess } from "svelte/compiler";
+import { walk } from "estree-walker";
 
 import { to_fs } from "stack54/internals";
 import { ResolvedConfig } from "stack54/config";
-import { walk_ast } from "./walk.js";
 
 type Attributes = Record<string, string | boolean>;
 
@@ -53,7 +53,7 @@ export async function make(
 
   if (!script) return;
 
-  const ast = parse(processed.code, { modern: false });
+  const ast = parse(processed.code, { modern: true });
 
   if (!ast.instance) return;
 
@@ -100,13 +100,14 @@ export async function make(
 
   let svelte_head: Head | undefined;
 
-  walk_ast(ast.html, {
+  walk(ast.fragment as any, {
     enter(node) {
       const node_: Element = node as any;
 
-      if (node_.type == "Head") {
-        const first = node_.children?.[0];
-        const last = node_.children?.[node_.children.length - 1];
+      if (node_.type == "SvelteHead") {
+        const fragment = (node as any).fragment;
+        const first = fragment.nodes?.[0];
+        const last = fragment.nodes?.[fragment.nodes.length - 1];
 
         if (first && last) {
           svelte_head = {

@@ -295,6 +295,9 @@ importers:
 
   integrations/island:
     dependencies:
+      estree-walker:
+        specifier: ^3.0.3
+        version: 3.0.3
       magic-string:
         specifier: ^0.30.5
         version: 0.30.21
@@ -440,6 +443,9 @@ importers:
       effection:
         specifier: ^4.0.0
         version: 4.1.1
+      estree-walker:
+        specifier: ^3.0.3
+        version: 3.0.3
       es-module-lexer:
         specifier: ^2.0.0
         version: 2.3.2
