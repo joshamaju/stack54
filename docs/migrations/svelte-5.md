@@ -23,7 +23,7 @@ The last tagged releases before this migration are `stack54@0.14.0`, `@stack54/e
 - [x] Phase 2: Migrate core rendering and component types
 - [x] Phase 3: Migrate island hydration (slotted children unsupported)
 - [x] Phase 4: Exclude `@stack54/streaming` from this Svelte 5 major
-- [ ] Phase 5: Update maintained examples and templates (source/manifests complete; release-dependent lockfiles and remaining project builds pending)
+- [ ] Phase 5: Update maintained examples and templates (source/manifests and representative builds complete; release-dependent lockfiles pending)
 - [ ] Phase 6: Validate, document, and prepare release (verification complete; automated release PR and publication pending)
 
 ## Phase 0: Confirm support policy and baseline
@@ -89,7 +89,7 @@ The integration still uses Svelte 4 SSR hooks and is not compatible with the new
 - [x] Review Svelte configs and type declarations for Svelte 5 changes.
 - [ ] Regenerate tracked example pnpm lockfiles after the new core version is published; no tracked template lockfiles exist.
 - [x] Keep legacy syntax where Svelte 5 supports it; make targeted changes only where runtime/compiler API compatibility requires them.
-- [ ] Build representative Express, Hono, standalone, Tailwind, and HTMX projects. Core's Express fixture and Hono integration fixture pass; standalone/Tailwind/HTMX builds depend on resolving the unpublished `stack54@1.0.0` package.
+- [x] Build representative Express, Hono, standalone, Tailwind, and HTMX projects. The three templates were built in temporary copies against local tarballs from the merged Svelte 5 source while `stack54@1.0.0` awaits automated publication.
 - [x] Check the remaining examples, integration fixtures, and scaffolder output for stale Svelte 4 pins.
 
 **Exit criteria:** generated projects install and build using the documented Svelte 5 toolchain.
@@ -135,4 +135,5 @@ The integration still uses Svelte 4 SSR hooks and is not compatible with the new
 - The included workspace tests pass sequentially, including Express/Hono integration fixtures and the core basic app's 25 browser tests. Running all workspace projects concurrently caused the invalid-entry test to exceed its timeout while nested Playwright installs ran; the root `test` script now uses workspace concurrency 1. The streaming integration remains excluded by design.
 - The root TypeScript workspace build passes under Node 25. Production builds passed for the core basic Express fixture and Hono default fixture. Browser tests reported no island marker warnings after enabling the island integration in the basic fixture. Svelte still reports the compatibility `Await.resolve` property warning; this migration retains legacy component syntax supported by Svelte 5.
 - Svelte 5 renders `undefined` interpolations as empty text; the affected environment/locals browser assertions now check the actual output. The ClientOnly fixture now uses `onMount` so its content is absent from SSR and appears after mount, and its dedicated fixture is kept separate from island auto-hydration.
-- Added [Svelte 5 release notes](./svelte-5-release-notes.md). Remaining release tasks are merging the automated version PR and allowing the workflow to publish the resulting packages, then regenerating the two tracked example pnpm lockfiles and building standalone, Tailwind, and HTMX generated projects against the published package. Do not publish `@stack54/streaming` as part of this migration.
+- Added [Svelte 5 release notes](./svelte-5-release-notes.md). Remaining release tasks are merging the corrected automated version PR and allowing the workflow to publish the resulting packages, then regenerating the two tracked example pnpm lockfiles and confirming project builds against published packages. Do not publish `@stack54/streaming` as part of this migration.
+- Standalone, Tailwind, and HTMX template production builds pass using temporary local tarballs of the merged Svelte 5 source; the package manifests remain on their released versions until Changesets automation publishes the new major. HTMX reports three existing label/control accessibility warnings. The tracked example lockfiles still require the published `stack54@1.0.0` resolution.
