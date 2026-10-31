@@ -439,16 +439,16 @@ importers:
         version: 1.2.0
       devalue:
         specifier: ^5.0.0
-        version: 5.9.3
+        version: 5.9.4
       effection:
         specifier: ^4.0.0
         version: 4.1.1
-      estree-walker:
-        specifier: ^3.0.3
-        version: 3.0.3
       es-module-lexer:
         specifier: ^2.0.0
         version: 2.3.2
+      estree-walker:
+        specifier: ^3.0.3
+        version: 3.0.3
       figlet:
         specifier: ^1.10.0
         version: 1.11.4
@@ -2252,8 +2252,8 @@ packages:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
-  devalue@5.9.3:
-    resolution: {integrity: sha512-xRumYOCUZN/EesqHEU3WOXanOZNvfZFZ/o1AHVFDX1yI0UAkZkOgDXt341CzKoBVIkgQba55/+DjGBKrIoKcHw==}
+  devalue@5.9.4:
+    resolution: {integrity: sha512-sPAT4pztbu6586/hrhOnMKS17IJrvg12mXiSPSS3W5qDeN2RGgvZ0diZCm31dBbnevfVmujNO3IM2wrS4Y2Rhg==}
 
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -5072,7 +5072,7 @@ snapshots:
 
   detect-libc@2.1.2: {}
 
-  devalue@5.9.3: {}
+  devalue@5.9.4: {}
 
   dir-glob@3.0.1:
     dependencies:
@@ -6337,7 +6337,7 @@ snapshots:
       aria-query: 5.3.1
       axobject-query: 4.1.0
       clsx: 2.1.1
-      devalue: 5.9.3
+      devalue: 5.9.4
       esm-env: 1.2.2
       esrap: 2.4.0
       is-reference: 3.0.3
