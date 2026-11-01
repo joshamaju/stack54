@@ -1,17 +1,17 @@
-## Remote Functions
+# Hono example
 
-## How to use
+Demonstrates a Hono application using `@hono/vite-dev-server` during development and `@hono/node-server` in production.
 
-Run the app in development mode
-
-> Builds the app, starts the express server and watches for changes
-
-```bash
-npm run watch
+```sh
+npm install
+npm run dev
 ```
 
-To start the express server
+Build and start the production server with:
 
-```bash
+```sh
+npm run build
 npm run start
 ```
+
+This example uses Hono's Vite dev server integration directly; see the separate [`@stack54/hono` package README](../../integrations/hono/README.md) for Stack54's Hono adapters.

@@ -1,3 +1,5 @@
-# stack54/core
+# stack54
 
-[Documentation](https://github.com/joshamaju/stack54/wiki)
+Core build and server rendering package for Stack54.
+
+See the repository [documentation](../../docs/README.md), especially the [API reference](../../docs/api-reference.md), [configuration guide](../../docs/configuration.md), and [deployment guide](../../docs/deployment.md).

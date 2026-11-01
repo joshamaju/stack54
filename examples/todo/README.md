@@ -1,17 +1,15 @@
-## ToDo
+# Todo example
 
-## How to use
+Demonstrates an Express application with Stack54-rendered Svelte views and island-based client interactivity.
 
-Run the app in development mode
-
-> Builds the app, starts the express server and watches for changes
-
-```bash
-npm run watch
+```sh
+npm install
+npm run dev
 ```
 
-To start the express server
+Build and start the production server with:
 
-```bash
+```sh
+npm run build
 npm run start
 ```

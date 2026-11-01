@@ -1,17 +1,15 @@
-## Remote Functions
+# Remote functions with Hono
 
-## How to use
+Demonstrates remote functions with Thaler in a Hono app, alongside Stack54-rendered Svelte views.
 
-Run the app in development mode
-
-> Builds the app, starts the express server and watches for changes
-
-```bash
-npm run watch
+```sh
+npm install
+npm run dev
 ```
 
-To start the express server
+Build and start the production server with:
 
-```bash
+```sh
+npm run build
 npm run start
 ```

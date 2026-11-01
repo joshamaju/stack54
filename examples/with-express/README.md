@@ -1,19 +1,15 @@
-## Express example
+# Express example
 
-Shows how to use a hono app with express abd just using vite to build the entire app for development and production.
+Demonstrates server rendered Svelte views in an Express application, using `@stack54/express` for Vite development and rendering integration.
 
-## How to use
-
-Run the app in development mode
-
-> Builds the app, starts the express server and watches for changes
-
-```bash
-npm run watch
+```sh
+npm install
+npm run dev
 ```
 
-To start the express server
+Build and start the production server with:
 
-```bash
+```sh
+npm run build
 npm run start
 ```
