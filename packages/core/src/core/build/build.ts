@@ -54,7 +54,14 @@ export function* builder({ cwd, env, config, outDir }: Opts) {
     transform: {
       order: "pre",
       async handler(code, id) {
-        const { filename } = parse_id(id);
+        const { filename, searchParams } = parse_id(id);
+
+        /** Svelte's virtual style modules share their component's `.svelte`
+         * filename (for example, `View.svelte?svelte&type=style&lang.css`).
+         * Their contents are CSS, so only compile the component's main module
+         * as a Stack54 view.
+         */
+        if (searchParams.has("svelte")) return;
 
         if (
           config.svelte.extensions.some((extension) =>
