@@ -1,21 +1,17 @@
-## HTMX
+# HTMX starter
 
-## How to use
+This starter combines Stack54's server rendered views with HTMX for request-driven interactivity.
 
-Run the app in development mode
-
-```bash
+```sh
+npm install
 npm run dev
 ```
 
-To make a production build
+Build and start the production server with:
 
-```bash
+```sh
 npm run build
-```
-
-To start the express server
-
-```bash
 npm run start
 ```
+
+The server entry is `bin/server.js`; inspect `src/entry.ts` and the views for the example routes and interactions.

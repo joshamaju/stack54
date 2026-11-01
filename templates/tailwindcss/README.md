@@ -1,21 +1,15 @@
-## Express
+# Express and Tailwind CSS starter
 
-## How to use
-
-Run the app in development mode
-
-```bash
+```sh
+npm install
 npm run dev
 ```
 
-To make a production build
+Build and start the production server with:
 
-```bash
+```sh
 npm run build
-```
-
-To start the express server
-
-```bash
 npm run start
 ```
+
+This starter uses Express and Tailwind CSS. The server entry is `bin/server.js`.

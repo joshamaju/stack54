@@ -1,17 +1,17 @@
-## Remote Functions
+# Hono starter
 
-## How to use
+This starter uses Hono with `@hono/vite-dev-server` during development, and `@hono/node-server` for its production server. It does not use the separate `@stack54/hono` integration package.
 
-Run the app in development mode
-
-> Builds the app, starts the express server and watches for changes
-
-```bash
-npm run watch
+```sh
+npm install
+npm run dev
 ```
 
-To start the express server
+Build and start the production server with:
 
-```bash
+```sh
+npm run build
 npm run start
 ```
+
+The production entry is `bin/server.js`. See the [Hono integration guide](../../docs/integrations.md#hono) for the distinction between this starter and `@stack54/hono`, and the [deployment guide](../../docs/deployment.md) for its asset serving setup.

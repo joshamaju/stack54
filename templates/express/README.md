@@ -1,21 +1,17 @@
-## Express
+# Express starter
 
-## How to use
+This starter uses the Stack54 Express integration. Install dependencies, then run the development server:
 
-Run the app in development mode
-
-```bash
+```sh
+npm install
 npm run dev
 ```
 
-To make a production build
+Build and start the production server with:
 
-```bash
+```sh
 npm run build
-```
-
-To start the express server
-
-```bash
 npm run start
 ```
+
+The server entry is `bin/server.js`. See the [deployment guide](../../docs/deployment.md) for how it serves generated and static assets.
