@@ -18,7 +18,7 @@
     "test": "pnpm --filter '!./templates/**' --filter '!./playground/**' --filter '!./integrations/streaming/**' -r --workspace-concurrency=1 test"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.1",
+    "@changesets/cli": "^3.0.0",
     "playwright": "^1.41.1",
     "typescript": "^5.3.3"
   }
